@@ -23,7 +23,7 @@ struct ContentView_Previews: PreviewProvider {
 
 struct Writer: View {
     @Environment(\.undoManager) var undoManager
-    let inferenceManager = InferenceManager()
+    let inferenceManager = InferenceManager(handler: QuickDrawModelDataHandler()!)
     
     @State private var canvasView = PKCanvasView()
 
@@ -59,9 +59,23 @@ struct MyCanvas: UIViewRepresentable {
 }
 
 class InferenceManager: NSObject, PKCanvasViewDelegate {
+    let handler: QuickDrawModelDataHandler
+    
+    init(handler: QuickDrawModelDataHandler) {
+        self.handler = handler
+    }
+    
     func canvasViewDrawingDidChange(_ canvasView: PKCanvasView) {
-        let image = canvasView.drawing.image(from: canvasView.bounds, scale: 256/max(canvasView.bounds.size.height, canvasView.bounds.size.height))
+        let image = canvasView.drawing.image(from: canvasView.bounds, scale: 224/max(canvasView.bounds.size.height, canvasView.bounds.size.height))
         
-        
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            guard let `self` = self else { return }
+
+            let result = self.handler.runModel(input: UIImage(named: "police_car")!)
+            
+            DispatchQueue.main.async {
+                print(result)
+            }
+        }
     }
 }

@@ -12,6 +12,7 @@
 		784C88152511598400943942 /* TFLiteExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784C88142511598400943942 /* TFLiteExtensions.swift */; };
 		785980D7251146F800722FDE /* ModelDataHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785980D6251146F800722FDE /* ModelDataHandling.swift */; };
 		785980D92511472800722FDE /* QuickDrawModelDataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785980D82511472800722FDE /* QuickDrawModelDataHandler.swift */; };
+		787A4DE6251275F40066BD39 /* ImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787A4DE5251275F40066BD39 /* ImageHelper.swift */; };
 		789F0BD4251124C100C7CD01 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789F0BD3251124C100C7CD01 /* AppDelegate.swift */; };
 		789F0BD6251124C100C7CD01 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789F0BD5251124C100C7CD01 /* SceneDelegate.swift */; };
 		789F0BD8251124C100C7CD01 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789F0BD7251124C100C7CD01 /* ContentView.swift */; };
@@ -52,6 +53,7 @@
 		784C88142511598400943942 /* TFLiteExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLiteExtensions.swift; sourceTree = "<group>"; };
 		785980D6251146F800722FDE /* ModelDataHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelDataHandling.swift; sourceTree = "<group>"; };
 		785980D82511472800722FDE /* QuickDrawModelDataHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickDrawModelDataHandler.swift; sourceTree = "<group>"; };
+		787A4DE5251275F40066BD39 /* ImageHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHelper.swift; sourceTree = "<group>"; };
 		789F0BD0251124C100C7CD01 /* TrickDraw.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrickDraw.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		789F0BD3251124C100C7CD01 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		789F0BD5251124C100C7CD01 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -121,6 +123,15 @@
 			path = ModelDataHandler;
 			sourceTree = "<group>";
 		};
+		787A4DE4251275C60066BD39 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				784C88142511598400943942 /* TFLiteExtensions.swift */,
+				787A4DE5251275F40066BD39 /* ImageHelper.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
 		789F0BC7251124C100C7CD01 = {
 			isa = PBXGroup;
 			children = (
@@ -146,6 +157,7 @@
 		789F0BD2251124C100C7CD01 /* TrickDraw */ = {
 			isa = PBXGroup;
 			children = (
+				787A4DE4251275C60066BD39 /* Util */,
 				784C8812251156E500943942 /* models */,
 				785980D5251146E400722FDE /* ModelDataHandler */,
 				789F0BD3251124C100C7CD01 /* AppDelegate.swift */,
@@ -155,7 +167,6 @@
 				789F0BDE251124C400C7CD01 /* LaunchScreen.storyboard */,
 				789F0BE1251124C400C7CD01 /* Info.plist */,
 				789F0BDB251124C400C7CD01 /* Preview Content */,
-				784C88142511598400943942 /* TFLiteExtensions.swift */,
 			);
 			path = TrickDraw;
 			sourceTree = "<group>";
@@ -406,6 +417,7 @@
 				784C88152511598400943942 /* TFLiteExtensions.swift in Sources */,
 				785980D7251146F800722FDE /* ModelDataHandling.swift in Sources */,
 				789F0BD8251124C100C7CD01 /* ContentView.swift in Sources */,
+				787A4DE6251275F40066BD39 /* ImageHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -502,7 +514,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.7;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -556,7 +568,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.7;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -573,6 +585,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"TrickDraw/Preview Content\"";
+				DEVELOPMENT_TEAM = U2PH7ZJ755;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = TrickDraw/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -593,6 +606,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"TrickDraw/Preview Content\"";
+				DEVELOPMENT_TEAM = U2PH7ZJ755;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = TrickDraw/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
