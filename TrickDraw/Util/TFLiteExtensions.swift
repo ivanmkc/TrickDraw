@@ -29,7 +29,7 @@ extension UIImage {
         let attrs = [
             kCVPixelBufferCGImageCompatibilityKey: kCFBooleanTrue,
             kCVPixelBufferCGBitmapContextCompatibilityKey: kCFBooleanTrue
-            ] as CFDictionary
+        ] as CFDictionary
         
         var pixelBuffer: CVPixelBuffer?
         let status = CVPixelBufferCreate(kCFAllocatorDefault,
@@ -63,23 +63,23 @@ extension UIImage {
         let bytesPerRow = bytesPerPixel * width;
         
         guard let context = CGContext(
-            data: pixelData,
-            width: width,
-            height: Int(size.height),
-            bitsPerComponent: bitsPerComponent,
-            bytesPerRow: bytesPerRow,
-            space: colorSpace,
-            bitmapInfo: bitmapInfo.rawValue)
-            else {
-                return nil
+                data: pixelData,
+                width: width,
+                height: Int(size.height),
+                bitsPerComponent: bitsPerComponent,
+                bytesPerRow: bytesPerRow,
+                space: colorSpace,
+                bitmapInfo: bitmapInfo.rawValue)
+        else {
+            return nil
         }
         
         context.draw(cgImage, in: CGRect(origin: .zero, size: size))
         
         let sourcePixelFormat = CVPixelBufferGetPixelFormatType(buffer)
         assert(sourcePixelFormat == kCVPixelFormatType_32ARGB ||
-            sourcePixelFormat == kCVPixelFormatType_32BGRA ||
-            sourcePixelFormat == kCVPixelFormatType_32RGBA)
+                sourcePixelFormat == kCVPixelFormatType_32BGRA ||
+                sourcePixelFormat == kCVPixelFormatType_32RGBA)
         
         
         let inputChannels = 4
@@ -89,9 +89,9 @@ extension UIImage {
             buffer,
             byteCount: Int(size.width * size.height) * inputChannels,
             isModelQuantized: isModelQuantized
-            ) else {
-                print("Failed to convert the image buffer to RGB data.")
-                return nil
+        ) else {
+            print("Failed to convert the image buffer to RGB data.")
+            return nil
         }
         
         return rgbData
@@ -124,6 +124,60 @@ private enum Constant {
 }
 
 extension UIImage {
+    func pixelData() -> Data? {
+        let width = 224
+        let height = 224
+
+        guard let image: CGImage = self.cgImage else { return nil }
+        guard let context = CGContext(
+          data: nil,
+          width: width, height: height,
+          bitsPerComponent: 8, bytesPerRow: width * 4,
+          space: CGColorSpaceCreateDeviceRGB(),
+          bitmapInfo: CGImageAlphaInfo.noneSkipFirst.rawValue
+        ) else {
+          return nil
+        }
+
+        context.draw(image, in: CGRect(x: 0, y: 0, width: width, height: height))
+        guard let imageData = context.data else { return nil }
+        
+        var inputData = Data()
+        do {
+            for row in 0 ..< height {
+                for col in 0 ..< width {
+                    let offset = 4 * (col * width + row)
+                    // (Ignore offset 0, the unused alpha channel)
+                    var red = imageData.load(fromByteOffset: offset+1, as: UInt8.self)
+                    var green = imageData.load(fromByteOffset: offset+2, as: UInt8.self)
+                    var blue = imageData.load(fromByteOffset: offset+3, as: UInt8.self)
+                    
+//                    // Normalize channel values to [0.0, 1.0]. This requirement varies
+//                    // by model. For example, some models might require values to be
+//                    // normalized to the range [-1.0, 1.0] instead, and others might
+//                    // require fixed-point values or the original bytes.
+//                    var normalizedRed = Float32(red) / 255.0
+//                    var normalizedGreen = Float32(green) / 255.0
+//                    var normalizedBlue = Float32(blue) / 255.0
+                    // Append normalized values to Data object in RGB order.
+                    let elementSize = MemoryLayout.size(ofValue: red)
+                    var bytes = [UInt8](repeating: 0, count: elementSize)
+                    memcpy(&bytes, &red, elementSize)
+                    inputData.append(&bytes, count: elementSize)
+                    memcpy(&bytes, &green, elementSize)
+                    inputData.append(&bytes, count: elementSize)
+                    memcpy(&bytes, &blue, elementSize)
+                    inputData.append(&bytes, count: elementSize)
+                }
+            }
+        
+            return inputData
+        } catch let error {
+            print("Failed to add input: \(error)")
+            return nil
+        }
+    }
+    
     func pixelValues() -> [UInt8]?
     {
         let imageRef = self.cgImage
@@ -139,7 +193,7 @@ extension UIImage {
                 rawValue: CGImageAlphaInfo.none.rawValue
             )
             
-//            let colorSpace = CGColorSpaceCreateDeviceRGB()
+            //            let colorSpace = CGColorSpaceCreateDeviceRGB()
             let colorSpace = CGColorSpaceCreateDeviceGray()
             var intensities = [UInt8](repeating: 0, count: totalBytes)
             
@@ -158,69 +212,114 @@ extension UIImage {
             contextRef?.fill(CGRect(x: 0.0, y: 0.0, width: CGFloat(width), height: CGFloat(height)))
             
             // Draw the image in white
-            contextRef?.clip(to: rect, mask: imageRef)
-            contextRef?.setFillColor(red: 1, green: 1, blue: 1, alpha: 1)
-            contextRef?.fill(rect)
-//                CGContextFillRect(context, CGRectMake(0, 0, image.size.width, image.size.height));
+            //            contextRef?.clip(to: rect, mask: imageRef)
+            //            contextRef?.setFillColor(red: 1, green: 1, blue: 1, alpha: 1)
+            //            contextRef?.fill(rect)
+            //                CGContextFillRect(context, CGRectMake(0, 0, image.size.width, image.size.height));
             
-//            contextRef?.draw(imageRef, in: rect)
+            contextRef?.draw(imageRef, in: rect)
             
             let outputImage = contextRef?.makeImage()
-//            guard let scaledBytes = outputImage?.dataProvider?.data as Data? else { return nil }
-//
-//            let array = scaledBytes.withUnsafeBytes {
-//                [UInt8](UnsafeBufferPointer(start: $0, count: scaledBytes.count))
-//            }
+            //            guard let scaledBytes = outputImage?.dataProvider?.data as Data? else { return nil }
+            //
+            //            let array = scaledBytes.withUnsafeBytes {
+            //                [UInt8](UnsafeBufferPointer(start: $0, count: scaledBytes.count))
+            //            }
             
-//            intensities = intensities.map { $0 > 0 ? 255 : 0 }
-//            intensities = (3-1).stride(to: intensities.count, by: 3).flatMap { intensities[($0-3+1)..<$0] }
-//            var sum: Int = 0
-//
-//            var sum = 0
-//
-//            for number in intensities {
-//                sum += Int(number)
-//            }
-//
-            pixelValues = [UInt8]()
-            
-            let asdf = intensities.map({ $0 < 255 ? UInt8(0) : UInt8(255) })
-            for number in asdf {
-                pixelValues?.append(number)
-                pixelValues?.app22end(number)
-                pixelValues?.append(number)
+            //            intensities = intensities.map { $0 > 0 ? 255 : 0 }
+            //            intensities = (3-1).stride(to: intensities.count, by: 3).flatMap { intensities[($0-3+1)..<$0] }
+            //            var sum: Int = 0
+            //
+            //            var sum = 0
+            //
+            //            for number in intensities {
+            //                sum += Int(number)
+            //            }
+            //
+            pixelValues = intensities + intensities + intensities
+            var counter = [UInt8: Int]()
+            //            let asdf = intensities.map({ $0 > 0 ? UInt8(255) : UInt8(0) })
+            for (index, number) in intensities.enumerated() {
+                //                if (number != 0) {
+                //                    print("[\(index)] = \(number)")
+                //                }
+                
+                counter[number] = counter[number, default: 0] + 1
+                
+                //                pixelValues?.append(number)
+                //                pixelValues?.append(number)
+                //                pixelValues?.append(number)
             }
-//
-//
             
-//            pixelValues = intensities
-////                .map { $0 > 0 ? 255 : 0 }
-//                .enumerated()
-//                .compactMap {
-//                    if $0.element != 0 {
-//                        print($0.offset % 4)
-//                    }
-                    
-//                    return $0.offset % 4 == 3 ? nil : $0.element
-////
-//                    let new = $0.offset % 4 == 3 ? $0.element : $0.element
-//
-////                    if (new != nil && new! > 0) {
-////                        print(new)
-////
-//                    }
-//
-//                    return new
-//
-//            } // Remove every four value (alpha)
+            print(counter.sorted { $0.key < $1.key })
+            
+            let sum = pixelValues?.reduce(0) { Int($0) + Int($1) }
+            print(sum)
+            //
+            //
+            
+            //            pixelValues = intensities
+            ////                .map { $0 > 0 ? 255 : 0 }
+            //                .enumerated()
+            //                .compactMap {
+            //                    if $0.element != 0 {
+            //                        print($0.offset % 4)
+            //                    }
+            
+            //                    return $0.offset % 4 == 3 ? nil : $0.element
+            ////
+            //                    let new = $0.offset % 4 == 3 ? $0.element : $0.element
+            //
+            ////                    if (new != nil && new! > 0) {
+            ////                        print(new)
+            ////
+            //                    }
+            //
+            //                    return new
+            //
+            //            } // Remove every four value (alpha)
         }
         
-//        var sum = 0
-//
-//        for number in pixelValues! {
-//            sum += Int(number)
-//        }
+        //        var sum = 0
+        //
+        //        for number in pixelValues! {
+        //            sum += Int(number)
+        //        }
         
         return pixelValues
     }
 }
+
+func pixelValuesFromImage(imageRef: CGImage) -> ([UInt8], width: Int, height: Int)
+{
+    var width = 0
+    var height = 0
+    var pixelValues: [UInt8]
+    
+    width = imageRef.width
+    height = imageRef.height
+    let bitsPerComponent = imageRef.bitsPerComponent
+    let bytesPerRow = imageRef.bytesPerRow
+    let totalBytes = height * bytesPerRow
+    
+    let colorSpace = CGColorSpaceCreateDeviceGray()
+    //        let colorSpace = CGColorSpaceCreateDeviceRGB()
+    let buffer = [UInt8](repeating: 0, count: totalBytes)
+    let mutablePointer = UnsafeMutablePointer<UInt8>(mutating: buffer)
+    
+    let contextRef = CGContext(data: mutablePointer,
+                               width: width,
+                               height: height,
+                               bitsPerComponent: bitsPerComponent,
+                               bytesPerRow: bytesPerRow,
+                               space: colorSpace,
+                               bitmapInfo: 0)
+    
+    contextRef?.draw(imageRef, in: CGRect(x: 0.0, y: 0.0, width: CGFloat(width), height: CGFloat(height)))
+    
+    let bufferPointer = UnsafeBufferPointer<UInt8>(start: mutablePointer, count: totalBytes)
+    pixelValues = Array<UInt8>(bufferPointer)
+    
+    return (pixelValues, width, height)
+}
+

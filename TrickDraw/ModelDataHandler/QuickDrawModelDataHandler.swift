@@ -24,23 +24,20 @@ class QuickDrawModelDataHandler: ModelDataHandling {
     typealias Inference = String
     
     // TODO
-    let labels = [
-        "donut",
-        "watermelon",
-        "tent",
-        "snake",
-        "duck",
-        "stitches",
-        "police car",
-        "snowman",
-        "underwear",
-        "potato"
-    ]
+    lazy var labels: [String]? = {
+        guard let labelPath = Bundle.main.path(forResource: labelFileInfo.name,
+                                               ofType: labelFileInfo.extension) else { return nil}
+        let fileContents = try? String(contentsOfFile: labelPath)
+        guard let labels = fileContents?.components(separatedBy: "\n") else { return nil }
+
+        return labels
+    }()
     
     /// Information about the MobileNet model.
     enum Model {
         static let modelInfo: FileInfo = (name: "models/10_500/model", extension: "tflite")
         //      static let modelInfoQuantized: FileInfo = (name: "style_predict_quantized_256", extension: "tflite")
+        static let labelInfo: FileInfo = (name: "models/10_500/dict", extension: "txt")
         static let inputImageWidth: Int = 224
         static let inputImageHeight: Int = 224
     }
@@ -55,20 +52,19 @@ class QuickDrawModelDataHandler: ModelDataHandling {
     private var interpreter: Interpreter
     
     private let modelFileInfo = Model.modelInfo
+    private let labelFileInfo = Model.labelInfo
     
     // MARK: - Initialization
     
     /// A failable initializer for `ModelDataHandler`. A new instance is created if the model and
     /// labels files are successfully loaded from the app's main bundle. Default `threadCount` is 1.
     init?(threadCount: Int = 1) {
-        let modelFilename = modelFileInfo.name
-        
         // Construct the path to the model file.
         guard let modelPath = Bundle.main.path(
-            forResource: modelFilename,
+            forResource: modelFileInfo.name,
             ofType: modelFileInfo.extension
             ) else {
-                print("Failed to load the model file with name: \(modelFilename).")
+                print("Failed to load the model file with name: \(modelFileInfo.name).")
                 return nil
         }
         
@@ -102,7 +98,7 @@ class QuickDrawModelDataHandler: ModelDataHandling {
 //            let inputTensor = try self.interpreter.input(at: 0)
             
             // Preprocessing: Convert the input UIImage to RGB image to feed to TF Lite model.
-            guard let pixelValues = input.pixelValues()
+            guard let rgbData = input.pixelData()
                 else {
                     //              DispatchQueue.main.async {
                     //                completion(.error(ClassificationError.invalidImage))
@@ -113,9 +109,13 @@ class QuickDrawModelDataHandler: ModelDataHandling {
                     print("Failed to convert the image buffer to RGB data.")
             }
             
+            let pixelValues = rgbData.withUnsafeBytes {
+                [UInt8](UnsafeBufferPointer(start: $0, count: rgbData.count))
+            }
+            
             print("Sum: \(pixelValues.reduce(0){ Int($0) + Int($1) })")
                         
-            let rgbData = Data(copyingBufferOf: pixelValues)
+//            let rgbData = Data(copyingBufferOf: pixelValues)
                         
             // Copy the RGB data to the input `Tensor`.
             try self.interpreter.copy(rgbData, toInputAt: 0)
@@ -156,6 +156,7 @@ class QuickDrawModelDataHandler: ModelDataHandling {
         
         let maxOffset = maxResult?.offset ?? 0
 //        print(humanReadableResult)
-        return .success(labels[maxOffset])
+        return .success(labels?[maxOffset] ?? "Unknown")
+//        return .success("maxOffset: \(maxOffset)")
     }
 }

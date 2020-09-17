@@ -12,6 +12,7 @@ import PencilKit
 struct ContentView: View {
     var body: some View {
         Writer()
+            .environment(\.colorScheme, .dark)
     }
 }
 
@@ -50,7 +51,7 @@ struct MyCanvas: UIViewRepresentable {
     var inferenceManager: InferenceManager?
 
     func makeUIView(context: Context) -> PKCanvasView {
-        self.canvasView.tool = PKInkingTool(.pencil, color: .black, width: 1)
+        self.canvasView.tool = PKInkingTool(.pencil, color: .black, width: 5) // This color inverts depending on light vs dark mode
         canvasView.delegate = inferenceManager
         return canvasView
     }
@@ -71,7 +72,7 @@ class InferenceManager: NSObject, PKCanvasViewDelegate {
         DispatchQueue.global(qos: .background).async { [weak self] in
             guard let `self` = self else { return }
 
-            let result = self.handler.runModel(input: UIImage(named: "police_car")!)
+            let result = self.handler.runModel(input: UIImage(named: "snowman")!)
             
             DispatchQueue.main.async {
                 print(result)
