@@ -30,7 +30,7 @@ class QuickDrawModelDataHandler: ModelDataHandling {
         let fileContents = try? String(contentsOfFile: labelPath)
         guard let labels = fileContents?.components(separatedBy: "\n") else { return nil }
 
-        return labels
+        return labels.filter { !$0.isEmpty }
     }()
     
     /// Information about the MobileNet model.
@@ -144,13 +144,17 @@ class QuickDrawModelDataHandler: ModelDataHandling {
         // Copy output to `Data` to process the inference results.
         let outputSize = outputTensor.shape.dimensions.reduce(1, {x, y in x * y})
         let outputData =
-              UnsafeMutableBufferPointer<Float32>.allocate(capacity: outputSize)
+              UnsafeMutableBufferPointer<UInt8>.allocate(capacity: outputSize)
         outputTensor.data.copyBytes(to: outputData)
+
+        let scale = outputTensor.quantizationParameters?.scale ?? 1
+        let zeroPoint = outputTensor.quantizationParameters?.zeroPoint ?? 0
+        let adjustedData = outputData.map { scale * (Float($0) - Float(zeroPoint)) }
         
         print("Results:")
-        outputData.enumerated().forEach{ print("\t\($0)") }
+        adjustedData.enumerated().forEach{ print("\t\($0)") }
         
-        let maxResult = outputData
+        let maxResult = adjustedData
             .enumerated()
             .max { $0.element <= $1.element }
         
