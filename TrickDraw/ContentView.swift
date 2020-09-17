@@ -72,7 +72,7 @@ class InferenceManager: NSObject, PKCanvasViewDelegate {
         DispatchQueue.global(qos: .background).async { [weak self] in
             guard let `self` = self else { return }
 
-            let result = self.handler.runModel(input: UIImage(named: "duck")!)
+            let result = self.handler.runModel(input: image)
             
             DispatchQueue.main.async {
                 print(result)

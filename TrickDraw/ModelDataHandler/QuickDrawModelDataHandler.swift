@@ -95,10 +95,11 @@ class QuickDrawModelDataHandler: ModelDataHandling {
         let outputTensor: Tensor
         do {
             // Get the output `Tensor` to process the inference results.
-//            let inputTensor = try self.interpreter.input(at: 0)
+            let inputTensor = try self.interpreter.input(at: 0)
             
             // Preprocessing: Convert the input UIImage to RGB image to feed to TF Lite model.
-            guard let rgbData = input.pixelData()
+            guard let rgbData = input.pixelData(size: CGSize(width: inputTensor.shape.dimensions[1],
+                                                             height: inputTensor.shape.dimensions[2]))
                 else {
                     //              DispatchQueue.main.async {
                     //                completion(.error(ClassificationError.invalidImage))
