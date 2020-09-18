@@ -7,6 +7,10 @@ target 'TrickDraw' do
 
   # Pods for TrickDraw
   pod "TensorFlowLiteSwift"
+  # Add the pods for any other Firebase products you want to use in your app
+  # For example, to use Firebase Authentication and Cloud Firestore
+  pod 'Firebase/Auth'
+  pod 'Firebase/Firestore'
 
   target 'TrickDrawTests' do
     inherit! :search_paths

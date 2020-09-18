@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -12,6 +12,13 @@
 		784C88152511598400943942 /* TFLiteExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784C88142511598400943942 /* TFLiteExtensions.swift */; };
 		785980D7251146F800722FDE /* ModelDataHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785980D6251146F800722FDE /* ModelDataHandling.swift */; };
 		785980D92511472800722FDE /* QuickDrawModelDataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785980D82511472800722FDE /* QuickDrawModelDataHandler.swift */; };
+		78732C6F251424C6005ABFBE /* GameSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78732C6E251424C6005ABFBE /* GameSession.swift */; };
+		78732C8E25144EC3005ABFBE /* DrawScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78732C8D25144EC3005ABFBE /* DrawScreenView.swift */; };
+		78732C9625146256005ABFBE /* GuessScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78732C9525146256005ABFBE /* GuessScreenView.swift */; };
+		78732CA4251467DB005ABFBE /* CanvasViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78732CA3251467DB005ABFBE /* CanvasViewWrapper.swift */; };
+		78732CB325150F4D005ABFBE /* DrawScreenOnlineModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78732CB225150F4D005ABFBE /* DrawScreenOnlineModel.swift */; };
+		78732CB825150F68005ABFBE /* DrawScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78732CB725150F68005ABFBE /* DrawScreenViewModel.swift */; };
+		78732CC12515129F005ABFBE /* DrawGuessCommonOnlineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78732CC02515129F005ABFBE /* DrawGuessCommonOnlineViewModel.swift */; };
 		789F0BD4251124C100C7CD01 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789F0BD3251124C100C7CD01 /* AppDelegate.swift */; };
 		789F0BD6251124C100C7CD01 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789F0BD5251124C100C7CD01 /* SceneDelegate.swift */; };
 		789F0BD8251124C100C7CD01 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789F0BD7251124C100C7CD01 /* ContentView.swift */; };
@@ -52,6 +59,13 @@
 		784C88142511598400943942 /* TFLiteExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLiteExtensions.swift; sourceTree = "<group>"; };
 		785980D6251146F800722FDE /* ModelDataHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelDataHandling.swift; sourceTree = "<group>"; };
 		785980D82511472800722FDE /* QuickDrawModelDataHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickDrawModelDataHandler.swift; sourceTree = "<group>"; };
+		78732C6E251424C6005ABFBE /* GameSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSession.swift; sourceTree = "<group>"; };
+		78732C8D25144EC3005ABFBE /* DrawScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawScreenView.swift; sourceTree = "<group>"; };
+		78732C9525146256005ABFBE /* GuessScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuessScreenView.swift; sourceTree = "<group>"; };
+		78732CA3251467DB005ABFBE /* CanvasViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasViewWrapper.swift; sourceTree = "<group>"; };
+		78732CB225150F4D005ABFBE /* DrawScreenOnlineModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawScreenOnlineModel.swift; sourceTree = "<group>"; };
+		78732CB725150F68005ABFBE /* DrawScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawScreenViewModel.swift; sourceTree = "<group>"; };
+		78732CC02515129F005ABFBE /* DrawGuessCommonOnlineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawGuessCommonOnlineViewModel.swift; sourceTree = "<group>"; };
 		789F0BD0251124C100C7CD01 /* TrickDraw.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrickDraw.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		789F0BD3251124C100C7CD01 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		789F0BD5251124C100C7CD01 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -121,6 +135,61 @@
 			path = ModelDataHandler;
 			sourceTree = "<group>";
 		};
+		78732C6C251424AD005ABFBE /* Inference */ = {
+			isa = PBXGroup;
+			children = (
+				787A4DE4251275C60066BD39 /* Util */,
+				785980D5251146E400722FDE /* ModelDataHandler */,
+			);
+			path = Inference;
+			sourceTree = "<group>";
+		};
+		78732C6D251424BA005ABFBE /* Game */ = {
+			isa = PBXGroup;
+			children = (
+				78732C8C25144EB6005ABFBE /* Screens */,
+				78732C8B25144EAC005ABFBE /* Models */,
+			);
+			path = Game;
+			sourceTree = "<group>";
+		};
+		78732C8B25144EAC005ABFBE /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				78732C6E251424C6005ABFBE /* GameSession.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		78732C8C25144EB6005ABFBE /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				78732CC02515129F005ABFBE /* DrawGuessCommonOnlineViewModel.swift */,
+				78732CAB25150F12005ABFBE /* DrawScreen */,
+				78732CBF251511CA005ABFBE /* GuessScreen */,
+				78732CA3251467DB005ABFBE /* CanvasViewWrapper.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		78732CAB25150F12005ABFBE /* DrawScreen */ = {
+			isa = PBXGroup;
+			children = (
+				78732C8D25144EC3005ABFBE /* DrawScreenView.swift */,
+				78732CB225150F4D005ABFBE /* DrawScreenOnlineModel.swift */,
+				78732CB725150F68005ABFBE /* DrawScreenViewModel.swift */,
+			);
+			path = DrawScreen;
+			sourceTree = "<group>";
+		};
+		78732CBF251511CA005ABFBE /* GuessScreen */ = {
+			isa = PBXGroup;
+			children = (
+				78732C9525146256005ABFBE /* GuessScreenView.swift */,
+			);
+			path = GuessScreen;
+			sourceTree = "<group>";
+		};
 		787A4DE4251275C60066BD39 /* Util */ = {
 			isa = PBXGroup;
 			children = (
@@ -154,9 +223,9 @@
 		789F0BD2251124C100C7CD01 /* TrickDraw */ = {
 			isa = PBXGroup;
 			children = (
-				787A4DE4251275C60066BD39 /* Util */,
+				78732C6D251424BA005ABFBE /* Game */,
+				78732C6C251424AD005ABFBE /* Inference */,
 				784C8812251156E500943942 /* models */,
-				785980D5251146E400722FDE /* ModelDataHandler */,
 				789F0BD3251124C100C7CD01 /* AppDelegate.swift */,
 				789F0BD5251124C100C7CD01 /* SceneDelegate.swift */,
 				789F0BD7251124C100C7CD01 /* ContentView.swift */,
@@ -215,6 +284,7 @@
 				789F0BCC251124C100C7CD01 /* Sources */,
 				789F0BCD251124C100C7CD01 /* Frameworks */,
 				789F0BCE251124C100C7CD01 /* Resources */,
+				8A58FDAA41F09616652721FE /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -252,6 +322,7 @@
 				789F0BED251124C400C7CD01 /* Sources */,
 				789F0BEE251124C400C7CD01 /* Frameworks */,
 				789F0BEF251124C400C7CD01 /* Resources */,
+				90770854EC25D21D3BB614CE /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -379,6 +450,40 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		8A58FDAA41F09616652721FE /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TrickDraw/Pods-TrickDraw-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TrickDraw/Pods-TrickDraw-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TrickDraw/Pods-TrickDraw-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		90770854EC25D21D3BB614CE /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TrickDraw-TrickDrawUITests/Pods-TrickDraw-TrickDrawUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TrickDraw-TrickDrawUITests/Pods-TrickDraw-TrickDrawUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TrickDraw-TrickDrawUITests/Pods-TrickDraw-TrickDrawUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		A7D1027B533162DFE3DEEE45 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -409,10 +514,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				789F0BD4251124C100C7CD01 /* AppDelegate.swift in Sources */,
+				78732CC12515129F005ABFBE /* DrawGuessCommonOnlineViewModel.swift in Sources */,
 				789F0BD6251124C100C7CD01 /* SceneDelegate.swift in Sources */,
+				78732CA4251467DB005ABFBE /* CanvasViewWrapper.swift in Sources */,
+				78732C8E25144EC3005ABFBE /* DrawScreenView.swift in Sources */,
 				785980D92511472800722FDE /* QuickDrawModelDataHandler.swift in Sources */,
 				784C88152511598400943942 /* TFLiteExtensions.swift in Sources */,
+				78732CB825150F68005ABFBE /* DrawScreenViewModel.swift in Sources */,
+				78732C6F251424C6005ABFBE /* GameSession.swift in Sources */,
 				785980D7251146F800722FDE /* ModelDataHandling.swift in Sources */,
+				78732CB325150F4D005ABFBE /* DrawScreenOnlineModel.swift in Sources */,
+				78732C9625146256005ABFBE /* GuessScreenView.swift in Sources */,
 				789F0BD8251124C100C7CD01 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

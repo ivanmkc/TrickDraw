@@ -14,6 +14,7 @@ enum ClassificationError: Error {
     case invalidImage
     // TF Lite Internal Error when initializing
     case internalError(Error)
+    case invalidOutput
 }
 
 /// This class handles all data preprocessing and makes calls to perform inference on a given image
@@ -110,14 +111,6 @@ class QuickDrawModelDataHandler: ModelDataHandling {
                     print("Failed to convert the image buffer to RGB data.")
             }
             
-            let pixelValues = rgbData.withUnsafeBytes {
-                [UInt8](UnsafeBufferPointer(start: $0, count: rgbData.count))
-            }
-            
-            print("Sum: \(pixelValues.reduce(0){ Int($0) + Int($1) })")
-                        
-//            let rgbData = Data(copyingBufferOf: pixelValues)
-                        
             // Copy the RGB data to the input `Tensor`.
             try self.interpreter.copy(rgbData, toInputAt: 0)
             
@@ -134,14 +127,6 @@ class QuickDrawModelDataHandler: ModelDataHandling {
             return .failure(ClassificationError.internalError(error))
         }
         
-        // Postprocessing: Find the label with highest confidence and return as human readable text.
-//        print("outputTensor: \(outputTensor.shape)")
-//        let results = outputTensor.data.toArray(type: Float32.self)
-//        print(results)
-//        let maxConfidence = results.max() ?? -1
-//        let maxIndex = results.firstIndex(of: maxConfidence) ?? -1
-//        let humanReadableResult = "Predicted: \(maxIndex)\nConfidence: \(maxConfidence)"
-        
         // Copy output to `Data` to process the inference results.
         let outputSize = outputTensor.shape.dimensions.reduce(1, {x, y in x * y})
         let outputData =
@@ -152,16 +137,19 @@ class QuickDrawModelDataHandler: ModelDataHandling {
         let zeroPoint = outputTensor.quantizationParameters?.zeroPoint ?? 0
         let adjustedData = outputData.map { scale * (Float($0) - Float(zeroPoint)) }
         
-        print("Results:")
-        adjustedData.enumerated().forEach{ print("\t\($0)") }
+//        print("Results:")
+//        adjustedData.enumerated().forEach{ print("\t\($0)") }
         
         let maxResult = adjustedData
             .enumerated()
             .max { $0.element <= $1.element }
         
         let maxOffset = maxResult?.offset ?? 0
-//        print(humanReadableResult)
-        return .success(labels?[maxOffset] ?? "Unknown")
-//        return .success("maxOffset: \(maxOffset)")
+
+        if let labels = labels {
+            return .success(labels[maxOffset])
+        } else {
+            return .failure(ClassificationError.invalidOutput)
+        }
     }
 }
