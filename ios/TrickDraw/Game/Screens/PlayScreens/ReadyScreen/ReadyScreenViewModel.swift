@@ -12,8 +12,8 @@ class ReadyScreenViewModel: ObservableObject {
     private var database: Firestore = Firestore.firestore()
     private var readyListener: ListenerRegistration?
     
-    private var gameReference: CollectionReference {
-        return database.collection("games")
+    private var gameReference: DocumentReference {
+        return database.collection("games").document(gameId)
     }
     
     let gameId: String
@@ -27,5 +27,7 @@ class ReadyScreenViewModel: ObservableObject {
 
     // Actions: Ready up
     func readyUp() {
+        // Send to readyUp cloud function
+        
     }
 }
