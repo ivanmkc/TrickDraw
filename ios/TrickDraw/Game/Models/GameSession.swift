@@ -25,11 +25,6 @@ struct GameSession {
     let host: Player
 }
 
-struct Guess {
-    let player: Player
-    let guess: String
-}
-
 extension Player {
     static let player1 = Player(id: "player1", name: "Player 1")
     static let player2 = Player(id: "player2", name: "Player 2")

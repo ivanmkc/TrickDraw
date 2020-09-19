@@ -12,10 +12,16 @@ import PencilKit
 struct ContentView: View {
     var body: some View {
         AuthWrapperView(viewModel: AuthWrapperViewModel(),
-                        view: AnyView(LobbyScreenView(viewModel: LobbyScreenViewModel())))
-//        LobbyScreenView(viewModel: LobbyScreenViewModel())
-//        DrawScreenView(viewModel: DrawScreenViewModel(onlineModel: nil))
-//            .environment(\.colorScheme, .dark)
+                        view:
+                            AnyView(
+                                NavigationView {
+                                    LobbyScreenView(viewModel: LobbyScreenViewModel())
+                                }
+                            )
+        )
+        //        LobbyScreenView(viewModel: LobbyScreenViewModel())
+        //        DrawScreenView(viewModel: DrawScreenViewModel(onlineModel: nil))
+        //            .environment(\.colorScheme, .dark)
     }
 }
 

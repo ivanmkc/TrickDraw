@@ -8,12 +8,17 @@
 
 import Foundation
 
-struct DrawGuessCommonOnlineModel {
+struct Guess: Codable {
+    let playerId: String
+    let guess: String
+}
+
+struct DrawGuessCommonOnlineModel: Codable {
     let artist: Player
     let guessers: [Player]
     let question: String
     
     let endTime: Date
     
-    let guesses: [(Player, String)]
+    let guesses: [Guess]
 }

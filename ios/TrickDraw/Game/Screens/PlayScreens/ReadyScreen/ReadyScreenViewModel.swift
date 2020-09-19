@@ -7,10 +7,10 @@
 //
 
 import FirebaseFirestore
+import FirebaseAuth
 
 class ReadyScreenViewModel: ObservableObject {
     private var database: Firestore = Firestore.firestore()
-    private var readyListener: ListenerRegistration?
     
     private var gameReference: DocumentReference {
         return database.collection("games").document(gameId)
@@ -18,16 +18,20 @@ class ReadyScreenViewModel: ObservableObject {
     
     let gameId: String
     
-    @Published var playersReady: [Player: Bool] = [:]
+    @Published var players: [Player]
+    @Published var playerIdsReady: [String]
     
-    init(gameId: String, playersReady: [Player: Bool]) {
+    init(gameId: String, players: [Player], playerIdsReady: [String]) {
         self.gameId = gameId
-        self.playersReady = playersReady
+        self.players = players
+        self.playerIdsReady = playerIdsReady
     }
 
     // Actions: Ready up
     func readyUp() {
-        // Send to readyUp cloud function
-        
+        // TODO: Send to readyUp cloud function so users can only ready themselves
+        if let playerId = Auth.auth().currentUser?.uid {
+            gameReference.updateData(["playerIdsReady" : FieldValue.arrayUnion([playerId])])
+        }
     }
 }

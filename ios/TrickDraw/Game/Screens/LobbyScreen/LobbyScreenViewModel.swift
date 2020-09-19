@@ -15,12 +15,7 @@ struct Game: Identifiable, Codable {
     
     let name: String
     var players: [Player] = []
-    
-    enum GameState {
-        case ready
-        case play
-        case score
-    }
+    var hostPlayerId: String
 }
 
 //struct LobbyScreenOnlineModel: Identifiable, Codable {
@@ -75,10 +70,16 @@ class LobbyScreenViewModel: ObservableObject {
     
     func createGame() {
         do {
-            guard let displayName = Auth.auth().currentUser?.displayName else { return }
-            // TODO: Move to Cloud function to auto-assign name
-            try gamesReference.addDocument(from: Game(name: "\(displayName)'s game",
-                                                      players: []))
+            guard let currentUser = Auth.auth().currentUser,
+                  let displayName = currentUser.displayName else { return }
+            
+            let userId = currentUser.uid
+            let player = Player(id: userId, name: displayName)
+            
+            let gameReference = try gamesReference.addDocument(from: Game(name: "\(displayName)'s game",
+                                                      players: [player],
+                                                      hostPlayerId: userId))
+            try gameReference.collection("gameinfo").document("state").setData(from: GameInfo(state: .ready(PlayingReadyInfo(playerIdsReady: []))))
         } catch (let error) {
             print("Error creating game: \(error.localizedDescription)")
         }

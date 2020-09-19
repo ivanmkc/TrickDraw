@@ -16,10 +16,10 @@ struct ReadyScreenView: View {
         VStack {
             Text("Ready")
             HStack {
-                ForEach(Array(viewModel.playersReady), id: \.self.key) { (player, isReady) in
+                ForEach(viewModel.players, id: \.self.id) { (player) in
                     VStack {
                         Text(player.name)
-                        Text(isReady ? "READY" : "NOT READY")
+                        Text(viewModel.playerIdsReady.contains(player.id ?? "") ? "READY" : "NOT READY")
                     }
                 }
             }
@@ -33,8 +33,7 @@ struct ReadyScreenView: View {
 
 struct ReadyScreenView_Previews: PreviewProvider {
     static var previews: some View {
-        ReadyScreenView(viewModel: ReadyScreenViewModel(gameId: "ASDF", playersReady: [Player.player1: true,
-                                                                                       Player.player2 : false]))
+        ReadyScreenView(viewModel: ReadyScreenViewModel(gameId: "ASDF", players: [Player.player1, Player.player2], playerIdsReady: [Player.player1.id!]))
     }
 }
 
