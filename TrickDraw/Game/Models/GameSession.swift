@@ -5,7 +5,6 @@
 //  Created by Ivan Cheung on 2020-09-17.
 //  Copyright © 2020 Google. All rights reserved.
 //
-
 import Foundation
 
 enum AnswerState {
@@ -42,11 +41,6 @@ struct GameSession {
 struct Guess {
     let player: Player
     let guess: String
-}
-
-struct Player {
-    let id: String
-    let name: String
 }
 
 extension Player {

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		162C51195BEB24FE36BCA75E /* Pods_TrickDraw.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3E183CF5359B91EDB444BB4 /* Pods_TrickDraw.framework */; };
+		7810279C2515632500B493BC /* AuthWrapperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7810279B2515632500B493BC /* AuthWrapperView.swift */; };
 		784C8813251156E500943942 /* models in Resources */ = {isa = PBXBuildFile; fileRef = 784C8812251156E500943942 /* models */; };
 		784C88152511598400943942 /* TFLiteExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784C88142511598400943942 /* TFLiteExtensions.swift */; };
 		785980D7251146F800722FDE /* ModelDataHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785980D6251146F800722FDE /* ModelDataHandling.swift */; };
@@ -19,6 +20,9 @@
 		78732CB325150F4D005ABFBE /* DrawScreenOnlineModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78732CB225150F4D005ABFBE /* DrawScreenOnlineModel.swift */; };
 		78732CB825150F68005ABFBE /* DrawScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78732CB725150F68005ABFBE /* DrawScreenViewModel.swift */; };
 		78732CC12515129F005ABFBE /* DrawGuessCommonOnlineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78732CC02515129F005ABFBE /* DrawGuessCommonOnlineViewModel.swift */; };
+		78732CCD251517EA005ABFBE /* LobbyScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78732CCC251517EA005ABFBE /* LobbyScreenView.swift */; };
+		78732D0425151EA2005ABFBE /* LobbyScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78732D0325151EA2005ABFBE /* LobbyScreenViewModel.swift */; };
+		78732D0925153679005ABFBE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 78732D0825153678005ABFBE /* GoogleService-Info.plist */; };
 		789F0BD4251124C100C7CD01 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789F0BD3251124C100C7CD01 /* AppDelegate.swift */; };
 		789F0BD6251124C100C7CD01 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789F0BD5251124C100C7CD01 /* SceneDelegate.swift */; };
 		789F0BD8251124C100C7CD01 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789F0BD7251124C100C7CD01 /* ContentView.swift */; };
@@ -55,6 +59,7 @@
 		4ACD583CCD21E5F498D542CF /* Pods_TrickDrawTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrickDrawTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6CE80A37E82EFF630AEB2250 /* Pods-TrickDrawTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrickDrawTests.release.xcconfig"; path = "Target Support Files/Pods-TrickDrawTests/Pods-TrickDrawTests.release.xcconfig"; sourceTree = "<group>"; };
 		6DB605AC70593670866E6471 /* Pods_TrickDraw_TrickDrawUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrickDraw_TrickDrawUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7810279B2515632500B493BC /* AuthWrapperView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthWrapperView.swift; sourceTree = "<group>"; };
 		784C8812251156E500943942 /* models */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = models; sourceTree = SOURCE_ROOT; };
 		784C88142511598400943942 /* TFLiteExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLiteExtensions.swift; sourceTree = "<group>"; };
 		785980D6251146F800722FDE /* ModelDataHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelDataHandling.swift; sourceTree = "<group>"; };
@@ -66,6 +71,9 @@
 		78732CB225150F4D005ABFBE /* DrawScreenOnlineModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawScreenOnlineModel.swift; sourceTree = "<group>"; };
 		78732CB725150F68005ABFBE /* DrawScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawScreenViewModel.swift; sourceTree = "<group>"; };
 		78732CC02515129F005ABFBE /* DrawGuessCommonOnlineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawGuessCommonOnlineViewModel.swift; sourceTree = "<group>"; };
+		78732CCC251517EA005ABFBE /* LobbyScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyScreenView.swift; sourceTree = "<group>"; };
+		78732D0325151EA2005ABFBE /* LobbyScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyScreenViewModel.swift; sourceTree = "<group>"; };
+		78732D0825153678005ABFBE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		789F0BD0251124C100C7CD01 /* TrickDraw.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrickDraw.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		789F0BD3251124C100C7CD01 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		789F0BD5251124C100C7CD01 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -126,6 +134,14 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		7810279A2515630B00B493BC /* AuthWrapper */ = {
+			isa = PBXGroup;
+			children = (
+				7810279B2515632500B493BC /* AuthWrapperView.swift */,
+			);
+			path = AuthWrapper;
+			sourceTree = "<group>";
+		};
 		785980D5251146E400722FDE /* ModelDataHandler */ = {
 			isa = PBXGroup;
 			children = (
@@ -164,6 +180,8 @@
 		78732C8C25144EB6005ABFBE /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				7810279A2515630B00B493BC /* AuthWrapper */,
+				78732CCB251517D5005ABFBE /* LobbyScreen */,
 				78732CC02515129F005ABFBE /* DrawGuessCommonOnlineViewModel.swift */,
 				78732CAB25150F12005ABFBE /* DrawScreen */,
 				78732CBF251511CA005ABFBE /* GuessScreen */,
@@ -188,6 +206,15 @@
 				78732C9525146256005ABFBE /* GuessScreenView.swift */,
 			);
 			path = GuessScreen;
+			sourceTree = "<group>";
+		};
+		78732CCB251517D5005ABFBE /* LobbyScreen */ = {
+			isa = PBXGroup;
+			children = (
+				78732CCC251517EA005ABFBE /* LobbyScreenView.swift */,
+				78732D0325151EA2005ABFBE /* LobbyScreenViewModel.swift */,
+			);
+			path = LobbyScreen;
 			sourceTree = "<group>";
 		};
 		787A4DE4251275C60066BD39 /* Util */ = {
@@ -231,6 +258,7 @@
 				789F0BD7251124C100C7CD01 /* ContentView.swift */,
 				789F0BD9251124C400C7CD01 /* Assets.xcassets */,
 				789F0BDE251124C400C7CD01 /* LaunchScreen.storyboard */,
+				78732D0825153678005ABFBE /* GoogleService-Info.plist */,
 				789F0BE1251124C400C7CD01 /* Info.plist */,
 				789F0BDB251124C400C7CD01 /* Preview Content */,
 			);
@@ -384,6 +412,7 @@
 			files = (
 				789F0BE0251124C400C7CD01 /* LaunchScreen.storyboard in Resources */,
 				789F0BDD251124C400C7CD01 /* Preview Assets.xcassets in Resources */,
+				78732D0925153679005ABFBE /* GoogleService-Info.plist in Resources */,
 				784C8813251156E500943942 /* models in Resources */,
 				789F0BDA251124C400C7CD01 /* Assets.xcassets in Resources */,
 			);
@@ -522,9 +551,12 @@
 				784C88152511598400943942 /* TFLiteExtensions.swift in Sources */,
 				78732CB825150F68005ABFBE /* DrawScreenViewModel.swift in Sources */,
 				78732C6F251424C6005ABFBE /* GameSession.swift in Sources */,
+				78732CCD251517EA005ABFBE /* LobbyScreenView.swift in Sources */,
 				785980D7251146F800722FDE /* ModelDataHandling.swift in Sources */,
 				78732CB325150F4D005ABFBE /* DrawScreenOnlineModel.swift in Sources */,
+				78732D0425151EA2005ABFBE /* LobbyScreenViewModel.swift in Sources */,
 				78732C9625146256005ABFBE /* GuessScreenView.swift in Sources */,
+				7810279C2515632500B493BC /* AuthWrapperView.swift in Sources */,
 				789F0BD8251124C100C7CD01 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -700,7 +732,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.google.TrickDraw;
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.trickdraw;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -721,7 +753,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.google.TrickDraw;
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.trickdraw;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

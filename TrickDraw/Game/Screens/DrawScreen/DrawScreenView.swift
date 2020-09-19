@@ -10,10 +10,9 @@ import SwiftUI
 import PencilKit
 
 struct DrawScreenView: View {
-    @Environment(\.undoManager) var undoManager
-    
     var viewModel: DrawScreenViewModel
     
+    @Environment(\.undoManager) var undoManager
     @State private var canvasView = PKCanvasView()
     
     init(viewModel: DrawScreenViewModel) {
