@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		162C51195BEB24FE36BCA75E /* Pods_TrickDraw.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3E183CF5359B91EDB444BB4 /* Pods_TrickDraw.framework */; };
 		7810279C2515632500B493BC /* AuthWrapperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7810279B2515632500B493BC /* AuthWrapperView.swift */; };
+		781027DA2515860E00B493BC /* ReadyScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 781027D92515860E00B493BC /* ReadyScreenView.swift */; };
+		781027DF2515863600B493BC /* ReadyScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 781027DE2515863600B493BC /* ReadyScreenViewModel.swift */; };
+		781027E6251589B300B493BC /* PlayScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 781027E5251589B300B493BC /* PlayScreenViewModel.swift */; };
+		781027EE251589BC00B493BC /* PlayScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 781027ED251589BC00B493BC /* PlayScreenView.swift */; };
+		781027FA2516612100B493BC /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 781027F92516612100B493BC /* Player.swift */; };
 		784C8813251156E500943942 /* models in Resources */ = {isa = PBXBuildFile; fileRef = 784C8812251156E500943942 /* models */; };
 		784C88152511598400943942 /* TFLiteExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784C88142511598400943942 /* TFLiteExtensions.swift */; };
 		785980D7251146F800722FDE /* ModelDataHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785980D6251146F800722FDE /* ModelDataHandling.swift */; };
@@ -60,6 +65,11 @@
 		6CE80A37E82EFF630AEB2250 /* Pods-TrickDrawTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrickDrawTests.release.xcconfig"; path = "Target Support Files/Pods-TrickDrawTests/Pods-TrickDrawTests.release.xcconfig"; sourceTree = "<group>"; };
 		6DB605AC70593670866E6471 /* Pods_TrickDraw_TrickDrawUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrickDraw_TrickDrawUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7810279B2515632500B493BC /* AuthWrapperView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthWrapperView.swift; sourceTree = "<group>"; };
+		781027D92515860E00B493BC /* ReadyScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadyScreenView.swift; sourceTree = "<group>"; };
+		781027DE2515863600B493BC /* ReadyScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadyScreenViewModel.swift; sourceTree = "<group>"; };
+		781027E5251589B300B493BC /* PlayScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayScreenViewModel.swift; sourceTree = "<group>"; };
+		781027ED251589BC00B493BC /* PlayScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayScreenView.swift; sourceTree = "<group>"; };
+		781027F92516612100B493BC /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		784C8812251156E500943942 /* models */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = models; sourceTree = SOURCE_ROOT; };
 		784C88142511598400943942 /* TFLiteExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLiteExtensions.swift; sourceTree = "<group>"; };
 		785980D6251146F800722FDE /* ModelDataHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelDataHandling.swift; sourceTree = "<group>"; };
@@ -142,6 +152,33 @@
 			path = AuthWrapper;
 			sourceTree = "<group>";
 		};
+		781027D82515833A00B493BC /* ReadyScreen */ = {
+			isa = PBXGroup;
+			children = (
+				781027D92515860E00B493BC /* ReadyScreenView.swift */,
+				781027DE2515863600B493BC /* ReadyScreenViewModel.swift */,
+			);
+			path = ReadyScreen;
+			sourceTree = "<group>";
+		};
+		781027E32515898700B493BC /* PlayContainer */ = {
+			isa = PBXGroup;
+			children = (
+				781027ED251589BC00B493BC /* PlayScreenView.swift */,
+				781027E5251589B300B493BC /* PlayScreenViewModel.swift */,
+			);
+			path = PlayContainer;
+			sourceTree = "<group>";
+		};
+		781027E42515899C00B493BC /* PlayScreens */ = {
+			isa = PBXGroup;
+			children = (
+				781027E32515898700B493BC /* PlayContainer */,
+				781027D82515833A00B493BC /* ReadyScreen */,
+			);
+			path = PlayScreens;
+			sourceTree = "<group>";
+		};
 		785980D5251146E400722FDE /* ModelDataHandler */ = {
 			isa = PBXGroup;
 			children = (
@@ -173,6 +210,7 @@
 			isa = PBXGroup;
 			children = (
 				78732C6E251424C6005ABFBE /* GameSession.swift */,
+				781027F92516612100B493BC /* Player.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -180,6 +218,7 @@
 		78732C8C25144EB6005ABFBE /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				781027E42515899C00B493BC /* PlayScreens */,
 				7810279A2515630B00B493BC /* AuthWrapper */,
 				78732CCB251517D5005ABFBE /* LobbyScreen */,
 				78732CC02515129F005ABFBE /* DrawGuessCommonOnlineViewModel.swift */,
@@ -546,17 +585,22 @@
 				78732CC12515129F005ABFBE /* DrawGuessCommonOnlineViewModel.swift in Sources */,
 				789F0BD6251124C100C7CD01 /* SceneDelegate.swift in Sources */,
 				78732CA4251467DB005ABFBE /* CanvasViewWrapper.swift in Sources */,
+				781027FA2516612100B493BC /* Player.swift in Sources */,
 				78732C8E25144EC3005ABFBE /* DrawScreenView.swift in Sources */,
 				785980D92511472800722FDE /* QuickDrawModelDataHandler.swift in Sources */,
 				784C88152511598400943942 /* TFLiteExtensions.swift in Sources */,
 				78732CB825150F68005ABFBE /* DrawScreenViewModel.swift in Sources */,
 				78732C6F251424C6005ABFBE /* GameSession.swift in Sources */,
+				781027DA2515860E00B493BC /* ReadyScreenView.swift in Sources */,
 				78732CCD251517EA005ABFBE /* LobbyScreenView.swift in Sources */,
 				785980D7251146F800722FDE /* ModelDataHandling.swift in Sources */,
+				781027EE251589BC00B493BC /* PlayScreenView.swift in Sources */,
 				78732CB325150F4D005ABFBE /* DrawScreenOnlineModel.swift in Sources */,
+				781027E6251589B300B493BC /* PlayScreenViewModel.swift in Sources */,
 				78732D0425151EA2005ABFBE /* LobbyScreenViewModel.swift in Sources */,
 				78732C9625146256005ABFBE /* GuessScreenView.swift in Sources */,
 				7810279C2515632500B493BC /* AuthWrapperView.swift in Sources */,
+				781027DF2515863600B493BC /* ReadyScreenViewModel.swift in Sources */,
 				789F0BD8251124C100C7CD01 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -12,12 +12,6 @@ enum AnswerState {
     case incorrect
 }
 
-enum PlayingState {
-    case ready
-    case guess
-    case answer(AnswerState)
-}
-
 enum GameState {
     case lobby
     case playing(PlayingState)
@@ -29,13 +23,6 @@ struct GameSession {
     let dynamicLinkUrl: URL
     
     let host: Player
-    
-    let artist: Player
-    let answer: String // How to make this only visible to the artist?
-    
-    let guesses: [Guess]
-    
-    let state: GameState
 }
 
 struct Guess {
@@ -69,13 +56,3 @@ struct StartScreenViewModel {
         
     }
 }
-
-struct ReadyScreenViewModel {
-    var players: [Player]
-    
-    // Actions: Ready up
-    func readyUp() {
-        
-    }
-}
-

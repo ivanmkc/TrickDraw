@@ -10,11 +10,6 @@ import FirebaseAuth
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-struct Player: Identifiable, Codable {
-    @DocumentID var id: String? = UUID().uuidString
-    let name: String
-}
-
 struct Game: Identifiable, Codable {
     @DocumentID var id: String? = UUID().uuidString
     
@@ -23,7 +18,7 @@ struct Game: Identifiable, Codable {
     
     enum GameState {
         case ready
-        case guessing
+        case play
         case score
     }
 }
@@ -82,8 +77,7 @@ class LobbyScreenViewModel: ObservableObject {
         do {
             guard let displayName = Auth.auth().currentUser?.displayName else { return }
             // TODO: Move to Cloud function to auto-assign name
-            try gamesReference.addDocument(from: Game(id: nil,
-                                                      name: "\(displayName)'s game",
+            try gamesReference.addDocument(from: Game(name: "\(displayName)'s game",
                                                       players: []))
         } catch (let error) {
             print("Error creating game: \(error.localizedDescription)")
