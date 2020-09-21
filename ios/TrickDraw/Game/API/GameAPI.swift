@@ -87,9 +87,9 @@ class DefaultGameAPI: GameAPI {
             completionHandler?(.failure(APIError.userNotLoggedIn))
             return
         }
-        
+                
         gamesReference.document(gameId)
-            .setData(["state" : "guess"]) { (error) in
+            .updateData(["state" : "guess"]) { (error) in
                 if let error = error {
                     completionHandler?(.failure(error))
                 } else {
@@ -99,6 +99,8 @@ class DefaultGameAPI: GameAPI {
                     let scoreboard = Scoreboard()
                     let question = ["TODO"].randomElement()!
                     
+                    // TODO: Delete "ready" document
+
                     do {
                         // TODO: Send to readyUp cloud function so users can only ready themselves
                         try self.viewInfoCollectionReference(gameId)

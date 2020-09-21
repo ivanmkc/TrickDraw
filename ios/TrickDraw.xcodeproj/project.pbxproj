@@ -177,6 +177,8 @@
 			children = (
 				781027E32515898700B493BC /* PlayContainer */,
 				781027D82515833A00B493BC /* ReadyScreen */,
+				78732CAB25150F12005ABFBE /* DrawScreen */,
+				78732CBF251511CA005ABFBE /* GuessScreen */,
 			);
 			path = PlayScreens;
 			sourceTree = "<group>";
@@ -225,8 +227,6 @@
 				7810279A2515630B00B493BC /* AuthWrapper */,
 				78732CCB251517D5005ABFBE /* LobbyScreen */,
 				78732CC02515129F005ABFBE /* DrawGuessCommonOnlineViewModel.swift */,
-				78732CAB25150F12005ABFBE /* DrawScreen */,
-				78732CBF251511CA005ABFBE /* GuessScreen */,
 				78732CA3251467DB005ABFBE /* CanvasViewWrapper.swift */,
 			);
 			path = Screens;
