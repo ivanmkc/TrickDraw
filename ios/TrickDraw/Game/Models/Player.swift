@@ -9,7 +9,7 @@
 import FirebaseFirestoreSwift
 
 struct Player: Identifiable, Codable {
-    var id: String
+    let id: String
     let name: String
 }
 

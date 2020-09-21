@@ -22,15 +22,20 @@ struct LobbyScreenView: View {
                         AnyView(Text("No games found")) :
                         AnyView(
                             ForEach(viewModel.games) { game in
+                                // TODO: Join game
                                 NavigationLink(
                                     destination: PlayContainerView(
                                         viewModel: PlayContainerViewModel(gameId: game.id!,
                                                                           hostPlayerId: game.hostPlayerId,
                                                                           players: game.players,
-                                                                          state: game.state))) {
+                                                                          state: game.state)),
+                                    isActive: $viewModel.didJoinSuccessfully) {
                                     HStack {
                                         Text(game.name)
                                         Text("\(game.players.count) players")
+                                    }
+                                    .onTapGesture {
+                                        viewModel.joinGame(game.id!)
                                     }
                                 }
                             }

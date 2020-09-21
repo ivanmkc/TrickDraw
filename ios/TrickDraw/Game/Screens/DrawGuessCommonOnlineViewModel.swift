@@ -7,18 +7,9 @@
 //
 
 import Foundation
+import PencilKit
 
 struct Guess: Codable {
     let playerId: String
     let guess: String
-}
-
-struct DrawGuessCommonOnlineModel: Codable {
-    let artist: Player
-    let guessers: [Player]
-    let question: String
-    
-    let endTime: Date
-    
-    let guesses: [Guess]
 }

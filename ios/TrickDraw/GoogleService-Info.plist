@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>1090886830575-g47gajrfvcf7l0avt785ac70hdp8g28t.apps.googleusercontent.com</string>
+	<string>1090886830575-qellr2mv3br1470jp3bb0s1h2u8cnhgi.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.1090886830575-g47gajrfvcf7l0avt785ac70hdp8g28t</string>
+	<string>com.googleusercontent.apps.1090886830575-qellr2mv3br1470jp3bb0s1h2u8cnhgi</string>
 	<key>API_KEY</key>
 	<string>AIzaSyBvUl6u9JfGHq5VlgOH26D7aJZw_ODAsYY</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.google.trickdraw</string>
+	<string>com.google.trickdraw2</string>
 	<key>PROJECT_ID</key>
 	<string>code-by-voice</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,7 +29,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1090886830575:ios:3055f625751ac589674e1a</string>
+	<string>1:1090886830575:ios:19e08180fce06b58674e1a</string>
 	<key>DATABASE_URL</key>
 	<string>https://code-by-voice.firebaseio.com</string>
 </dict>

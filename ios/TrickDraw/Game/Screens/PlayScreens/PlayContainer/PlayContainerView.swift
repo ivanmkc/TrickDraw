@@ -31,7 +31,8 @@ struct PlayContainerView: View {
                 return AnyView(
                     DrawScreenView(
                         viewModel: DrawScreenViewModel(
-                            onlineModel: DrawScreenOnlineModel(common: info.common))))
+                            gameId: viewModel.gameId,
+                            onlineInfo: info)))
             case .answer(let info):
                 return AnyView(Text("TODO"))
             }

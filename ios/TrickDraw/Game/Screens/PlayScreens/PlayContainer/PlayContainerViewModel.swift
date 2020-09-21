@@ -23,6 +23,7 @@ enum GameStateWrapper {
 
 class PlayContainerViewModel: ObservableObject {
     private var database: Firestore = Firestore.firestore()
+    private var viewInfoListener: ListenerRegistration?
     
     private var viewInfoCollectionReference: CollectionReference
     
@@ -50,7 +51,7 @@ class PlayContainerViewModel: ObservableObject {
     }
     
     private func fetchData() {
-        viewInfoCollectionReference.addSnapshotListener { documentSnapshot, error in
+        viewInfoListener = viewInfoCollectionReference.addSnapshotListener { documentSnapshot, error in
             let state = self.state
             
             switch (state) {
@@ -72,24 +73,6 @@ class PlayContainerViewModel: ObservableObject {
                             self.stateInfo = .failure(error)
                         }
                     })
-            case .answer:
-                self.viewInfoCollectionReference
-                    .document(state.rawValue)
-                    .getDocument(completion: { [weak self] (snapshot, error) in
-                        guard let `self` = self else { return }
-                        
-                        do {
-                            if let error = error {
-                                self.stateInfo = .failure(error)
-                            } else {
-                                if let info = try snapshot?.data(as: PlayingAnswerInfo.self) {
-                                    self.stateInfo = .success(GameStateWrapper.answer(info))
-                                }
-                            }
-                        } catch (let error) {
-                            self.stateInfo = .failure(error)
-                        }
-                    })
             case .guess:
                 self.viewInfoCollectionReference
                     .document(state.rawValue)
@@ -102,6 +85,24 @@ class PlayContainerViewModel: ObservableObject {
                             } else {
                                 if let info = try snapshot?.data(as: PlayingGuessInfo.self) {
                                     self.stateInfo = .success(GameStateWrapper.guess(info))
+                                }
+                            }
+                        } catch (let error) {
+                            self.stateInfo = .failure(error)
+                        }
+                    })
+            case .answer:
+                self.viewInfoCollectionReference
+                    .document(state.rawValue)
+                    .getDocument(completion: { [weak self] (snapshot, error) in
+                        guard let `self` = self else { return }
+                        
+                        do {
+                            if let error = error {
+                                self.stateInfo = .failure(error)
+                            } else {
+                                if let info = try snapshot?.data(as: PlayingAnswerInfo.self) {
+                                    self.stateInfo = .success(GameStateWrapper.answer(info))
                                 }
                             }
                         } catch (let error) {
@@ -132,6 +133,10 @@ class PlayContainerViewModel: ObservableObject {
                 }
             })
     }
+    
+    deinit {
+        viewInfoListener?.remove()
+    }
 }
 
 typealias Scoreboard = [Player: Int]
@@ -141,13 +146,24 @@ struct PlayingReadyInfo: Codable {
 }
 
 struct PlayingGuessInfo: Codable {
-    let common: DrawGuessCommonOnlineModel
+    let artist: Player
+    let guessers: [Player]
+    let question: String
+    
+    let endTime: Date
+    
+    let guesses: [Guess]
+    
+    let drawingAsBase64: String?
+
     let scoreboard: Scoreboard
 }
 
 struct PlayingAnswerInfo: Codable {
-    let gameId: String
-    let common: DrawGuessCommonOnlineModel
+    let artist: Player
+    let guessers: [Player]
+    let question: String
+
     let correctPlayer: Player
     let scoreboard: Scoreboard
 }

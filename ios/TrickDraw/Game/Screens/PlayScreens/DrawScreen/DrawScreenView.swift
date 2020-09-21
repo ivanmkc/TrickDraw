@@ -10,13 +10,18 @@ import SwiftUI
 import PencilKit
 
 struct DrawScreenView: View {
-    var viewModel: DrawScreenViewModel
+    private let viewModel: DrawScreenViewModel
     
     @Environment(\.undoManager) var undoManager
     @State private var canvasView = PKCanvasView()
     
     init(viewModel: DrawScreenViewModel) {
         self.viewModel = viewModel
+        canvasView.delegate = viewModel
+        
+//        if let drawing = viewModel.drawing {
+//            canvasView.drawing = drawing
+//        }
     }
     
     var body: some View {
@@ -37,36 +42,20 @@ struct DrawScreenView: View {
     }
 }
 
-struct DrawScreenView_Previews: PreviewProvider {
-    static var previews: some View {
-        DrawScreenView(
-            viewModel: DrawScreenViewModel(
-                onlineModel: DrawScreenOnlineModel(
-                    common: DrawGuessCommonOnlineModel(
-                        artist: Player.player1,
-                        guessers: [],
-                        question: "duck",
-                        endTime: Date().addingTimeInterval(60),
-                        guesses: [
-                            Guess(playerId: Player.player2.id, guess: "toast"),
-                            Guess(playerId: Player.player3.id, guess: "bread"),
-                        ])
-                )
-            )
-        )
-    }
-}
-
-struct MyCanvas: UIViewRepresentable {
-    @Binding var canvasView: PKCanvasView
-    weak var delegate: PKCanvasViewDelegate?
-    
-    func makeUIView(context: Context) -> PKCanvasView {
-        self.canvasView.tool = PKInkingTool(.pencil, color: .black, width: 5) // This color inverts depending on light vs dark mode
-        canvasView.delegate = delegate
-        return canvasView
-    }
-    
-    func updateUIView(_ uiView: PKCanvasView, context: Context) { }
-}
+//struct DrawScreenView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        DrawScreenView(
+//            viewModel: DrawScreenViewModel(
+//                artist: Player.player1,
+//                guessers: [],
+//                question: "duck",
+//                endTime: Date().addingTimeInterval(60),
+//                guesses: [
+//                    Guess(playerId: Player.player2.id, guess: "toast"),
+//                    Guess(playerId: Player.player3.id, guess: "bread"),
+//                ],
+//                drawingAsBase64: nil)
+//        )
+//    }
+//}
 

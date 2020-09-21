@@ -10,17 +10,11 @@ import SwiftUI
 import PencilKit
 
 struct GuessScreenOnlineModel {
-    let common: DrawGuessCommonOnlineModel
-    
-    let drawing: PKDrawing
+//    let drawing: PKDrawing
     
     // Actions: Add guess
     func guessByAI(guess: String) {
         
-    }
-    
-    func updateDrawing(drawing: PKDrawing) {
-        let drawingAsString = String(data: drawing.dataRepresentation(), encoding: .utf8)
     }
 }
 struct GuessScreenViewModel {

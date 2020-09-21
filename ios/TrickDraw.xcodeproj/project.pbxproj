@@ -22,12 +22,11 @@
 		78732C8E25144EC3005ABFBE /* DrawScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78732C8D25144EC3005ABFBE /* DrawScreenView.swift */; };
 		78732C9625146256005ABFBE /* GuessScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78732C9525146256005ABFBE /* GuessScreenView.swift */; };
 		78732CA4251467DB005ABFBE /* CanvasViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78732CA3251467DB005ABFBE /* CanvasViewWrapper.swift */; };
-		78732CB325150F4D005ABFBE /* DrawScreenOnlineModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78732CB225150F4D005ABFBE /* DrawScreenOnlineModel.swift */; };
 		78732CB825150F68005ABFBE /* DrawScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78732CB725150F68005ABFBE /* DrawScreenViewModel.swift */; };
 		78732CC12515129F005ABFBE /* DrawGuessCommonOnlineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78732CC02515129F005ABFBE /* DrawGuessCommonOnlineViewModel.swift */; };
 		78732CCD251517EA005ABFBE /* LobbyScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78732CCC251517EA005ABFBE /* LobbyScreenView.swift */; };
 		78732D0425151EA2005ABFBE /* LobbyScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78732D0325151EA2005ABFBE /* LobbyScreenViewModel.swift */; };
-		788DA6832516944A00C3A6AD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 788DA6822516944A00C3A6AD /* GoogleService-Info.plist */; };
+		78925BBF25195750009B9096 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 78925BBE25195750009B9096 /* GoogleService-Info.plist */; };
 		789F0BD4251124C100C7CD01 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789F0BD3251124C100C7CD01 /* AppDelegate.swift */; };
 		789F0BD6251124C100C7CD01 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789F0BD5251124C100C7CD01 /* SceneDelegate.swift */; };
 		789F0BD8251124C100C7CD01 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789F0BD7251124C100C7CD01 /* ContentView.swift */; };
@@ -79,12 +78,11 @@
 		78732C8D25144EC3005ABFBE /* DrawScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawScreenView.swift; sourceTree = "<group>"; };
 		78732C9525146256005ABFBE /* GuessScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuessScreenView.swift; sourceTree = "<group>"; };
 		78732CA3251467DB005ABFBE /* CanvasViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasViewWrapper.swift; sourceTree = "<group>"; };
-		78732CB225150F4D005ABFBE /* DrawScreenOnlineModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawScreenOnlineModel.swift; sourceTree = "<group>"; };
 		78732CB725150F68005ABFBE /* DrawScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawScreenViewModel.swift; sourceTree = "<group>"; };
 		78732CC02515129F005ABFBE /* DrawGuessCommonOnlineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawGuessCommonOnlineViewModel.swift; sourceTree = "<group>"; };
 		78732CCC251517EA005ABFBE /* LobbyScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyScreenView.swift; sourceTree = "<group>"; };
 		78732D0325151EA2005ABFBE /* LobbyScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyScreenViewModel.swift; sourceTree = "<group>"; };
-		788DA6822516944A00C3A6AD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		78925BBE25195750009B9096 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		789F0BD0251124C100C7CD01 /* TrickDraw.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrickDraw.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		789F0BD3251124C100C7CD01 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		789F0BD5251124C100C7CD01 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -236,7 +234,6 @@
 			isa = PBXGroup;
 			children = (
 				78732C8D25144EC3005ABFBE /* DrawScreenView.swift */,
-				78732CB225150F4D005ABFBE /* DrawScreenOnlineModel.swift */,
 				78732CB725150F68005ABFBE /* DrawScreenViewModel.swift */,
 			);
 			path = DrawScreen;
@@ -301,7 +298,7 @@
 				789F0BD9251124C400C7CD01 /* Assets.xcassets */,
 				789F0BDE251124C400C7CD01 /* LaunchScreen.storyboard */,
 				789F0BE1251124C400C7CD01 /* Info.plist */,
-				788DA6822516944A00C3A6AD /* GoogleService-Info.plist */,
+				78925BBE25195750009B9096 /* GoogleService-Info.plist */,
 				789F0BDB251124C400C7CD01 /* Preview Content */,
 			);
 			path = TrickDraw;
@@ -462,7 +459,7 @@
 			files = (
 				789F0BE0251124C400C7CD01 /* LaunchScreen.storyboard in Resources */,
 				789F0BDD251124C400C7CD01 /* Preview Assets.xcassets in Resources */,
-				788DA6832516944A00C3A6AD /* GoogleService-Info.plist in Resources */,
+				78925BBF25195750009B9096 /* GoogleService-Info.plist in Resources */,
 				784C8813251156E500943942 /* models in Resources */,
 				789F0BDA251124C400C7CD01 /* Assets.xcassets in Resources */,
 			);
@@ -607,7 +604,6 @@
 				78732CCD251517EA005ABFBE /* LobbyScreenView.swift in Sources */,
 				785980D7251146F800722FDE /* ModelDataHandling.swift in Sources */,
 				781027EE251589BC00B493BC /* PlayContainerView.swift in Sources */,
-				78732CB325150F4D005ABFBE /* DrawScreenOnlineModel.swift in Sources */,
 				781027E6251589B300B493BC /* PlayContainerViewModel.swift in Sources */,
 				78732D0425151EA2005ABFBE /* LobbyScreenViewModel.swift in Sources */,
 				78732C9625146256005ABFBE /* GuessScreenView.swift in Sources */,
@@ -788,7 +784,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.google.trickdraw;
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.trickdraw2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -809,7 +805,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.google.trickdraw;
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.trickdraw2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
