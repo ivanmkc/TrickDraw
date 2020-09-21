@@ -18,13 +18,13 @@ protocol GameAPI {
     
     func createGame(_ completionHandler: ((Result<Void, Error>) -> ())?)
     func readyUp(_ gameId: String, _ completionHandler: ((Result<Void, Error>) -> ())?)
-    func startGame(_ gameId: String, _ completionHandler: ((Result<Void, Error>) -> ())?)
+    func startGame(_ gameId: String, _ players: [Player], _ completionHandler: ((Result<Void, Error>) -> ())?)
 }
 
 class DefaultGameAPI: GameAPI {
     static let shared = DefaultGameAPI() // TODO: Replace with DI framework
     private var database: Firestore = Firestore.firestore()
-    
+
     init() {
     }
     
@@ -82,7 +82,7 @@ class DefaultGameAPI: GameAPI {
             }
     }
     
-    func startGame(_ gameId: String, _ completionHandler: ((Result<Void, Error>) -> ())?) {
+    func startGame(_ gameId: String, _ players: [Player], _ completionHandler: ((Result<Void, Error>) -> ())?) {
         guard let playerId = currentUser?.uid else {
             completionHandler?(.failure(APIError.userNotLoggedIn))
             return
@@ -94,9 +94,10 @@ class DefaultGameAPI: GameAPI {
                     completionHandler?(.failure(error))
                 } else {
                     
-                    let artist = Player(id: "TODO", name: "Tester")
-                    let endTime = Date().addingTimeInterval(10)
+                    let artist = players.randomElement()!
+                    let endTime = Date().addingTimeInterval(60)
                     let scoreboard = Scoreboard()
+                    let question = ["TODO"].randomElement()!
                     
                     do {
                         // TODO: Send to readyUp cloud function so users can only ready themselves
@@ -104,7 +105,7 @@ class DefaultGameAPI: GameAPI {
                             .document("guess")
                             .setData(from: PlayingGuessInfo(common: DrawGuessCommonOnlineModel(artist: artist,
                                                                                                guessers: [],
-                                                                                               question: "TODO",
+                                                                                               question: question,
                                                                                                endTime: endTime,
                                                                                                guesses: []),
                                                             scoreboard: scoreboard)) {

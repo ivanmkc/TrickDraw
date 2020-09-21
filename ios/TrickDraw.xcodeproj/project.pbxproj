@@ -11,7 +11,7 @@
 		7810279C2515632500B493BC /* AuthWrapperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7810279B2515632500B493BC /* AuthWrapperView.swift */; };
 		781027DA2515860E00B493BC /* ReadyScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 781027D92515860E00B493BC /* ReadyScreenView.swift */; };
 		781027DF2515863600B493BC /* ReadyScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 781027DE2515863600B493BC /* ReadyScreenViewModel.swift */; };
-		781027E6251589B300B493BC /* PlayScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 781027E5251589B300B493BC /* PlayScreenViewModel.swift */; };
+		781027E6251589B300B493BC /* PlayContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 781027E5251589B300B493BC /* PlayContainerViewModel.swift */; };
 		781027EE251589BC00B493BC /* PlayContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 781027ED251589BC00B493BC /* PlayContainerView.swift */; };
 		781027FA2516612100B493BC /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 781027F92516612100B493BC /* Player.swift */; };
 		784C8813251156E500943942 /* models in Resources */ = {isa = PBXBuildFile; fileRef = 784C8812251156E500943942 /* models */; };
@@ -68,7 +68,7 @@
 		7810279B2515632500B493BC /* AuthWrapperView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthWrapperView.swift; sourceTree = "<group>"; };
 		781027D92515860E00B493BC /* ReadyScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadyScreenView.swift; sourceTree = "<group>"; };
 		781027DE2515863600B493BC /* ReadyScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadyScreenViewModel.swift; sourceTree = "<group>"; };
-		781027E5251589B300B493BC /* PlayScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayScreenViewModel.swift; sourceTree = "<group>"; };
+		781027E5251589B300B493BC /* PlayContainerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayContainerViewModel.swift; sourceTree = "<group>"; };
 		781027ED251589BC00B493BC /* PlayContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayContainerView.swift; sourceTree = "<group>"; };
 		781027F92516612100B493BC /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		784C8812251156E500943942 /* models */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = models; sourceTree = SOURCE_ROOT; };
@@ -167,7 +167,7 @@
 			isa = PBXGroup;
 			children = (
 				781027ED251589BC00B493BC /* PlayContainerView.swift */,
-				781027E5251589B300B493BC /* PlayScreenViewModel.swift */,
+				781027E5251589B300B493BC /* PlayContainerViewModel.swift */,
 			);
 			path = PlayContainer;
 			sourceTree = "<group>";
@@ -608,7 +608,7 @@
 				785980D7251146F800722FDE /* ModelDataHandling.swift in Sources */,
 				781027EE251589BC00B493BC /* PlayContainerView.swift in Sources */,
 				78732CB325150F4D005ABFBE /* DrawScreenOnlineModel.swift in Sources */,
-				781027E6251589B300B493BC /* PlayScreenViewModel.swift in Sources */,
+				781027E6251589B300B493BC /* PlayContainerViewModel.swift in Sources */,
 				78732D0425151EA2005ABFBE /* LobbyScreenViewModel.swift in Sources */,
 				78732C9625146256005ABFBE /* GuessScreenView.swift in Sources */,
 				7810279C2515632500B493BC /* AuthWrapperView.swift in Sources */,
