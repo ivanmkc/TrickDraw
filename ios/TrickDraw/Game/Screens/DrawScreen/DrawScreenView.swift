@@ -48,8 +48,8 @@ struct DrawScreenView_Previews: PreviewProvider {
                         question: "duck",
                         endTime: Date().addingTimeInterval(60),
                         guesses: [
-                            Guess(playerId: Player.player2.id!, guess: "toast"),
-                            Guess(playerId: Player.player3.id!, guess: "bread"),
+                            Guess(playerId: Player.player2.id, guess: "toast"),
+                            Guess(playerId: Player.player3.id, guess: "bread"),
                         ])
                 )
             )

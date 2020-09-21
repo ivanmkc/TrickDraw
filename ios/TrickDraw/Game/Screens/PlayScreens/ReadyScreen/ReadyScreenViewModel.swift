@@ -11,27 +11,33 @@ import FirebaseAuth
 
 class ReadyScreenViewModel: ObservableObject {
     private var database: Firestore = Firestore.firestore()
+    private let gameAPI: GameAPI = DefaultGameAPI.shared // TODO: Replace with DI
+            
+    private let gameId: String
+    private let hostPlayerId: String
     
-    private var gameReference: DocumentReference {
-        return database.collection("games").document(gameId)
+    var isHost: Bool {
+        return gameAPI.currentUser.map { hostPlayerId == $0.uid } ?? false
     }
-    
-    let gameId: String
     
     @Published var players: [Player]
     @Published var playerIdsReady: [String]
     
-    init(gameId: String, players: [Player], playerIdsReady: [String]) {
+    init(gameId: String,
+         hostPlayerId: String,
+         players: [Player],
+         playerIdsReady: [String]) {
         self.gameId = gameId
+        self.hostPlayerId = hostPlayerId
         self.players = players
         self.playerIdsReady = playerIdsReady
     }
-
-    // Actions: Ready up
+    
     func readyUp() {
-        // TODO: Send to readyUp cloud function so users can only ready themselves
-        if let playerId = Auth.auth().currentUser?.uid {
-            gameReference.updateData(["playerIdsReady" : FieldValue.arrayUnion([playerId])])
-        }
+        gameAPI.readyUp(gameId, nil)
+    }
+    
+    func startGame() {
+        gameAPI.startGame(gameId, nil)
     }
 }

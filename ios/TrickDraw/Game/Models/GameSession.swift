@@ -12,12 +12,6 @@ enum AnswerState {
     case incorrect
 }
 
-enum GameState {
-    case lobby
-    case playing(PlayingState)
-    case scoreboard
-}
-
 struct GameSession {
     
     let dynamicLinkUrl: URL

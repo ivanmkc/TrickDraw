@@ -10,38 +10,24 @@ import FirebaseAuth
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
+enum GameState: String, Codable {
+    case ready
+    case guess
+    case answer
+}
+
 struct Game: Identifiable, Codable {
     @DocumentID var id: String? = UUID().uuidString
     
     let name: String
     var players: [Player] = []
     var hostPlayerId: String
+    var state: GameState
 }
 
-//struct LobbyScreenOnlineModel: Identifiable, Codable {
-//    @DocumentID var id: String? = UUID().uuidString
-//
-//    var games: [Game]
-//
-//    init?(document: QueryDocumentSnapshot) {
-//      let data = document.data()
-//
-//      guard let name = data["games"] as? [String] else {
-//        return nil
-//      }
-//
-//      id = document.documentID
-//      self.name = name
-//    }
-//}
-
 class LobbyScreenViewModel: ObservableObject {
-    private var database: Firestore = Firestore.firestore()
     private var gamesListener: ListenerRegistration?
-    
-    private var gamesReference: CollectionReference {
-        return database.collection("games")
-    }
+    private let gameAPI = DefaultGameAPI.shared
     
     @Published var games: [Game] = []
     
@@ -50,7 +36,9 @@ class LobbyScreenViewModel: ObservableObject {
     }
     
     func setupListener() {
-        gamesListener = gamesReference.addSnapshotListener { querySnapshot, error in
+        gamesListener = gameAPI
+            .gamesReference
+            .addSnapshotListener { querySnapshot, error in
             // TODO: Sort by creation date
             guard let documents = querySnapshot?.documents else {
                 print("Error listening for games updates: \(error?.localizedDescription ?? "No error")")
@@ -69,20 +57,7 @@ class LobbyScreenViewModel: ObservableObject {
     }
     
     func createGame() {
-        do {
-            guard let currentUser = Auth.auth().currentUser,
-                  let displayName = currentUser.displayName else { return }
-            
-            let userId = currentUser.uid
-            let player = Player(id: userId, name: displayName)
-            
-            let gameReference = try gamesReference.addDocument(from: Game(name: "\(displayName)'s game",
-                                                      players: [player],
-                                                      hostPlayerId: userId))
-            try gameReference.collection("gameinfo").document("state").setData(from: GameInfo(state: .ready(PlayingReadyInfo(playerIdsReady: []))))
-        } catch (let error) {
-            print("Error creating game: \(error.localizedDescription)")
-        }
+        gameAPI.createGame(nil)
     }
     
     deinit {

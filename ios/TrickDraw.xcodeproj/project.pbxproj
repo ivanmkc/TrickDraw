@@ -36,6 +36,7 @@
 		789F0BE0251124C400C7CD01 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 789F0BDE251124C400C7CD01 /* LaunchScreen.storyboard */; };
 		789F0BEB251124C400C7CD01 /* TrickDrawTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789F0BEA251124C400C7CD01 /* TrickDrawTests.swift */; };
 		789F0BF6251124C400C7CD01 /* TrickDrawUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789F0BF5251124C400C7CD01 /* TrickDrawUITests.swift */; };
+		78D124E4251915A6005DA2A4 /* GameAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D124E3251915A6005DA2A4 /* GameAPI.swift */; };
 		E987CCE786C3C5F599175C49 /* Pods_TrickDraw_TrickDrawUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DB605AC70593670866E6471 /* Pods_TrickDraw_TrickDrawUITests.framework */; };
 		F0C975F96820311532F85553 /* Pods_TrickDrawTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4ACD583CCD21E5F498D542CF /* Pods_TrickDrawTests.framework */; };
 /* End PBXBuildFile section */
@@ -98,6 +99,7 @@
 		789F0BF1251124C400C7CD01 /* TrickDrawUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrickDrawUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		789F0BF5251124C400C7CD01 /* TrickDrawUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickDrawUITests.swift; sourceTree = "<group>"; };
 		789F0BF7251124C400C7CD01 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		78D124E3251915A6005DA2A4 /* GameAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameAPI.swift; sourceTree = "<group>"; };
 		ADBBBCCFECB515A0B667AABC /* Pods-TrickDraw-TrickDrawUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrickDraw-TrickDrawUITests.release.xcconfig"; path = "Target Support Files/Pods-TrickDraw-TrickDrawUITests/Pods-TrickDraw-TrickDrawUITests.release.xcconfig"; sourceTree = "<group>"; };
 		C3935E74DF1B9EF97481F93C /* Pods-TrickDrawTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrickDrawTests.debug.xcconfig"; path = "Target Support Files/Pods-TrickDrawTests/Pods-TrickDrawTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C3E183CF5359B91EDB444BB4 /* Pods_TrickDraw.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrickDraw.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -200,6 +202,7 @@
 		78732C6D251424BA005ABFBE /* Game */ = {
 			isa = PBXGroup;
 			children = (
+				78D124E225191597005DA2A4 /* API */,
 				78732C8C25144EB6005ABFBE /* Screens */,
 				78732C8B25144EAC005ABFBE /* Models */,
 			);
@@ -328,6 +331,14 @@
 				789F0BF7251124C400C7CD01 /* Info.plist */,
 			);
 			path = TrickDrawUITests;
+			sourceTree = "<group>";
+		};
+		78D124E225191597005DA2A4 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				78D124E3251915A6005DA2A4 /* GameAPI.swift */,
+			);
+			path = API;
 			sourceTree = "<group>";
 		};
 		96554DB4DD79FE4274001AB4 /* Frameworks */ = {
@@ -585,6 +596,7 @@
 				78732CC12515129F005ABFBE /* DrawGuessCommonOnlineViewModel.swift in Sources */,
 				789F0BD6251124C100C7CD01 /* SceneDelegate.swift in Sources */,
 				78732CA4251467DB005ABFBE /* CanvasViewWrapper.swift in Sources */,
+				78D124E4251915A6005DA2A4 /* GameAPI.swift in Sources */,
 				781027FA2516612100B493BC /* Player.swift in Sources */,
 				78732C8E25144EC3005ABFBE /* DrawScreenView.swift in Sources */,
 				785980D92511472800722FDE /* QuickDrawModelDataHandler.swift in Sources */,

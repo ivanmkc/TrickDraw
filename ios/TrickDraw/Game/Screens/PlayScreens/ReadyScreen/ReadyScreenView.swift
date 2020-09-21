@@ -19,7 +19,7 @@ struct ReadyScreenView: View {
                 ForEach(viewModel.players, id: \.self.id) { (player) in
                     VStack {
                         Text(player.name)
-                        Text(viewModel.playerIdsReady.contains(player.id ?? "") ? "READY" : "NOT READY")
+                        Text(viewModel.playerIdsReady.contains(player.id) ? "READY" : "NOT READY")
                     }
                 }
             }
@@ -27,13 +27,21 @@ struct ReadyScreenView: View {
             Button("Ready up!") {
                 viewModel.readyUp()
             }
+            
+            if viewModel.isHost {
+                Button("Start game") {
+                    viewModel.startGame()
+                }
+            }
         }
     }
 }
 
 struct ReadyScreenView_Previews: PreviewProvider {
     static var previews: some View {
-        ReadyScreenView(viewModel: ReadyScreenViewModel(gameId: "ASDF", players: [Player.player1, Player.player2], playerIdsReady: [Player.player1.id!]))
+        ReadyScreenView(viewModel: ReadyScreenViewModel(gameId: "ASDF",
+                                                        hostPlayerId: "randomID",
+                                                        players: [Player.player1, Player.player2], playerIdsReady: [Player.player1.id]))
     }
 }
 

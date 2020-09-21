@@ -22,8 +22,12 @@ struct LobbyScreenView: View {
                         AnyView(Text("No games found")) :
                         AnyView(
                             ForEach(viewModel.games) { game in
-                                NavigationLink(destination: PlayContainerView(viewModel: PlayContainerViewModel(gameId: game.id!,
-                                                                                                                players: game.players))) {
+                                NavigationLink(
+                                    destination: PlayContainerView(
+                                        viewModel: PlayContainerViewModel(gameId: game.id!,
+                                                                          hostPlayerId: game.hostPlayerId,
+                                                                          players: game.players,
+                                                                          state: game.state))) {
                                     HStack {
                                         Text(game.name)
                                         Text("\(game.players.count) players")

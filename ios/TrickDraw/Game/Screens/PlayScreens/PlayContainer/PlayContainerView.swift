@@ -16,90 +16,122 @@ enum LoadableResult<Result, Error> {
     case failure(Error)
 }
 
-struct GameInfo: Codable {
-    var state: PlayingState
-    
-    init(state: PlayingState) {
-        self.state = state
-    }
-    enum CodingKeys: CodingKey {
-        case ready, guess, answer
-    }
-    
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        
-        switch state {
-        case .ready(let info):
-            try container.encode(info, forKey: .ready)
-        case .guess(let info):
-            try container.encode(info, forKey: .guess)
-        case .answer(let info):
-            try container.encode(info, forKey: .answer)
-        }
-    }
-    
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        if let key = container.allKeys.first {
-            switch key {
-            case .ready:
-                let info = try container.decode(
-                    PlayingReadyInfo.self,
-                    forKey: .ready
-                )
-                self = GameInfo(state: .ready(info))
-            case .guess:
-                let info = try container.decode(
-                    PlayingGuessInfo.self,
-                    forKey: .guess
-                )
-                self = GameInfo(state: .guess(info))
-            case .answer:
-                let info = try container.decode(
-                    PlayingAnswerInfo.self,
-                    forKey: .answer
-                )
-                self = GameInfo(state: .answer(info))
-            }
-        } else {
-            throw ClassificationError.invalidImage // TODO
-        }
-    }
-
+enum GameStateWrapper {
+    case ready(PlayingReadyInfo)
+    case guess(PlayingGuessInfo)
+    case answer(PlayingAnswerInfo)
 }
 
 class PlayContainerViewModel: ObservableObject {
     private var database: Firestore = Firestore.firestore()
     
-    private var gameReference: DocumentReference
+    private var viewInfoCollectionReference: CollectionReference
     
-    var gameId: String
+    let gameId: String
+    let hostPlayerId: String
+    let state: GameState
     @Published var players: [Player]
-    
-    @Published var state: LoadableResult<PlayingState, Error> = .loading
+    @Published var stateInfo: LoadableResult<GameStateWrapper, Error> = .loading
         
-    init(gameId: String, players: [Player]) {
+    init(gameId: String,
+         hostPlayerId: String,
+         players: [Player],
+         state: GameState) {
         self.gameId = gameId
+        self.hostPlayerId = hostPlayerId
         self.players = players
-        gameReference = database.collection("games").document(gameId).collection("gameinfo").document("state")
+        self.state = state
+        
+        viewInfoCollectionReference = database
+            .collection("games")
+            .document(gameId)
+            .collection("viewInfo")
         
         fetchData()
     }
     
     private func fetchData() {
-        gameReference.addSnapshotListener { documentSnapshot, error in
-            // TODO: Sort by creation date
-            do {
-                guard let gameInfo = try documentSnapshot?.data(as: GameInfo.self) else {
-                    return
-                }
+        viewInfoCollectionReference.addSnapshotListener { documentSnapshot, error in
+            let state = self.state
             
-                self.state = .success(gameInfo.state)
-            } catch (let error) {
-                self.state = .failure(error)
+            switch (state) {
+            case .ready:
+                self.viewInfoCollectionReference
+                    .document(state.rawValue)
+                    .getDocument(completion: { [weak self] (snapshot, error) in
+                        guard let `self` = self else { return }
+                        
+                        do {
+                            if let error = error {
+                                self.stateInfo = .failure(error)
+                            } else {
+                                if let info = try snapshot?.data(as: PlayingReadyInfo.self) {
+                                    self.stateInfo = .success(GameStateWrapper.ready(info))
+                                }
+                            }
+                        } catch (let error) {
+                            self.stateInfo = .failure(error)
+                        }
+                    })
+            case .answer:
+                self.viewInfoCollectionReference
+                    .document(state.rawValue)
+                    .getDocument(completion: { [weak self] (snapshot, error) in
+                        guard let `self` = self else { return }
+                        
+                        do {
+                            if let error = error {
+                                self.stateInfo = .failure(error)
+                            } else {
+                                if let info = try snapshot?.data(as: PlayingAnswerInfo.self) {
+                                    self.stateInfo = .success(GameStateWrapper.answer(info))
+                                }
+                            }
+                        } catch (let error) {
+                            self.stateInfo = .failure(error)
+                        }
+                    })
+            case .guess:
+                self.viewInfoCollectionReference
+                    .document(state.rawValue)
+                    .getDocument(completion: { [weak self] (snapshot, error) in
+                        guard let `self` = self else { return }
+                        
+                        do {
+                            if let error = error {
+                                self.stateInfo = .failure(error)
+                            } else {
+                                if let info = try snapshot?.data(as: PlayingGuessInfo.self) {
+                                    self.stateInfo = .success(GameStateWrapper.guess(info))
+                                }
+                            }
+                        } catch (let error) {
+                            self.stateInfo = .failure(error)
+                        }
+                    })
             }
         }
+    }
+    
+    private func fetchGameStateInfo(_ gameState: GameState,
+                                    completionHandler: () -> LoadableResult<GameStateWrapper, Error>) {
+        self.viewInfoCollectionReference
+            .document(gameState.rawValue)
+            .getDocument(completion: { [weak self] (snapshot, error) in
+                guard let `self` = self else { return }
+                
+                do {
+                    if let error = error {
+                        self.stateInfo = .failure(error)
+                    } else {
+                        if let info = try snapshot?.data(as: PlayingReadyInfo.self) {
+                            self.stateInfo = .success(GameStateWrapper.ready(info))
+                        }
+                    }
+                } catch (let error) {
+                    self.stateInfo = .failure(error)
+                }
+            })
     }
 }
 
@@ -110,7 +142,6 @@ struct PlayingReadyInfo: Codable {
 }
 
 struct PlayingGuessInfo: Codable {
-    let gameId: String
     let common: DrawGuessCommonOnlineModel
     let scoreboard: Scoreboard
 }
@@ -137,13 +168,14 @@ struct PlayContainerView: View {
     }
     
     private func createView() -> AnyView {
-        switch viewModel.state {
+        switch viewModel.stateInfo {
         case .loading:
             return AnyView(Text("Loading..."))
         case .success(let playState):
             switch playState {
             case .ready(let info):
                 return AnyView(ReadyScreenView(viewModel: ReadyScreenViewModel(gameId: viewModel.gameId,
+                                                                               hostPlayerId: viewModel.hostPlayerId,
                                                                                players: viewModel.players,
                                                                                playerIdsReady: info.playerIdsReady)))
             case .guess(let info):
