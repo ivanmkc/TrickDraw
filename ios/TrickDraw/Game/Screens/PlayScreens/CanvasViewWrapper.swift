@@ -13,7 +13,7 @@ struct CanvasViewWrapper: UIViewRepresentable {
     @Binding var canvasView: PKCanvasView
     
     var isUserInteractionEnabled: Bool = true
-    var initialDrawing: PKDrawing? = nil
+    var drawing: PKDrawing? = nil
     
     weak var delegate: PKCanvasViewDelegate? {
         didSet {
@@ -31,8 +31,8 @@ struct CanvasViewWrapper: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: PKCanvasView, context: Context) {
-        if let initialDrawing = initialDrawing {
-            canvasView.drawing = initialDrawing
+        if let drawing = drawing {
+            canvasView.drawing = drawing
         }
         
         canvasView.isUserInteractionEnabled = isUserInteractionEnabled

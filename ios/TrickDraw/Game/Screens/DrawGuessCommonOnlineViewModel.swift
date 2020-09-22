@@ -6,10 +6,11 @@
 //  Copyright © 2020 Google. All rights reserved.
 //
 
-import Foundation
-import PencilKit
+import FirebaseFirestoreSwift
 
-struct Guess: Codable {
+struct Guess: Identifiable, Codable {
+    @DocumentID var id: String? = UUID().uuidString
+    
     let playerId: String
     let guess: String
 }

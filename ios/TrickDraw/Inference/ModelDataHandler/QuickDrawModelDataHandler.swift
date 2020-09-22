@@ -106,9 +106,9 @@ class QuickDrawModelDataHandler: ModelDataHandling {
                     //                completion(.error(ClassificationError.invalidImage))
                     
                     //              }
-                    
-                    return .failure(ClassificationError.invalidImage)
                     print("Failed to convert the image buffer to RGB data.")
+
+                    return .failure(ClassificationError.invalidImage)
             }
             
             // Copy the RGB data to the input `Tensor`.

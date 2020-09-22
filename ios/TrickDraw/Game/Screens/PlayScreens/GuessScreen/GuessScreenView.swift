@@ -23,14 +23,14 @@ class GuessScreenViewModel: NSObject, ObservableObject {
     private let gameApi: GameAPI = DefaultGameAPI.shared
     
     private let gameId: String
-    @Published var onlineInfo: PlayingGuessInfo
+    @Published var onlineInfo: PlayGuessInfo
     @Published var drawing: PKDrawing?
     
     // Local
     var aiWarnings: String? = nil
     
     init(gameId: String,
-         onlineInfo: PlayingGuessInfo) {
+         onlineInfo: PlayGuessInfo) {
         self.gameId = gameId
         self.onlineInfo = onlineInfo
         
@@ -58,7 +58,7 @@ struct GuessScreenView: View {
             // Canvas
             CanvasViewWrapper(canvasView: $canvasView,
                               isUserInteractionEnabled: false,
-                              initialDrawing: viewModel.drawing)
+                              drawing: viewModel.drawing)
                 .environment(\.colorScheme, .dark)
         }
     }

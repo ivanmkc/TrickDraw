@@ -14,9 +14,7 @@ struct ContentView: View {
         AuthWrapperView(viewModel: AuthWrapperViewModel(),
                         view:
                             AnyView(
-                                NavigationView {
-                                    LobbyScreenView(viewModel: LobbyScreenViewModel())
-                                }
+                                LobbyScreenView(viewModel: LobbyScreenViewModel())
                             )
         )
         //        LobbyScreenView(viewModel: LobbyScreenViewModel())

@@ -14,6 +14,9 @@ struct PlayContainerView: View {
     
     var body: some View {
         return AnyView(createView())
+            .onAppear {
+                viewModel.fetchData()
+            }
     }
     
     private func createView() -> AnyView {

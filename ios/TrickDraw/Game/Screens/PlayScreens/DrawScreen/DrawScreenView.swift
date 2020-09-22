@@ -39,9 +39,11 @@ struct DrawScreenView: View {
             
             CanvasViewWrapper(canvasView: $canvasView,
                               isUserInteractionEnabled: true,
-                              initialDrawing: viewModel.drawing,
+                              drawing: viewModel.drawing,
                               delegate: self.viewModel)
                 .environment(\.colorScheme, .dark)
+            
+            viewModel.onlineInfo.guesses.last.map { Text($0.playerId) }
         }
     }
 }

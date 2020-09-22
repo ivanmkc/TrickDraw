@@ -13,43 +13,43 @@ struct LobbyScreenView: View {
     var viewModel: LobbyScreenViewModel
     
     var body: some View {
-        VStack {
-            ScrollView {
-                VStack {
-                    Text("Lobby")
+        NavigationView {
+            
+            VStack {
+                Text("Lobby")
                     
-                    viewModel.games.isEmpty ?
-                        AnyView(Text("No games found")) :
-                        AnyView(
-                            ForEach(viewModel.games) { game in
-                                // TODO: Join game
-                                NavigationLink(
-                                    destination: PlayContainerView(
-                                        viewModel: PlayContainerViewModel(gameId: game.id!,
-                                                                          hostPlayerId: game.hostPlayerId,
-                                                                          players: game.players,
-                                                                          state: game.state)),
-                                    isActive: $viewModel.didJoinSuccessfully) {
-                                    HStack {
-                                        Text(game.name)
-                                        Text("\(game.players.count) players")
-                                    }
-                                    .onTapGesture {
-                                        viewModel.joinGame(game.id!)
-                                    }
+                viewModel.games.isEmpty ?
+                    AnyView(Text("No games found")) :
+                    AnyView(
+                        List(viewModel.games) { game in
+                            // TODO: Join game
+                            NavigationLink(
+                                destination: PlayContainerView(
+                                    viewModel: PlayContainerViewModel(gameId: game.id!,
+                                                                      hostPlayerId: game.hostPlayerId,
+                                                                      players: game.players,
+                                                                      state: game.state))) {
+                                HStack {
+                                    Text(game.name)
+                                    Spacer()
+                                    Text("\(game.players.count) players")
+                                }
+                                .frame(height: 60)
+                                .onTapGesture {
+                                    viewModel.joinGame(game.id!)
                                 }
                             }
-                        )
-                }
-            }
-            
-            HStack {
-                Button("New") {
-                    viewModel.createGame()
-                }
+                        }
+                    )
                 
-                Button("Join") {
+                HStack {
+                    Button("New") {
+                        viewModel.createGame()
+                    }
                     
+                    Button("Join") {
+                        
+                    }
                 }
             }
         }

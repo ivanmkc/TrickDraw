@@ -12,13 +12,6 @@ enum AnswerState {
     case incorrect
 }
 
-struct GameSession {
-    
-    let dynamicLinkUrl: URL
-    
-    let host: Player
-}
-
 extension Player {
     static let player1 = Player(id: "player1", name: "Player 1")
     static let player2 = Player(id: "player2", name: "Player 2")

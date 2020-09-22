@@ -38,35 +38,31 @@ extension UIImage {
         
         var inputData = Data()
         var totalSum = 0
-        do {
-            for row in 0 ..< height {
-                for col in 0 ..< width {
-                    let offset = 4 * (row * width + col)
-                    // (Ignore offset 0, the unused alpha channel)
-                    var red = imageData.load(fromByteOffset: offset+1, as: UInt8.self)
-                    var green = imageData.load(fromByteOffset: offset+2, as: UInt8.self)
-                    var blue = imageData.load(fromByteOffset: offset+3, as: UInt8.self)
-                    
-                    totalSum += Int(red)
-                    totalSum += Int(green)
-                    totalSum += Int(blue)
-                    
-                    // Append normalized values to Data object in RGB order.
-                    let elementSize = MemoryLayout.size(ofValue: red)
-                    var bytes = [UInt8](repeating: 0, count: elementSize)
-                    memcpy(&bytes, &red, elementSize)
-                    inputData.append(&bytes, count: elementSize)
-                    memcpy(&bytes, &green, elementSize)
-                    inputData.append(&bytes, count: elementSize)
-                    memcpy(&bytes, &blue, elementSize)
-                    inputData.append(&bytes, count: elementSize)
-                }
+
+        for row in 0 ..< height {
+            for col in 0 ..< width {
+                let offset = 4 * (row * width + col)
+                // (Ignore offset 0, the unused alpha channel)
+                var red = imageData.load(fromByteOffset: offset+1, as: UInt8.self)
+                var green = imageData.load(fromByteOffset: offset+2, as: UInt8.self)
+                var blue = imageData.load(fromByteOffset: offset+3, as: UInt8.self)
+                
+                totalSum += Int(red)
+                totalSum += Int(green)
+                totalSum += Int(blue)
+                
+                // Append normalized values to Data object in RGB order.
+                let elementSize = MemoryLayout.size(ofValue: red)
+                var bytes = [UInt8](repeating: 0, count: elementSize)
+                memcpy(&bytes, &red, elementSize)
+                inputData.append(&bytes, count: elementSize)
+                memcpy(&bytes, &green, elementSize)
+                inputData.append(&bytes, count: elementSize)
+                memcpy(&bytes, &blue, elementSize)
+                inputData.append(&bytes, count: elementSize)
             }
-        
-            return inputData
-        } catch let error {
-            print("Failed to add input: \(error)")
-            return nil
         }
+    
+        return inputData
     }
 }

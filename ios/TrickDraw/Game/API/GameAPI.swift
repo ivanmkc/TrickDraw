@@ -27,9 +27,13 @@ protocol GameAPI {
     func startGame(_ gameId: String, _ players: [Player], _ completionHandler: ((Result<Void, Error>) -> ())?)
     
     func updateDrawing(_ gameId: String, drawing: PKDrawing, _ completionHandler: ((Result<Void, Error>) -> ())?)
+    
+    func submitGuessByPlayer(_ gameId: String, guess: String, _ completionHandler: ((Result<Void, Error>) -> ())?)
+    func submitGuessByAI(_ gameId: String, guess: String, _ completionHandler: ((Result<Void, Error>) -> ())?)
 }
 
 class DefaultGameAPI: GameAPI {
+    
     static let shared = DefaultGameAPI() // TODO: Replace with DI framework
     private var database: Firestore = Firestore.firestore()
     
@@ -63,7 +67,7 @@ class DefaultGameAPI: GameAPI {
             try gameReference
                 .collection("viewInfo")
                 .document("ready")
-                .setData(from: PlayingReadyInfo(playerIdsReady: []))
+                .setData(from: PlayReadyInfo(playerIdsReady: []))
             completionHandler?(.success(()))
         } catch (let error) {
             print("Error creating game: \(error.localizedDescription)")
@@ -132,7 +136,7 @@ class DefaultGameAPI: GameAPI {
                         // TODO: Send to readyUp cloud function so users can only ready themselves
                         try self.viewInfoCollectionReference(gameId)
                             .document("guess")
-                            .setData(from: PlayingGuessInfo(artist: artist,
+                            .setData(from: PlayGuessInfo(artist: artist,
                                                             guessers: [],
                                                             question: question,
                                                             endTime: endTime,
@@ -158,6 +162,33 @@ class DefaultGameAPI: GameAPI {
         self.viewInfoCollectionReference(gameId)
             .document("guess")
             .updateData(["drawingAsBase64": drawingAsBase64]) {
+                if let error = $0 {
+                    completionHandler?(.failure(error))
+                } else {
+                    completionHandler?(.success(()))
+                }
+            }
+    }
+    
+    func submitGuessByPlayer(_ gameId: String, guess: String, _ completionHandler: ((Result<Void, Error>) -> ())?) {
+        if let userId = currentUser?.uid {
+            submitGuess(gameId, playerId: userId, guess: guess, completionHandler)
+        }
+    }
+    
+    func submitGuessByAI(_ gameId: String, guess: String, _ completionHandler: ((Result<Void, Error>) -> ())?) {
+        submitGuess(gameId, playerId: "ai", guess: guess, completionHandler)
+    }
+    
+    private func submitGuess(_ gameId: String, playerId: String, guess: String, _ completionHandler: ((Result<Void, Error>) -> ())?) {
+        print("'\(playerId)' submitted \(guess)")
+        
+        let player = ["playerId": playerId,
+                      "guess": guess]
+        
+        self.viewInfoCollectionReference(gameId)
+            .document("guess")
+            .updateData(["guesses": FieldValue.arrayUnion([player])]) {
                 if let error = $0 {
                     completionHandler?(.failure(error))
                 } else {
