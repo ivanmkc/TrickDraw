@@ -28,6 +28,7 @@
 		78732CCD251517EA005ABFBE /* LobbyScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78732CCC251517EA005ABFBE /* LobbyScreenView.swift */; };
 		78732D0425151EA2005ABFBE /* LobbyScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78732D0325151EA2005ABFBE /* LobbyScreenViewModel.swift */; };
 		7877A21A251A97EF001B533E /* GuessScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7877A219251A97EF001B533E /* GuessScreenViewModel.swift */; };
+		7877A21F251AC265001B533E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7877A21E251AC265001B533E /* Constants.swift */; };
 		78925BBF25195750009B9096 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 78925BBE25195750009B9096 /* GoogleService-Info.plist */; };
 		78925BC725197FDF009B9096 /* LoadableResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78925BC625197FDF009B9096 /* LoadableResult.swift */; };
 		789F0BD4251124C100C7CD01 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789F0BD3251124C100C7CD01 /* AppDelegate.swift */; };
@@ -87,6 +88,7 @@
 		78732CCC251517EA005ABFBE /* LobbyScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyScreenView.swift; sourceTree = "<group>"; };
 		78732D0325151EA2005ABFBE /* LobbyScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyScreenViewModel.swift; sourceTree = "<group>"; };
 		7877A219251A97EF001B533E /* GuessScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuessScreenViewModel.swift; sourceTree = "<group>"; };
+		7877A21E251AC265001B533E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		78925BBE25195750009B9096 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		78925BC625197FDF009B9096 /* LoadableResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadableResult.swift; sourceTree = "<group>"; };
 		789F0BD0251124C100C7CD01 /* TrickDraw.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrickDraw.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -222,6 +224,7 @@
 				78D124E225191597005DA2A4 /* API */,
 				78732C8C25144EB6005ABFBE /* Screens */,
 				78732C8B25144EAC005ABFBE /* Models */,
+				7877A21E251AC265001B533E /* Constants.swift */,
 			);
 			path = Game;
 			sourceTree = "<group>";
@@ -598,6 +601,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7877A21F251AC265001B533E /* Constants.swift in Sources */,
 				789F0BD4251124C100C7CD01 /* AppDelegate.swift in Sources */,
 				78732CC12515129F005ABFBE /* DrawGuessCommonOnlineViewModel.swift in Sources */,
 				789F0BD6251124C100C7CD01 /* SceneDelegate.swift in Sources */,

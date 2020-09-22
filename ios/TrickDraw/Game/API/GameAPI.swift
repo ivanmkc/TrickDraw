@@ -29,7 +29,7 @@ protocol GameAPI {
     func updateDrawing(_ gameId: String, drawing: PKDrawing, _ completionHandler: ((Result<Void, Error>) -> ())?)
     
     func submitGuessByPlayer(_ gameId: String, guess: String, _ completionHandler: ((Result<Void, Error>) -> ())?)
-    func submitGuessByAI(_ gameId: String, guess: String, _ completionHandler: ((Result<Void, Error>) -> ())?)
+    func submitGuessByAI(_ gameId: String, guess: String, confidence: Float, _ completionHandler: ((Result<Void, Error>) -> ())?)
 }
 
 class DefaultGameAPI: GameAPI {
@@ -182,21 +182,27 @@ class DefaultGameAPI: GameAPI {
         if let currentUser = currentUser {
             submitGuess(gameId, player: Player(id: currentUser.uid, name: currentUser.displayName ?? ""),
                         guess: guess,
+                        confidence: 1.0,
                         completionHandler)
         }
     }
     
-    func submitGuessByAI(_ gameId: String, guess: String, _ completionHandler: ((Result<Void, Error>) -> ())?) {
-        submitGuess(gameId, player: Player(id: "ai", name: "GoogleBot"), guess: guess, completionHandler)
+    func submitGuessByAI(_ gameId: String, guess: String, confidence: Float, _ completionHandler: ((Result<Void, Error>) -> ())?) {
+        submitGuess(gameId, player: GlobalConstants.GoogleBot, guess: guess, confidence: confidence, completionHandler)
     }
     
-    private func submitGuess(_ gameId: String, player: Player, guess: String, _ completionHandler: ((Result<Void, Error>) -> ())?) {
+    private func submitGuess(_ gameId: String, player: Player, guess: String, confidence: Float, _ completionHandler: ((Result<Void, Error>) -> ())?) {
         print("'\(player.name)' submitting \(guess)")
         
-        let guess = Guess(playerId: player.id, playerName: player.name, guess: guess)
-        let dict = ["id": guess.id,
+        let guess = Guess(playerId: player.id,
+                          playerName: player.name,
+                          guess: guess,
+                          confidence: confidence)
+        
+        let dict: [String : Any] = ["id": guess.id,
                     "playerId": guess.playerId,
                     "playerName": guess.playerName,
+                    "confidence": guess.confidence,
                     "guess": guess.guess]
         
         self.viewInfoCollectionReference(gameId)

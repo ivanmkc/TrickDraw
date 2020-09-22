@@ -14,4 +14,5 @@ struct Guess: Identifiable, Codable {
     let playerId: String
     let playerName: String
     let guess: String
+    let confidence: Float
 }

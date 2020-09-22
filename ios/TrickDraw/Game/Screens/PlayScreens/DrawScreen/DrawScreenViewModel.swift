@@ -46,8 +46,10 @@ class DrawScreenViewModel: NSObject, ObservableObject {
         gameApi.startGame(gameId, players, nil) // TODO: Show error toast
     }
     
-    private func submitGuessByAI(_ guess: String) {
-        gameApi.submitGuessByAI(gameId, guess: guess) { (result) in
+    private func submitGuessByAI(_ guess: String, confidence: Float) {
+        gameApi.submitGuessByAI(gameId,
+                                guess: guess,
+                                confidence: confidence) { (result) in
             switch (result) {
             case .success():
                 break
@@ -79,9 +81,10 @@ extension DrawScreenViewModel: PKCanvasViewDelegate {
             switch (result) {
             case .success(let guesses):
                 if let bestGuess = guesses.first, bestGuess.confidence > Constants.confidenceThreshold {
-                    self.submitGuessByAI(bestGuess.guess)
+                    self.submitGuessByAI(bestGuess.guess,
+                                         confidence: bestGuess.confidence)
                 } else {
-                    self.submitGuessByAI("Unknown")
+                    self.submitGuessByAI("Unknown", confidence: 0)
                 }
             case .failure(let error):
                 print(error) // Show error toast

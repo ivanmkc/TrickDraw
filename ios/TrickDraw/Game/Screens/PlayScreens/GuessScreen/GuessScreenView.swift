@@ -40,7 +40,7 @@ struct GuessScreenView: View {
                         .guesses
                         .last
                         .map {
-                            Text("'\($0.playerName)' guesses \($0.guess)")
+                            Text("'\($0.playerName)' guesses \($0.guess) with confidence \($0.confidence)")
                                 .foregroundColor(Color.white)
                         }
                         .animation(.easeInOut(duration: 1))
