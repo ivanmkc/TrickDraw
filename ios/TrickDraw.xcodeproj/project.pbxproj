@@ -225,7 +225,6 @@
 				7810279A2515630B00B493BC /* AuthWrapper */,
 				78732CCB251517D5005ABFBE /* LobbyScreen */,
 				78732CC02515129F005ABFBE /* DrawGuessCommonOnlineViewModel.swift */,
-				78732CA3251467DB005ABFBE /* CanvasViewWrapper.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -235,6 +234,7 @@
 			children = (
 				78732C8D25144EC3005ABFBE /* DrawScreenView.swift */,
 				78732CB725150F68005ABFBE /* DrawScreenViewModel.swift */,
+				78732CA3251467DB005ABFBE /* CanvasViewWrapper.swift */,
 			);
 			path = DrawScreen;
 			sourceTree = "<group>";

@@ -10,18 +10,15 @@ import SwiftUI
 import PencilKit
 
 struct DrawScreenView: View {
-    private let viewModel: DrawScreenViewModel
+    var viewModel: DrawScreenViewModel
     
     @Environment(\.undoManager) var undoManager
     @State private var canvasView = PKCanvasView()
     
     init(viewModel: DrawScreenViewModel) {
         self.viewModel = viewModel
-        canvasView.delegate = viewModel
         
-//        if let drawing = viewModel.drawing {
-//            canvasView.drawing = drawing
-//        }
+        canvasView.delegate = viewModel
     }
     
     var body: some View {
@@ -37,7 +34,7 @@ struct DrawScreenView: View {
             }
             
             CanvasViewWrapper(canvasView: $canvasView,
-                              delegate: viewModel)
+                              delegate: self.viewModel)
         }
     }
 }

@@ -7,7 +7,7 @@
 //
 
 import FirebaseFirestore
-import FirebaseAuth
+import FirebaseAuth 
 
 class ReadyScreenViewModel: ObservableObject {
     private var database: Firestore = Firestore.firestore()

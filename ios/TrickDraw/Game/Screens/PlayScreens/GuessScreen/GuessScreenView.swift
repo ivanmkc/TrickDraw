@@ -42,8 +42,7 @@ struct GuessScreenView: View {
             }
             
             // Canvas
-            CanvasViewWrapper(canvasView: $canvasView,
-                              delegate: nil)
+            CanvasViewWrapper(canvasView: $canvasView)
         }
     }
 }
