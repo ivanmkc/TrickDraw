@@ -44,7 +44,7 @@ class DrawScreenViewModel: NSObject, ObservableObject {
             case .success():
                 break
             case .failure(let error):
-                // Show poptart
+                // Show error toast
                 break
             }
         }
@@ -76,7 +76,7 @@ extension DrawScreenViewModel: PKCanvasViewDelegate {
                     self.submitGuessByAI("Unknown")
                 }
             case .failure(let error):
-                print(error) // TODO: Show poptart
+                print(error) // Show error toast
             }
         }
     }

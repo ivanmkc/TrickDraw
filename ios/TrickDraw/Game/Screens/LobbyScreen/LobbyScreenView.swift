@@ -9,8 +9,8 @@
 import SwiftUI
 
 struct LobbyScreenView: View {
-    @ObservedObject
-    var viewModel: LobbyScreenViewModel
+    @ObservedObject var viewModel: LobbyScreenViewModel
+    @State var selectedGameId: String?
     
     var body: some View {
         NavigationView {
@@ -28,7 +28,9 @@ struct LobbyScreenView: View {
                                     viewModel: PlayContainerViewModel(gameId: game.id!,
                                                                       hostPlayerId: game.hostPlayerId,
                                                                       players: game.players,
-                                                                      state: game.state))) {
+                                                                      state: game.state)),
+                                    tag: game.id!,
+                                    selection: $selectedGameId) {
                                 HStack {
                                     Text(game.name)
                                     Spacer()
@@ -36,7 +38,9 @@ struct LobbyScreenView: View {
                                 }
                                 .frame(height: 60)
                                 .onTapGesture {
-                                    viewModel.joinGame(game.id!)
+                                    viewModel.joinGame(game.id!) { _ in 
+                                        selectedGameId = game.id!
+                                    }
                                 }
                             }
                         }
@@ -44,11 +48,15 @@ struct LobbyScreenView: View {
                 
                 HStack {
                     Button("New") {
-                        viewModel.createGame()
-                    }
-                    
-                    Button("Join") {
-                        
+                        viewModel.createGame { result in
+                            switch (result) {
+                            case .success(let gameId):
+                                selectedGameId = gameId
+                            case .failure:
+                                // TODO: Show error toast
+                                break
+                            }
+                        }
                     }
                 }
             }

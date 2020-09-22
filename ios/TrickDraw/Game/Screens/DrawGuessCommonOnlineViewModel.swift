@@ -12,5 +12,6 @@ struct Guess: Identifiable, Codable {
     var id: String = UUID().uuidString
     
     let playerId: String
+    let playerName: String
     let guess: String
 }

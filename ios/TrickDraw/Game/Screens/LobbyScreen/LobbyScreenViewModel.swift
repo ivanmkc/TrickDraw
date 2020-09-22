@@ -29,7 +29,6 @@ class LobbyScreenViewModel: ObservableObject {
     private var gamesListener: ListenerRegistration?
     private let gameAPI = DefaultGameAPI.shared
     
-    @Published var didJoinSuccessfully: Bool = false
     @Published var games: [Game] = []
     
     init() {
@@ -57,19 +56,12 @@ class LobbyScreenViewModel: ObservableObject {
         }
     }
     
-    func createGame() {
-        gameAPI.createGame(nil)
+    func createGame(_ completionHandler: ((Result<String, Error>) -> ())?) {
+        gameAPI.createGame(completionHandler)
     }
     
-    func joinGame(_ gameId: String) {
-        gameAPI.joinGame(gameId) {
-            switch ($0) {
-            case .success:
-                self.didJoinSuccessfully = true
-            case .failure:
-                break // TODO: Handle failure
-            }
-        }
+    func joinGame(_ gameId: String, _ completionHandler: ((Result<Void, Error>) -> ())?) {
+        gameAPI.joinGame(gameId, completionHandler)
     }
     
     deinit {

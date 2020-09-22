@@ -43,7 +43,14 @@ struct DrawScreenView: View {
                               delegate: self.viewModel)
                 .environment(\.colorScheme, .dark)
             
-            viewModel.onlineInfo.guesses.last.map { Text("'\($0.playerId)' guesses \($0.guess)") }
+            viewModel
+                .onlineInfo
+                .guesses
+                .last
+                .map {
+                    Text("'\($0.playerName)' guesses \($0.guess)")
+                        .foregroundColor(Color.white)
+                }
                 .animation(.easeInOut(duration: 1))
         }
     }

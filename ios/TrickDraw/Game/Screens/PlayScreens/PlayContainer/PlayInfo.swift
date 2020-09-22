@@ -24,7 +24,9 @@ struct PlayAnswerInfo: Codable {
 struct PlayGuessInfo: Codable {
     let artist: Player
     let guessers: [Player]
+    
     let question: String
+    let choices: [String]
     
     let endTime: Date
     

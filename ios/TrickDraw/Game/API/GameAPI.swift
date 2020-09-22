@@ -19,7 +19,7 @@ protocol GameAPI {
     
     var currentUser: User? { get }
     
-    func createGame(_ completionHandler: ((Result<Void, Error>) -> ())?)
+    func createGame(_ completionHandler: ((Result<String, Error>) -> ())?)
     
     func joinGame(_ gameId: String, _ completionHandler: ((Result<Void, Error>) -> ())?)
     
@@ -33,6 +33,9 @@ protocol GameAPI {
 }
 
 class DefaultGameAPI: GameAPI {
+    struct Constants {
+        static let numChoices = 8
+    }
     
     static let shared = DefaultGameAPI() // TODO: Replace with DI framework
     private var database: Firestore = Firestore.firestore()
@@ -53,7 +56,7 @@ class DefaultGameAPI: GameAPI {
         return Auth.auth().currentUser
     }
     
-    func createGame(_ completionHandler: ((Result<Void, Error>) -> ())?) {
+    func createGame(_ completionHandler: ((Result<String, Error>) -> ())?) {
         do {
             guard let currentUser = Auth.auth().currentUser,
                   let displayName = currentUser.displayName else { return }
@@ -69,7 +72,8 @@ class DefaultGameAPI: GameAPI {
                 .collection("viewInfo")
                 .document("ready")
                 .setData(from: PlayReadyInfo(playerIdsReady: []))
-            completionHandler?(.success(()))
+            
+            completionHandler?(.success(gameReference.documentID))
         } catch (let error) {
             print("Error creating game: \(error.localizedDescription)")
             completionHandler?(.failure(error))
@@ -116,7 +120,9 @@ class DefaultGameAPI: GameAPI {
     
     func startGame(_ gameId: String, _ players: [Player], _ completionHandler: ((Result<Void, Error>) -> ())?) {
         gamesReference.document(gameId)
-            .updateData(["state" : "guess"]) { (error) in
+            .updateData(["state" : "guess"]) { [weak self] (error) in
+                guard let `self` = self else { return }
+                
                 if let error = error {
                     completionHandler?(.failure(error))
                 } else {
@@ -125,6 +131,12 @@ class DefaultGameAPI: GameAPI {
                     let endTime = Date().addingTimeInterval(60)
                     let scoreboard = Scoreboard()
                     let question = self.labels.randomElement()!
+                    
+                    var choices = self.labels
+                    choices.removeAll { $0 == question }
+                    
+                    choices = (choices.shuffled().prefix(Constants.numChoices - 1) + [question])
+                        .sorted()
                     
                     // TODO: Delete "ready" document
                     
@@ -135,6 +147,7 @@ class DefaultGameAPI: GameAPI {
                             .setData(from: PlayGuessInfo(artist: artist,
                                                             guessers: [],
                                                             question: question,
+                                                            choices: choices,
                                                             endTime: endTime,
                                                             guesses: [],
                                                             drawingAsBase64: nil,
@@ -167,21 +180,24 @@ class DefaultGameAPI: GameAPI {
     }
     
     func submitGuessByPlayer(_ gameId: String, guess: String, _ completionHandler: ((Result<Void, Error>) -> ())?) {
-        if let userId = currentUser?.uid {
-            submitGuess(gameId, playerId: userId, guess: guess, completionHandler)
+        if let currentUser = currentUser {
+            submitGuess(gameId, player: Player(id: currentUser.uid, name: currentUser.displayName ?? ""),
+                        guess: guess,
+                        completionHandler)
         }
     }
     
     func submitGuessByAI(_ gameId: String, guess: String, _ completionHandler: ((Result<Void, Error>) -> ())?) {
-        submitGuess(gameId, playerId: "ai", guess: guess, completionHandler)
+        submitGuess(gameId, player: Player(id: "ai", name: "GoogleBot"), guess: guess, completionHandler)
     }
     
-    private func submitGuess(_ gameId: String, playerId: String, guess: String, _ completionHandler: ((Result<Void, Error>) -> ())?) {
-        print("'\(playerId)' submitting \(guess)")
+    private func submitGuess(_ gameId: String, player: Player, guess: String, _ completionHandler: ((Result<Void, Error>) -> ())?) {
+        print("'\(player.name)' submitting \(guess)")
         
-        let guess = Guess(playerId: playerId, guess: guess)
+        let guess = Guess(playerId: player.id, playerName: player.name, guess: guess)
         let dict = ["id": guess.id,
                     "playerId": guess.playerId,
+                    "playerName": guess.playerName,
                     "guess": guess.guess]
         
         self.viewInfoCollectionReference(gameId)

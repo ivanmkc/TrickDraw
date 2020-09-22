@@ -9,37 +9,6 @@
 import SwiftUI
 import PencilKit
 
-struct GuessScreenOnlineModel {
-//    let drawing: PKDrawing
-    
-    // Actions: Add guess
-    func guessByAI(guess: String) {
-        
-    }
-}
-
-class GuessScreenViewModel: NSObject, ObservableObject {
-    // Server
-    private let gameApi: GameAPI = DefaultGameAPI.shared
-    
-    private let gameId: String
-    @Published var onlineInfo: PlayGuessInfo
-    @Published var drawing: PKDrawing?
-    
-    // Local
-    var aiWarnings: String? = nil
-    
-    init(gameId: String,
-         onlineInfo: PlayGuessInfo) {
-        self.gameId = gameId
-        self.onlineInfo = onlineInfo
-        
-        if let drawingAsBase64 = onlineInfo.drawingAsBase64 {
-            self.drawing = try? PKDrawing(base64Encoded: drawingAsBase64)
-        }
-    }
-}
-
 struct GuessScreenView: View {
     @State private var canvasView = PKCanvasView()
     
@@ -56,10 +25,52 @@ struct GuessScreenView: View {
 //            }
 //            
             // Canvas
-            CanvasViewWrapper(canvasView: $canvasView,
-                              isUserInteractionEnabled: false,
-                              drawing: viewModel.drawing)
-                .environment(\.colorScheme, .dark)
+            ZStack {
+                CanvasViewWrapper(canvasView: $canvasView,
+                                  isUserInteractionEnabled: false,
+                                  drawing: viewModel.drawing)
+                    .environment(\.colorScheme, .dark)
+                
+                VStack {
+                    Spacer()
+                    
+                    viewModel
+                        .onlineInfo
+                        .guesses
+                        .last
+                        .map {
+                            Text("'\($0.playerName)' guesses \($0.guess)")
+                                .foregroundColor(Color.white)
+                        }
+                        .animation(.easeInOut(duration: 1))
+                }
+            }
+
+            VStack {
+                ForEach(Array(viewModel
+                                .onlineInfo
+                                .choices
+                                .chunked(by: 2)
+                                .enumerated()), id: \.offset) { (offset, element) in
+                    HStack {
+                        ForEach(Array(element.enumerated()), id: \.offset) { (offset, choice) in
+                            Spacer()
+                            Button(choice) {
+                                viewModel.submitGuess(guess: choice)
+                            }
+                            Spacer()
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+extension Array {
+    func chunked(by chunkSize: Int) -> [[Element]] {
+        return stride(from: 0, to: self.count, by: chunkSize).map {
+            Array(self[$0 ..< Swift.min($0 + chunkSize, self.count)]) // fixed
         }
     }
 }
