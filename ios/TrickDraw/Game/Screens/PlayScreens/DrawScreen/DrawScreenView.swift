@@ -35,11 +35,14 @@ struct DrawScreenView: View {
                 }
             }
             
+            Button("Reset") { viewModel.resetRound() }
+            
             Text("Draw '\(viewModel.onlineInfo.question)'!")
             
             CanvasViewWrapper(canvasView: $canvasView,
                               isUserInteractionEnabled: true,
                               drawing: viewModel.drawing,
+                              shouldUpdateDrawing: false,
                               delegate: self.viewModel)
                 .environment(\.colorScheme, .dark)
             

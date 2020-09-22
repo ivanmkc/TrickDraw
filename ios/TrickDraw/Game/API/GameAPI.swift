@@ -78,9 +78,8 @@ class DefaultGameAPI: GameAPI {
             print("Error creating game: \(error.localizedDescription)")
             completionHandler?(.failure(error))
         }
-        
     }
-    
+        
     func joinGame(_ gameId: String, _ completionHandler: ((Result<Void, Error>) -> ())?) {
         guard let currentUser = currentUser,
               let displayName = currentUser.displayName else {
@@ -145,13 +144,13 @@ class DefaultGameAPI: GameAPI {
                         try self.viewInfoCollectionReference(gameId)
                             .document("guess")
                             .setData(from: PlayGuessInfo(artist: artist,
-                                                            guessers: [],
-                                                            question: question,
-                                                            choices: choices,
-                                                            endTime: endTime,
-                                                            guesses: [],
-                                                            drawingAsBase64: nil,
-                                                            scoreboard: scoreboard)) {
+                                                         guessers: [],
+                                                         question: question,
+                                                         choices: choices,
+                                                         endTime: endTime,
+                                                         guesses: [],
+                                                         drawingAsBase64: nil,
+                                                         scoreboard: scoreboard)) {
                                 if let error = $0 {
                                     completionHandler?(.failure(error))
                                 } else {

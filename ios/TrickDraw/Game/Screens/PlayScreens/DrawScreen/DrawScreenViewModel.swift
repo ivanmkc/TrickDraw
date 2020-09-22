@@ -10,7 +10,7 @@ import PencilKit
 
 class DrawScreenViewModel: NSObject, ObservableObject {
     struct Constants {
-        static let confidenceThreshold: Float = 0.3
+        static let confidenceThreshold: Float = 0.1
     }
     
     private let gameApi: GameAPI = DefaultGameAPI.shared
@@ -19,6 +19,8 @@ class DrawScreenViewModel: NSObject, ObservableObject {
     private let serialQueue = DispatchQueue(label: "inference")
     
     private let gameId: String
+    private let players: [Player]
+    
     @Published var onlineInfo: PlayGuessInfo
     @Published var drawing: PKDrawing?
     
@@ -29,13 +31,19 @@ class DrawScreenViewModel: NSObject, ObservableObject {
     private let handler = QuickDrawModelDataHandler.shared
     
     init(gameId: String,
+         players: [Player], // TODO: Remove this when moved to cloud function
          onlineInfo: PlayGuessInfo) {
         self.gameId = gameId
+        self.players = players
         self.onlineInfo = onlineInfo
         
         if let drawingAsBase64 = onlineInfo.drawingAsBase64 {
             self.drawing = try? PKDrawing(base64Encoded: drawingAsBase64)
         }
+    }
+    
+    func resetRound() {
+        gameApi.startGame(gameId, players, nil) // TODO: Show error toast
     }
     
     private func submitGuessByAI(_ guess: String) {

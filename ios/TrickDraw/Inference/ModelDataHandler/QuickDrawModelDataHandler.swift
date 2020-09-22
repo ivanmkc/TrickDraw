@@ -42,9 +42,9 @@ class QuickDrawModelDataHandler: ModelDataHandling {
     
     /// Information about the MobileNet model.
     enum Model {
-        static let modelInfo: FileInfo = (name: "models/10_500/model", extension: "tflite")
+        static let modelInfo: FileInfo = (name: "models/350_300/model", extension: "tflite")
         //      static let modelInfoQuantized: FileInfo = (name: "style_predict_quantized_256", extension: "tflite")
-        static let labelInfo: FileInfo = (name: "models/10_500/dict", extension: "txt")
+        static let labelInfo: FileInfo = (name: "models/350_300/dict", extension: "txt")
         static let inputImageWidth: Int = 224
         static let inputImageHeight: Int = 224
     }

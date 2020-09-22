@@ -14,6 +14,7 @@ struct CanvasViewWrapper: UIViewRepresentable {
     
     var isUserInteractionEnabled: Bool = true
     var drawing: PKDrawing? = nil
+    var shouldUpdateDrawing: Bool = false
     
     weak var delegate: PKCanvasViewDelegate? {
         didSet {
@@ -23,15 +24,15 @@ struct CanvasViewWrapper: UIViewRepresentable {
         
     func makeUIView(context: Context) -> PKCanvasView {
         self.canvasView.tool = PKInkingTool(.pencil, color: .black, width: 5) // This color inverts depending on light vs dark mode
+        if let drawing = drawing {
+            canvasView.drawing = drawing
+        }
+        
         return canvasView
     }
-    
-    func setDrawing(drawing: PKDrawing) {
-        canvasView.drawing = drawing
-    }
-    
+        
     func updateUIView(_ uiView: PKCanvasView, context: Context) {
-        if let drawing = drawing {
+        if let drawing = drawing, shouldUpdateDrawing {
             canvasView.drawing = drawing
         }
         

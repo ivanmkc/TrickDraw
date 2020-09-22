@@ -28,7 +28,8 @@ struct GuessScreenView: View {
             ZStack {
                 CanvasViewWrapper(canvasView: $canvasView,
                                   isUserInteractionEnabled: false,
-                                  drawing: viewModel.drawing)
+                                  drawing: viewModel.drawing,
+                                  shouldUpdateDrawing: true)
                     .environment(\.colorScheme, .dark)
                 
                 VStack {

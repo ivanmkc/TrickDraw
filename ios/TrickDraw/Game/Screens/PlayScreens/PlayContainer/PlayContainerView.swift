@@ -35,6 +35,7 @@ struct PlayContainerView: View {
                                 viewModel:
                                     DrawScreenViewModel(
                                         gameId: viewModel.gameId,
+                                        players: viewModel.players,
                                         onlineInfo: info))
                         ):
                         AnyView(
