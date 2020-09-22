@@ -22,5 +22,5 @@ protocol ModelDataHandling {
     
     var threadCount: Int { get }
     
-    func runModel(input: Input) -> Result<Inference, Error>?
+    func runModel(input: Input) -> Result<Inference, Error>
 }

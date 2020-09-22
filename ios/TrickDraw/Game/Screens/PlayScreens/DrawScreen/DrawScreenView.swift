@@ -14,7 +14,7 @@ struct DrawScreenView: View {
     
     @Environment(\.undoManager) var undoManager
     @State private var canvasView = PKCanvasView()
-    
+        
     init(viewModel: DrawScreenViewModel) {
         self.viewModel = viewModel
         
@@ -43,7 +43,8 @@ struct DrawScreenView: View {
                               delegate: self.viewModel)
                 .environment(\.colorScheme, .dark)
             
-            viewModel.onlineInfo.guesses.last.map { Text($0.playerId) }
+            viewModel.onlineInfo.guesses.last.map { Text("'\($0.playerId)' guesses \($0.guess)") }
+                .animation(.easeInOut(duration: 1))
         }
     }
 }

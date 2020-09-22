@@ -36,6 +36,7 @@ class DefaultGameAPI: GameAPI {
     
     static let shared = DefaultGameAPI() // TODO: Replace with DI framework
     private var database: Firestore = Firestore.firestore()
+    private var labels = QuickDrawModelDataHandler.shared.labels! // TODO: Replace with DI framework
     
     init() {
     }
@@ -114,11 +115,6 @@ class DefaultGameAPI: GameAPI {
     }
     
     func startGame(_ gameId: String, _ players: [Player], _ completionHandler: ((Result<Void, Error>) -> ())?) {
-        guard let playerId = currentUser?.uid else {
-            completionHandler?(.failure(APIError.userNotLoggedIn))
-            return
-        }
-        
         gamesReference.document(gameId)
             .updateData(["state" : "guess"]) { (error) in
                 if let error = error {
@@ -128,7 +124,7 @@ class DefaultGameAPI: GameAPI {
                     let artist = players.randomElement()!
                     let endTime = Date().addingTimeInterval(60)
                     let scoreboard = Scoreboard()
-                    let question = ["TODO"].randomElement()!
+                    let question = self.labels.randomElement()!
                     
                     // TODO: Delete "ready" document
                     
@@ -181,14 +177,16 @@ class DefaultGameAPI: GameAPI {
     }
     
     private func submitGuess(_ gameId: String, playerId: String, guess: String, _ completionHandler: ((Result<Void, Error>) -> ())?) {
-        print("'\(playerId)' submitted \(guess)")
+        print("'\(playerId)' submitting \(guess)")
         
-        let player = ["playerId": playerId,
-                      "guess": guess]
+        let guess = Guess(playerId: playerId, guess: guess)
+        let dict = ["id": guess.id,
+                    "playerId": guess.playerId,
+                    "guess": guess.guess]
         
         self.viewInfoCollectionReference(gameId)
             .document("guess")
-            .updateData(["guesses": FieldValue.arrayUnion([player])]) {
+            .updateData(["guesses": FieldValue.arrayUnion([dict])]) {
                 if let error = $0 {
                     completionHandler?(.failure(error))
                 } else {

@@ -17,12 +17,18 @@ enum ClassificationError: Error {
     case invalidOutput
 }
 
+struct InferenceResult {
+    let guess: String
+    let confidence: Float
+}
+
 /// This class handles all data preprocessing and makes calls to perform inference on a given image
 /// by invoking the `Interpreter`.
 class QuickDrawModelDataHandler: ModelDataHandling {
-    
     typealias Input = UIImage
-    typealias Inference = String
+    typealias Inference = [InferenceResult]
+    
+    static let shared = QuickDrawModelDataHandler()! // TODO: Use DI
     
     // TODO
     lazy var labels: [String]? = {
@@ -80,9 +86,9 @@ class QuickDrawModelDataHandler: ModelDataHandling {
             // Allocate memory for the model's input `Tensor`s.
             try interpreter.allocateTensors()
             
-            for tensorIndex in 0..<interpreter.inputTensorCount {
-                print("\(tensorIndex): \(try interpreter.input(at: tensorIndex).shape)")
-            }
+//            for tensorIndex in 0..<interpreter.inputTensorCount {
+//                print("\(tensorIndex): \(try interpreter.input(at: tensorIndex).shape)")
+//            }
         } catch let error {
             print("Failed to create the interpreter with error: \(error.localizedDescription)")
             return nil
@@ -92,7 +98,7 @@ class QuickDrawModelDataHandler: ModelDataHandling {
     
     // MARK: - Internal Methods
     /// Performs image preprocessing, invokes the `Interpreter`, and processes the inference results.
-    func runModel(input: UIImage) -> Result<String, Error>? {
+    func runModel(input: UIImage) -> Result<[InferenceResult], Error> {
         let outputTensor: Tensor
         do {
             // Get the output `Tensor` to process the inference results.
@@ -102,10 +108,6 @@ class QuickDrawModelDataHandler: ModelDataHandling {
             guard let rgbData = input.pixelData(size: CGSize(width: inputTensor.shape.dimensions[1],
                                                              height: inputTensor.shape.dimensions[2]))
                 else {
-                    //              DispatchQueue.main.async {
-                    //                completion(.error(ClassificationError.invalidImage))
-                    
-                    //              }
                     print("Failed to convert the image buffer to RGB data.")
 
                     return .failure(ClassificationError.invalidImage)
@@ -121,9 +123,6 @@ class QuickDrawModelDataHandler: ModelDataHandling {
             outputTensor = try self.interpreter.output(at: 0)
         } catch let error {
             print("Failed to invoke the interpreter with error: \(error.localizedDescription)")
-//            DispatchQueue.main.async {
-//                completion(.error(ClassificationError.internalError(error)))
-//            }
             return .failure(ClassificationError.internalError(error))
         }
         
@@ -140,14 +139,16 @@ class QuickDrawModelDataHandler: ModelDataHandling {
 //        print("Results:")
 //        adjustedData.enumerated().forEach{ print("\t\($0)") }
         
-        let maxResult = adjustedData
-            .enumerated()
-            .max { $0.element <= $1.element }
+//        let maxResult = adjustedData
+//            .enumerated()
+//            .max { $0.element <= $1.element }
+//        
+//        let maxOffset = maxResult?.offset ?? 0
         
-        let maxOffset = maxResult?.offset ?? 0
-
         if let labels = labels {
-            return .success(labels[maxOffset])
+            return .success(zip(labels, adjustedData)
+                                .map { InferenceResult(guess: $0, confidence: $1) }
+                                .sorted(by: { $0.confidence > $1.confidence }))
         } else {
             return .failure(ClassificationError.invalidOutput)
         }

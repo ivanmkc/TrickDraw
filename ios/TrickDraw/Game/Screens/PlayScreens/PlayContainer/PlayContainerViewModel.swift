@@ -19,12 +19,12 @@ class PlayContainerViewModel: ObservableObject {
     private let gameAPI: GameAPI = DefaultGameAPI.shared
     private var viewInfoListener: ListenerRegistration?
     
+    private let state: GameState
+    
     let gameId: String
     let hostPlayerId: String
-    let state: GameState
     
     @Published var isHost: Bool
-
     @Published var players: [Player]
     @Published var stateInfo: LoadableResult<GameStateWrapper, Error> = .loading
         
@@ -37,9 +37,11 @@ class PlayContainerViewModel: ObservableObject {
         self.players = players
         self.state = state
         self.isHost = gameAPI.currentUser.map { $0.uid == hostPlayerId } ?? false
+        
+        fetchData()
     }
     
-    func fetchData() {
+    private func fetchData() {
         viewInfoListener = gameAPI
             .viewInfoCollectionReference(gameId)
             .addSnapshotListener { documentSnapshot, error in

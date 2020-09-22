@@ -12,7 +12,6 @@ struct PlayReadyInfo: Codable {
     let playerIdsReady: [String]
 }
 
-
 struct PlayAnswerInfo: Codable {
     let artist: Player
     let guessers: [Player]

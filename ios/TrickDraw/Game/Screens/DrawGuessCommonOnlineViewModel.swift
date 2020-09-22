@@ -9,7 +9,7 @@
 import FirebaseFirestoreSwift
 
 struct Guess: Identifiable, Codable {
-    @DocumentID var id: String? = UUID().uuidString
+    var id: String = UUID().uuidString
     
     let playerId: String
     let guess: String

@@ -9,6 +9,10 @@
 import PencilKit
 
 class DrawScreenViewModel: NSObject, ObservableObject {
+    struct Constants {
+        static let confidenceThreshold: Float = 0.3
+    }
+    
     private let gameApi: GameAPI = DefaultGameAPI.shared
     
     // This is needed to prevent race condition crashes during inference.
@@ -22,7 +26,7 @@ class DrawScreenViewModel: NSObject, ObservableObject {
     var aiWarnings: String? = nil
     
     // TODO: Inject this
-    private let handler = QuickDrawModelDataHandler()!
+    private let handler = QuickDrawModelDataHandler.shared
     
     init(gameId: String,
          onlineInfo: PlayGuessInfo) {
@@ -52,7 +56,6 @@ extension DrawScreenViewModel: PKCanvasViewDelegate {
         
         print("canvasViewDrawingDidChange")
         
-        
         // Update the drawing on the server
         // TODO: Fix issue where the Firestore update sets the drawing on each artist update
         self.gameApi.updateDrawing(self.gameId, drawing: canvasView.drawing, nil) // TODO: Handle error
@@ -63,17 +66,17 @@ extension DrawScreenViewModel: PKCanvasViewDelegate {
         serialQueue.async { [weak self] in
             guard let `self` = self else { return }
             
-            guard let result = self.handler.runModel(input: image) else { return }
+            let result = self.handler.runModel(input: image)
             
-            DispatchQueue.main.async { [weak self] in
-                guard let `self` = self else { return }
-                
-                switch (result) {
-                case .success(let guess):
-                    self.submitGuessByAI(guess)
-                case .failure(let error):
-                    print(error) // TODO: Show poptart
+            switch (result) {
+            case .success(let guesses):
+                if let bestGuess = guesses.first, bestGuess.confidence > Constants.confidenceThreshold {
+                    self.submitGuessByAI(bestGuess.guess)
+                } else {
+                    self.submitGuessByAI("Unknown")
                 }
+            case .failure(let error):
+                print(error) // TODO: Show poptart
             }
         }
     }
