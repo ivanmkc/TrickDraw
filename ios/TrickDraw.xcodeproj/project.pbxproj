@@ -27,6 +27,7 @@
 		78732CCD251517EA005ABFBE /* LobbyScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78732CCC251517EA005ABFBE /* LobbyScreenView.swift */; };
 		78732D0425151EA2005ABFBE /* LobbyScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78732D0325151EA2005ABFBE /* LobbyScreenViewModel.swift */; };
 		78925BBF25195750009B9096 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 78925BBE25195750009B9096 /* GoogleService-Info.plist */; };
+		78925BC725197FDF009B9096 /* LoadableResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78925BC625197FDF009B9096 /* LoadableResult.swift */; };
 		789F0BD4251124C100C7CD01 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789F0BD3251124C100C7CD01 /* AppDelegate.swift */; };
 		789F0BD6251124C100C7CD01 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789F0BD5251124C100C7CD01 /* SceneDelegate.swift */; };
 		789F0BD8251124C100C7CD01 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789F0BD7251124C100C7CD01 /* ContentView.swift */; };
@@ -83,6 +84,7 @@
 		78732CCC251517EA005ABFBE /* LobbyScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyScreenView.swift; sourceTree = "<group>"; };
 		78732D0325151EA2005ABFBE /* LobbyScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyScreenViewModel.swift; sourceTree = "<group>"; };
 		78925BBE25195750009B9096 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		78925BC625197FDF009B9096 /* LoadableResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadableResult.swift; sourceTree = "<group>"; };
 		789F0BD0251124C100C7CD01 /* TrickDraw.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrickDraw.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		789F0BD3251124C100C7CD01 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		789F0BD5251124C100C7CD01 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 				781027D82515833A00B493BC /* ReadyScreen */,
 				78732CAB25150F12005ABFBE /* DrawScreen */,
 				78732CBF251511CA005ABFBE /* GuessScreen */,
+				78925BC625197FDF009B9096 /* LoadableResult.swift */,
 			);
 			path = PlayScreens;
 			sourceTree = "<group>";
@@ -601,6 +604,7 @@
 				78732CB825150F68005ABFBE /* DrawScreenViewModel.swift in Sources */,
 				78732C6F251424C6005ABFBE /* GameSession.swift in Sources */,
 				781027DA2515860E00B493BC /* ReadyScreenView.swift in Sources */,
+				78925BC725197FDF009B9096 /* LoadableResult.swift in Sources */,
 				78732CCD251517EA005ABFBE /* LobbyScreenView.swift in Sources */,
 				785980D7251146F800722FDE /* ModelDataHandling.swift in Sources */,
 				781027EE251589BC00B493BC /* PlayContainerView.swift in Sources */,

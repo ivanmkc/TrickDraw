@@ -8,18 +8,18 @@
 
 import PencilKit
 
-class DrawScreenViewModel: NSObject {
+class DrawScreenViewModel: NSObject, ObservableObject {
     // Server
     private let gameApi: GameAPI = DefaultGameAPI.shared
     
     private let gameId: String
-    private let onlineInfo: PlayingGuessInfo
+    @Published var onlineInfo: PlayingGuessInfo
     
     // Local
     var aiWarnings: String? = nil
     
     // TODO: Inject this
-    let handler = QuickDrawModelDataHandler()!
+    private let handler = QuickDrawModelDataHandler()!
     
     init(gameId: String,
          onlineInfo: PlayingGuessInfo) {
@@ -35,33 +35,33 @@ extension DrawScreenViewModel: PKCanvasViewDelegate {
         // Update the drawing on the server
         self.gameApi.updateDrawing(self.gameId, drawing: canvasView.drawing, nil) // TODO: Handle error
         
-//        // Perform inference
-//        let image = canvasView.drawing.image(from: canvasView.bounds, scale: 1)
-//
-//        DispatchQueue.global(qos: .background).async { [weak self] in
-//            guard let `self` = self else { return }
-//
-//            guard let result = self.handler.runModel(input: image) else { return }
-//
-//            DispatchQueue.main.async { [weak self] in
-//                guard let `self` = self else { return }
-//
-//                switch (result) {
-//                case .success(let guess):
-//                    break
-//                // self.guessByAI(guess: guess)
-//                //                        if guess == self.question {
-//                //                            // TODO: Update the server that the AI has won
-//                //
-//                //                        } else {
-//                //                            // TODO: Update the UI to warn the user that the AI is close
-//                //                            guessByAI(guessFromAI)
-//                //                        }
-//                case .failure(let error):
-//                    print(error) // TODO: Show poptart
-//                }
-//            }
-//        }
+        // Perform inference
+        let image = canvasView.drawing.image(from: canvasView.bounds, scale: 1)
+
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            guard let `self` = self else { return }
+
+            guard let result = self.handler.runModel(input: image) else { return }
+
+            DispatchQueue.main.async { [weak self] in
+                guard let `self` = self else { return }
+
+                switch (result) {
+                case .success(let guess):
+                    break
+                // self.guessByAI(guess: guess)
+                //                        if guess == self.question {
+                //                            // TODO: Update the server that the AI has won
+                //
+                //                        } else {
+                //                            // TODO: Update the UI to warn the user that the AI is close
+                //                            guessByAI(guessFromAI)
+                //                        }
+                case .failure(let error):
+                    print(error) // TODO: Show poptart
+                }
+            }
+        }
     }
 
 }

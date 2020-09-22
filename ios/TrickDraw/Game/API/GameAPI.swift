@@ -15,6 +15,8 @@ enum APIError: Error {
 }
 
 protocol GameAPI {
+    func viewInfoCollectionReference(_ gameId: String) -> CollectionReference
+    
     var currentUser: User? { get }
     
     func createGame(_ completionHandler: ((Result<Void, Error>) -> ())?)
@@ -38,7 +40,7 @@ class DefaultGameAPI: GameAPI {
         return database.collection("games")
     }
     
-    private func viewInfoCollectionReference(_ gameId: String) -> CollectionReference {
+    func viewInfoCollectionReference(_ gameId: String) -> CollectionReference {
         return gamesReference.document(gameId).collection("viewInfo")
     }
     
@@ -155,7 +157,7 @@ class DefaultGameAPI: GameAPI {
         
         self.viewInfoCollectionReference(gameId)
             .document("guess")
-            .updateData(["drawing": drawingAsBase64]) {
+            .updateData(["drawingAsBase64": drawingAsBase64]) {
                 if let error = $0 {
                     completionHandler?(.failure(error))
                 } else {

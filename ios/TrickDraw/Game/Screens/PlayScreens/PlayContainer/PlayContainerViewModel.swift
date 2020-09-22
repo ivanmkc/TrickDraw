@@ -9,12 +9,6 @@
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-enum LoadableResult<Result, Error> {
-    case loading
-    case success(Result)
-    case failure(Error)
-}
-
 enum GameStateWrapper {
     case ready(PlayingReadyInfo)
     case guess(PlayingGuessInfo)
@@ -22,14 +16,15 @@ enum GameStateWrapper {
 }
 
 class PlayContainerViewModel: ObservableObject {
-    private var database: Firestore = Firestore.firestore()
+    private let gameAPI: GameAPI = DefaultGameAPI.shared
     private var viewInfoListener: ListenerRegistration?
-    
-    private var viewInfoCollectionReference: CollectionReference
     
     let gameId: String
     let hostPlayerId: String
     let state: GameState
+    
+    @Published var isHost: Bool
+
     @Published var players: [Player]
     @Published var stateInfo: LoadableResult<GameStateWrapper, Error> = .loading
         
@@ -41,22 +36,21 @@ class PlayContainerViewModel: ObservableObject {
         self.hostPlayerId = hostPlayerId
         self.players = players
         self.state = state
-        
-        viewInfoCollectionReference = database
-            .collection("games")
-            .document(gameId)
-            .collection("viewInfo")
+        self.isHost = gameAPI.currentUser.map { $0.uid == hostPlayerId } ?? false
         
         fetchData()
     }
     
     private func fetchData() {
-        viewInfoListener = viewInfoCollectionReference.addSnapshotListener { documentSnapshot, error in
+        viewInfoListener = gameAPI
+            .viewInfoCollectionReference(gameId)
+            .addSnapshotListener { documentSnapshot, error in
             let state = self.state
             
             switch (state) {
             case .ready:
-                self.viewInfoCollectionReference
+                self.gameAPI
+                    .viewInfoCollectionReference(self.gameId)
                     .document(state.rawValue)
                     .getDocument(completion: { [weak self] (snapshot, error) in
                         guard let `self` = self else { return }
@@ -74,7 +68,8 @@ class PlayContainerViewModel: ObservableObject {
                         }
                     })
             case .guess:
-                self.viewInfoCollectionReference
+                self.gameAPI
+                    .viewInfoCollectionReference(self.gameId)
                     .document(state.rawValue)
                     .getDocument(completion: { [weak self] (snapshot, error) in
                         guard let `self` = self else { return }
@@ -92,7 +87,8 @@ class PlayContainerViewModel: ObservableObject {
                         }
                     })
             case .answer:
-                self.viewInfoCollectionReference
+                self.gameAPI
+                    .viewInfoCollectionReference(self.gameId)
                     .document(state.rawValue)
                     .getDocument(completion: { [weak self] (snapshot, error) in
                         guard let `self` = self else { return }
@@ -115,7 +111,8 @@ class PlayContainerViewModel: ObservableObject {
     
     private func fetchGameStateInfo(_ gameState: GameState,
                                     completionHandler: () -> LoadableResult<GameStateWrapper, Error>) {
-        self.viewInfoCollectionReference
+        self.gameAPI
+            .viewInfoCollectionReference(gameId)
             .document(gameState.rawValue)
             .getDocument(completion: { [weak self] (snapshot, error) in
                 guard let `self` = self else { return }
@@ -145,6 +142,8 @@ struct PlayingReadyInfo: Codable {
     let playerIdsReady: [String]
 }
 
+import PencilKit
+
 struct PlayingGuessInfo: Codable {
     let artist: Player
     let guessers: [Player]
@@ -157,6 +156,19 @@ struct PlayingGuessInfo: Codable {
     let drawingAsBase64: String?
 
     let scoreboard: Scoreboard
+}
+
+extension PKDrawing {
+    enum DecodingError: Error {
+        case decodingError
+    }
+    
+    init(base64Encoded base64: String) throws {
+        guard let data = Data(base64Encoded: base64) else {
+            throw DecodingError.decodingError
+        }
+        try self.init(data: data)
+    }
 }
 
 struct PlayingAnswerInfo: Codable {

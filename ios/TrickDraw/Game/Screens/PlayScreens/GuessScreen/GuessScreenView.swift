@@ -17,13 +17,26 @@ struct GuessScreenOnlineModel {
         
     }
 }
-struct GuessScreenViewModel {
+
+class GuessScreenViewModel: NSObject, ObservableObject {
+    // Server
+    private let gameApi: GameAPI = DefaultGameAPI.shared
     
-    let name: String
-    let players: [Player]
+    private let gameId: String
+    @Published var onlineInfo: PlayingGuessInfo
+    @Published var drawing: PKDrawing?
     
-    func submitGuess(string: String) {
+    // Local
+    var aiWarnings: String? = nil
+    
+    init(gameId: String,
+         onlineInfo: PlayingGuessInfo) {
+        self.gameId = gameId
+        self.onlineInfo = onlineInfo
         
+        if let drawingAsBase64 = onlineInfo.drawingAsBase64 {
+            self.drawing = try? PKDrawing(base64Encoded: drawingAsBase64)
+        }
     }
 }
 
@@ -35,14 +48,18 @@ struct GuessScreenView: View {
     var body: some View {
         VStack {
             // Nav bar
-            HStack(spacing: 10) {
-                ForEach(viewModel.players, id: \.id) {
-                    Text($0.name)
-                }
-            }
-            
+            Text("Guess the drawing!")
+//            HStack(spacing: 10) {
+//                ForEach(viewModel.players, id: \.id) {
+//                    Text($0.name)
+//                }
+//            }
+//            
             // Canvas
-            CanvasViewWrapper(canvasView: $canvasView)
+            CanvasViewWrapper(canvasView: $canvasView,
+                              isUserInteractionEnabled: false,
+                              initialDrawing: viewModel.drawing)
+                .environment(\.colorScheme, .dark)
         }
     }
 }

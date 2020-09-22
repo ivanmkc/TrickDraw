@@ -29,10 +29,21 @@ struct PlayContainerView: View {
                                                                                playerIdsReady: info.playerIdsReady)))
             case .guess(let info):
                 return AnyView(
-                    DrawScreenView(
-                        viewModel: DrawScreenViewModel(
-                            gameId: viewModel.gameId,
-                            onlineInfo: info)))
+                    viewModel.isHost ?
+                        AnyView(
+                            DrawScreenView(
+                                viewModel:
+                                    DrawScreenViewModel(
+                                        gameId: viewModel.gameId,
+                                        onlineInfo: info))
+                        ):
+                        AnyView(
+                            GuessScreenView(
+                                viewModel: GuessScreenViewModel(
+                                    gameId: viewModel.gameId,
+                                    onlineInfo: info))
+                        )
+                )
             case .answer(let info):
                 return AnyView(Text("TODO"))
             }

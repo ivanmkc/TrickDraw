@@ -23,18 +23,23 @@ struct DrawScreenView: View {
     
     var body: some View {
         VStack(spacing: 10) {
-            Button("Clear") {
-                self.canvasView.drawing = PKDrawing()
+            HStack {
+                Button("Clear") {
+                    self.canvasView.drawing = PKDrawing()
+                }
+                Button("Undo") {
+                    self.undoManager?.undo()
+                }
+                Button("Redo") {
+                    self.undoManager?.redo()
+                }
             }
-            Button("Undo") {
-                self.undoManager?.undo()
-            }
-            Button("Redo") {
-                self.undoManager?.redo()
-            }
+            
+            Text("Draw '\(viewModel.onlineInfo.question)'!")
             
             CanvasViewWrapper(canvasView: $canvasView,
                               delegate: self.viewModel)
+                .environment(\.colorScheme, .dark)
         }
     }
 }
