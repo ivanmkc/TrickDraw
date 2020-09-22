@@ -175,6 +175,7 @@
 		781027E42515899C00B493BC /* PlayScreens */ = {
 			isa = PBXGroup;
 			children = (
+				78732CA3251467DB005ABFBE /* CanvasViewWrapper.swift */,
 				781027E32515898700B493BC /* PlayContainer */,
 				781027D82515833A00B493BC /* ReadyScreen */,
 				78732CAB25150F12005ABFBE /* DrawScreen */,
@@ -237,7 +238,6 @@
 			children = (
 				78732C8D25144EC3005ABFBE /* DrawScreenView.swift */,
 				78732CB725150F68005ABFBE /* DrawScreenViewModel.swift */,
-				78732CA3251467DB005ABFBE /* CanvasViewWrapper.swift */,
 			);
 			path = DrawScreen;
 			sourceTree = "<group>";

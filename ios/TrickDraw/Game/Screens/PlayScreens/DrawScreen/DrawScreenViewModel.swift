@@ -14,6 +14,7 @@ class DrawScreenViewModel: NSObject, ObservableObject {
     
     private let gameId: String
     @Published var onlineInfo: PlayingGuessInfo
+    @Published var drawing: PKDrawing?
     
     // Local
     var aiWarnings: String? = nil
@@ -25,6 +26,10 @@ class DrawScreenViewModel: NSObject, ObservableObject {
          onlineInfo: PlayingGuessInfo) {
         self.gameId = gameId
         self.onlineInfo = onlineInfo
+        
+        if let drawingAsBase64 = onlineInfo.drawingAsBase64 {
+            self.drawing = try? PKDrawing(base64Encoded: drawingAsBase64)
+        }
     }
 }
 
@@ -64,14 +69,4 @@ extension DrawScreenViewModel: PKCanvasViewDelegate {
         }
     }
 
-}
-
-extension DrawScreenViewModel {
-    var drawing: PKDrawing? {
-        if let drawingData = onlineInfo.drawingAsBase64?.data(using: .utf8) {
-            return try? PKDrawing(data: drawingData)
-        } else {
-            return nil
-        }
-    }
 }

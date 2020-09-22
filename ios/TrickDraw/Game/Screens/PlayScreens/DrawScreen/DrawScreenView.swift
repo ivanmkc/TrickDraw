@@ -38,6 +38,8 @@ struct DrawScreenView: View {
             Text("Draw '\(viewModel.onlineInfo.question)'!")
             
             CanvasViewWrapper(canvasView: $canvasView,
+                              isUserInteractionEnabled: true,
+                              initialDrawing: viewModel.drawing,
                               delegate: self.viewModel)
                 .environment(\.colorScheme, .dark)
         }
