@@ -136,4 +136,4 @@ class PlayContainerViewModel: ObservableObject {
     }
 }
 
-typealias Scoreboard = [Player: Int]
+typealias Scoreboard = [String: Int]

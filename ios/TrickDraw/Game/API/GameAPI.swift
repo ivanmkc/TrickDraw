@@ -24,7 +24,7 @@ protocol GameAPI {
     func joinGame(_ gameId: String, _ completionHandler: ((Result<Void, Error>) -> ())?)
     
     func readyUp(_ gameId: String, _ completionHandler: ((Result<Void, Error>) -> ())?)
-    func startGame(_ gameId: String, _ players: [Player], _ completionHandler: ((Result<Void, Error>) -> ())?)
+    func startGame(_ gameId: String, _ completionHandler: ((Result<Void, Error>) -> ())?)
     
     func updateDrawing(_ gameId: String, drawing: PKDrawing, _ completionHandler: ((Result<Void, Error>) -> ())?)
     
@@ -117,51 +117,73 @@ class DefaultGameAPI: GameAPI {
             }
     }
     
-    func startGame(_ gameId: String, _ players: [Player], _ completionHandler: ((Result<Void, Error>) -> ())?) {
-        gamesReference.document(gameId)
-            .updateData(["state" : "guess"]) { [weak self] (error) in
-                guard let `self` = self else { return }
-                
-                if let error = error {
-                    completionHandler?(.failure(error))
-                } else {
+    func startGame(_ gameId: String, _ completionHandler: ((Result<Void, Error>) -> ())?) {
+        let gameReference = gamesReference.document(gameId)
+        
+        gameReference.getDocument { (snapshot, error) in
+            if let error = error {
+                completionHandler?(.failure(error))
+                return
+            } else {
+                do {
+                    guard let game = try snapshot?.data(as: Game.self) else {
+                        return
+                    }
                     
-                    let artist = players.randomElement()!
-                    let endTime = Date().addingTimeInterval(60)
-                    let scoreboard = Scoreboard()
-                    let question = self.labels.randomElement()!
+                    let players = game.players
                     
-                    var choices = self.labels
-                    choices.removeAll { $0 == question }
-                    
-                    choices = (choices.shuffled().prefix(Constants.numChoices - 1) + [question])
-                        .sorted()
-                    
-                    // TODO: Delete "ready" document
-                    
-                    do {
-                        // TODO: Send to readyUp cloud function so users can only ready themselves
-                        try self.viewInfoCollectionReference(gameId)
-                            .document("guess")
-                            .setData(from: PlayGuessInfo(artist: artist,
-                                                         guessers: [],
-                                                         question: question,
-                                                         choices: choices,
-                                                         endTime: endTime,
-                                                         guesses: [],
-                                                         drawingAsBase64: nil,
-                                                         scoreboard: scoreboard)) {
-                                if let error = $0 {
+                    gameReference
+                        .updateData(["state" : "guess"]) { [weak self] (error) in
+                            guard let `self` = self else { return }
+                            
+                            if let error = error {
+                                completionHandler?(.failure(error))
+                                return
+                            } else {
+                                
+                                let artist = players.randomElement()!
+                                let endTime = Date().addingTimeInterval(60)
+                                let scoreboard = Scoreboard()
+                                let question = self.labels.randomElement()!
+                                
+                                var choices = self.labels
+                                choices.removeAll { $0 == question }
+                                
+                                choices = (choices.shuffled().prefix(Constants.numChoices - 1) + [question])
+                                    .sorted()
+                                
+                                // TODO: Delete "ready" document
+                                
+                                do {
+                                    // TODO: Send to readyUp cloud function so users can only ready themselves
+                                    try self.viewInfoCollectionReference(gameId)
+                                        .document("guess")
+                                        .setData(from: PlayGuessInfo(artist: artist,
+                                                                     guessers: [],
+                                                                     question: question,
+                                                                     choices: choices,
+                                                                     endTime: endTime,
+                                                                     guesses: [],
+                                                                     drawingAsBase64: nil,
+                                                                     scoreboard: scoreboard)) {
+                                            if let error = $0 {
+                                                completionHandler?(.failure(error))
+                                            } else {
+                                                completionHandler?(.success(()))
+                                            }
+                                        }
+                                } catch (let error) {
                                     completionHandler?(.failure(error))
-                                } else {
-                                    completionHandler?(.success(()))
                                 }
                             }
-                    } catch (let error) {
-                        completionHandler?(.failure(error))
-                    }
+                        }
+
+                } catch (let error) {
+                    completionHandler?(.failure(error))
+                    return
                 }
             }
+        }
     }
     
     func updateDrawing(_ gameId: String, drawing: PKDrawing, _ completionHandler: ((Result<Void, Error>) -> ())?) {

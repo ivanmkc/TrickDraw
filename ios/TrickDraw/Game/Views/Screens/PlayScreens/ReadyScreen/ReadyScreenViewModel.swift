@@ -38,6 +38,6 @@ class ReadyScreenViewModel: ObservableObject {
     }
     
     func startGame() {
-        gameAPI.startGame(gameId, players, nil)
+        gameAPI.startGame(gameId, nil)
     }
 }

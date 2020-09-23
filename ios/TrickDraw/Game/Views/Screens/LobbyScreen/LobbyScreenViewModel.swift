@@ -57,7 +57,18 @@ class LobbyScreenViewModel: ObservableObject {
     }
     
     func createGame(_ completionHandler: ((Result<String, Error>) -> ())?) {
-        gameAPI.createGame(completionHandler)
+        gameAPI.createGame { (result) in
+            switch result {
+            case .success(let gameId):
+                // Start game right away. This skips the ready screen
+                self.gameAPI.startGame(gameId) { _ in
+                    completionHandler?(result)
+                }
+            case .failure:
+                // TODO: Show failure toast
+                break
+            }
+        }
     }
     
     func joinGame(_ gameId: String, _ completionHandler: ((Result<Void, Error>) -> ())?) {

@@ -10,11 +10,6 @@ import Foundation
 import PencilKit
 import Combine
 
-struct GuessScreenOnlineModel {
-    
-
-}
-
 class GuessScreenViewModel: NSObject, ObservableObject {
     
     // Server

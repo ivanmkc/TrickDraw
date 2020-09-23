@@ -40,7 +40,7 @@ class DrawScreenViewModel: NSObject, ObservableObject {
     }
     
     func resetRound() {
-        gameApi.startGame(gameId, players, nil) // TODO: Show error toast
+        gameApi.startGame(gameId, nil) // TODO: Show error toast
     }
     
     private func submitGuessByAI(_ guess: String, confidence: Float) {

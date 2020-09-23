@@ -13,13 +13,23 @@ struct PlayContainerView: View {
     var viewModel: PlayContainerViewModel
     
     var body: some View {
-        return AnyView(createView())
+        ZStack {
+            Color(GlobalConstants.Colors.LightGrey).edgesIgnoringSafeArea(.all)
+
+            createView()
+        }
+        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .center)
+        .background(Color(GlobalConstants.Colors.LightGrey))
     }
     
     private func createView() -> AnyView {
         switch viewModel.stateInfo {
         case .loading:
-            return AnyView(Text("Loading..."))
+            return AnyView(
+                Text("loading...")
+                    .font(GlobalConstants.Fonts.Medium)
+                    .foregroundColor(Color(GlobalConstants.Colors.DarkGrey))
+            )
         case .success(let playState):
             switch playState {
             case .ready(let info):
@@ -51,5 +61,15 @@ struct PlayContainerView: View {
         case .failure(let error):
             return AnyView(Text("Loading: \(error.localizedDescription)"))
         }
+    }
+}
+
+struct PlayContainerView_Previews: PreviewProvider {
+    static var previews: some View {
+        // Loading
+        PlayContainerView(viewModel: PlayContainerViewModel(gameId: "GameId",
+                                                            hostPlayerId: "PlayerId",
+                                                            players: [Player.player1, Player.player2],
+                                                            state: GameState.ready))
     }
 }
