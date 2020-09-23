@@ -188,7 +188,7 @@ class DefaultGameAPI: GameAPI {
     }
     
     func submitGuessByAI(_ gameId: String, guess: String, confidence: Float, _ completionHandler: ((Result<Void, Error>) -> ())?) {
-        submitGuess(gameId, player: GlobalConstants.GoogleBot, guess: guess, confidence: confidence, completionHandler)
+        submitGuess(gameId, player: GlobalConstants.GoogleBot, guess: guess, confidence: confidence, nil)
     }
     
     private func submitGuess(_ gameId: String, player: Player, guess: String, confidence: Float, _ completionHandler: ((Result<Void, Error>) -> ())?) {

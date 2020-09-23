@@ -37,6 +37,16 @@ struct PlayGuessInfo: Codable {
     let scoreboard: Scoreboard
 }
 
+extension PlayGuessInfo {
+    var drawing: PKDrawing? {
+        if let drawingAsBase64 = drawingAsBase64, let drawing = try? PKDrawing(base64Encoded: drawingAsBase64) {
+            return drawing
+        } else {
+            return nil
+        }
+    }
+}
+
 extension PKDrawing {
     enum DecodingError: Error {
         case decodingError

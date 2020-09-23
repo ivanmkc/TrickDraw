@@ -36,10 +36,7 @@ class DrawScreenViewModel: NSObject, ObservableObject {
         self.gameId = gameId
         self.players = players
         self.onlineInfo = onlineInfo
-        
-        if let drawingAsBase64 = onlineInfo.drawingAsBase64 {
-            self.drawing = try? PKDrawing(base64Encoded: drawingAsBase64)
-        }
+        self.drawing = onlineInfo.drawing
     }
     
     func resetRound() {

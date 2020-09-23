@@ -35,7 +35,10 @@ struct DrawScreenView: View {
                 }
             }
             
-            Button("Reset") { viewModel.resetRound() }
+            Button("Reset") {
+                viewModel.resetRound()
+                canvasView.drawing = PKDrawing()
+            }
             
             Text("Draw '\(viewModel.onlineInfo.question)'!")
             

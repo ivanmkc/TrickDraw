@@ -33,10 +33,7 @@ class GuessScreenViewModel: NSObject, ObservableObject {
          onlineInfo: PlayGuessInfo) {
         self.gameId = gameId
         self.onlineInfo = onlineInfo
-        
-        if let drawingAsBase64 = onlineInfo.drawingAsBase64 {
-            self.drawing = try? PKDrawing(base64Encoded: drawingAsBase64)
-        }
+        self.drawing = onlineInfo.drawing
     }
     
     func submitGuess(guess: String) {
