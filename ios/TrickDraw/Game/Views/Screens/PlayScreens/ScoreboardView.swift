@@ -30,6 +30,9 @@ struct ScoreboardEntry: View {
             Text("\(score)")
                 .foregroundColor(Color(GlobalConstants.Colors.DarkGrey))
                 .font(GlobalConstants.Fonts.Medium)
+                .frame(width: 30, height: 30, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                .background(Color(GlobalConstants.Colors.Grey))
+                .cornerRadius(5)
         }
     }
 }

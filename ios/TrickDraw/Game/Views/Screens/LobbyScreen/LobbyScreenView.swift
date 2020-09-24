@@ -110,8 +110,8 @@ struct LobbyScreenView: View {
                 .background(Color(GlobalConstants.Colors.LightGrey))
                 .navigationBarTitle("Lobby")
             }
+            .animation(.default)
         }
-        .animation(.default)
         .accentColor(Color(GlobalConstants.Colors.LightPurple2))
     }
 }

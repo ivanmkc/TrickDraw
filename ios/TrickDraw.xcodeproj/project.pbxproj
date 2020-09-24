@@ -280,8 +280,8 @@
 		78940229251B988800302F48 /* LobbyScreen */ = {
 			isa = PBXGroup;
 			children = (
-				7894022A251B988800302F48 /* LobbyScreenViewModel.swift */,
 				7894022B251B988800302F48 /* LobbyScreenView.swift */,
+				7894022A251B988800302F48 /* LobbyScreenViewModel.swift */,
 			);
 			path = LobbyScreen;
 			sourceTree = "<group>";

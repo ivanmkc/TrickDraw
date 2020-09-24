@@ -55,7 +55,7 @@ struct PrimaryButton: View {
                 
                 if let text = text {
                     Text(text)
-                        .lineLimit(1)
+                        .lineLimit(2)
                         .minimumScaleFactor(0.5)
                         .font(LocalConstants.Colors.TextFont)
                         .padding([.leading], systemImageName == nil ? 0 : 30)

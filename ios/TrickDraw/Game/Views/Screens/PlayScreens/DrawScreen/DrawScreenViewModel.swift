@@ -10,7 +10,7 @@ import PencilKit
 
 class DrawScreenViewModel: NSObject, ObservableObject {
     struct Constants {
-        static let confidenceThreshold: Float = 0.1
+        static let confidenceThreshold: Float = 0.01
     }
     
     private let gameApi: GameAPI = DefaultGameAPI.shared
@@ -81,6 +81,11 @@ extension DrawScreenViewModel: PKCanvasViewDelegate {
             
             switch (result) {
             case .success(let guesses):
+                // Filter among the choices available to the user
+                let choicesSet = Set(self.onlineInfo.choices)
+                
+                let guesses = guesses.filter { choicesSet.contains($0.guess) }
+                
                 if let bestGuess = guesses.first, bestGuess.confidence > Constants.confidenceThreshold {
                     self.submitGuessByAI(bestGuess.guess,
                                          confidence: bestGuess.confidence,

@@ -18,6 +18,7 @@ struct PlayContainerView: View {
 
             createView()
         }
+        .animation(.default)
         .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .center)
         .background(Color(GlobalConstants.Colors.LightGrey))
     }

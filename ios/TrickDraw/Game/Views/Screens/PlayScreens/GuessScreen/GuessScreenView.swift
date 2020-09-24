@@ -86,9 +86,9 @@ struct GuessScreenView: View {
                     }
                 }
             }
-        }
+        }        
         .padding(20)
-        .navigationBarTitle(Text("\(viewModel.onlineInfo.artist.name) is the artist"), displayMode: .inline)
+        .navigationBarTitle(Text("\(viewModel.onlineInfo.artist.name) is drawing"), displayMode: .inline)
     }
 }
 
