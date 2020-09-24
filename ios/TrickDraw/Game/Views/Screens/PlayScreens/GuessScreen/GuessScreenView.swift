@@ -36,7 +36,7 @@ struct GuessScreenView: View {
             if let correctGuess =
                 viewModel.onlineInfo.guesses.first { $0.isCorrect } {
                 // Drawing instructions
-                Text("'\(correctGuess.playerName)' wins!")
+                Text("\(correctGuess.playerName) wins!")
                     .foregroundColor(Color(GlobalConstants.Colors.Teal))
                     .font(GlobalConstants.Fonts.Medium)
                     .frame(height: 30, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
