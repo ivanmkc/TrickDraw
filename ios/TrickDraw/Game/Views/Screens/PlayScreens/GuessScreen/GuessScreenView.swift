@@ -21,27 +21,23 @@ struct GuessScreenView: View {
     
     private func scaledDrawing(_ drawing: PKDrawing, size: CGSize) -> PKDrawing {
         let scaleFactor = min(size.width/drawing.bounds.size.width, size.height/drawing.bounds.size.height)
-        return drawing.transformed(using: CGAffineTransform(scaleX: scaleFactor, y: scaleFactor))
+        let newDrawing = drawing
+            .transformed(using: CGAffineTransform(scaleX: scaleFactor, y: scaleFactor))
+
+        return newDrawing
+            .transformed(using: CGAffineTransform(translationX: -newDrawing.bounds.origin.x,
+                                                  y: -newDrawing.bounds.origin.y))
     }
     
     var body: some View {
         VStack(spacing: 20) {
             ScoreboardView(scoreboard: viewModel.scoreboard)
-            
-            Spacer()
-            
+                        
             if let correctGuess =
                 viewModel.onlineInfo.guesses.first { $0.isCorrect } {
                 // Drawing instructions
                 Text("'\(correctGuess.playerName)' wins!")
                     .foregroundColor(Color(GlobalConstants.Colors.Teal))
-                    .font(GlobalConstants.Fonts.Medium)
-                    .frame(height: 30, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-                
-            } else {
-                // Drawing instructions
-                Text("Guess what the drawing is!")
-                    .foregroundColor(Color(GlobalConstants.Colors.DarkGrey))
                     .font(GlobalConstants.Fonts.Medium)
                     .frame(height: 30, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
             }

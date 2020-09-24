@@ -38,7 +38,7 @@ struct GuessesView: View {
         let isBot = guess.playerId == GlobalConstants.GoogleBot.id
         
         if isBot {
-            let text: String = "'\(guess.playerName)' guesses '\(guess.guess)' with \(String(format: "%.0f", guess.confidence  * 100))% confidence"
+            let text: String = "'\(guess.playerName)' guesses '\(guess.guess)' with \(String(format: "%.0f", guess.confidence * 100))% confidence"
 
             return Text(text)
                 .minimumScaleFactor(0.5)
