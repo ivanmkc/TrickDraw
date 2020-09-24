@@ -102,30 +102,56 @@ extension Array {
 
 struct GuessScreenView_Previews: PreviewProvider {
     static var previews: some View {
-        GuessScreenView(
-            viewModel: GuessScreenViewModel(gameId: "gameId",
-                                            scoreboard: [
-                                                Player.player1.id: 10,
-                                                Player.player2.id: 20,
-                                                GlobalConstants.GoogleBot.id: 40
-                                            ],
-                                            onlineInfo: PlayGuessInfo(artist: Player.player1,
-                                                                      guessers: [],
-                                                                      question: "duck",
-                                                                      choices: ["toast", "sheep", "duck", "faucet"], endTime: Date().addingTimeInterval(60),
-                                                                      guesses: [
-                                                                        Guess(playerId: Player.player1.id,
-                                                                              playerName: Player.player1.name,
-                                                                              guess: "toast", confidence: 1),
-                                                                        Guess(playerId: Player.player2.id,
-                                                                              playerName: Player.player2.name,
-                                                                              guess: "bread",
-                                                                              confidence: 1),
-                                                                      ],
-                                                                      drawingAsBase64: nil
-                                            )
+        Group {
+            GuessScreenView(
+                viewModel: GuessScreenViewModel(gameId: "gameId",
+                                                scoreboard: [
+                                                    Player.player1.id: 10,
+                                                    Player.player2.id: 20,
+                                                    GlobalConstants.GoogleBot.id: 40
+                                                ],
+                                                onlineInfo: PlayGuessInfo(artist: Player.player1,
+                                                                          guessers: [],
+                                                                          question: "duck",
+                                                                          choices: ["toast", "sheep", "duck", "faucet"], endTime: Date().addingTimeInterval(60),
+                                                                          guesses: [
+                                                                            Guess(playerId: Player.player1.id,
+                                                                                  playerName: Player.player1.name,
+                                                                                  guess: "toast", confidence: 1),
+                                                                            Guess(playerId: Player.player2.id,
+                                                                                  playerName: Player.player2.name,
+                                                                                  guess: "bread",
+                                                                                  confidence: 1),
+                                                                          ],
+                                                                          drawingAsBase64: nil
+                                                )
+                )
             )
-        )
+            GuessScreenView(
+                viewModel: GuessScreenViewModel(gameId: "gameId",
+                                                scoreboard: [
+                                                    Player.player1.id: 10,
+                                                    Player.player2.id: 20,
+                                                    GlobalConstants.GoogleBot.id: 40
+                                                ],
+                                                onlineInfo: PlayGuessInfo(artist: Player.player1,
+                                                                          guessers: [],
+                                                                          question: "duck",
+                                                                          choices: ["toast", "sheep", "duck", "faucet"], endTime: Date().addingTimeInterval(60),
+                                                                          guesses: [
+                                                                            Guess(playerId: Player.player1.id,
+                                                                                  playerName: Player.player1.name,
+                                                                                  guess: "toast", confidence: 1),
+                                                                            Guess(playerId: Player.player2.id,
+                                                                                  playerName: Player.player2.name,
+                                                                                  guess: "bread",
+                                                                                  confidence: 1),
+                                                                          ],
+                                                                          drawingAsBase64: nil
+                                                )
+                )
+            )
+        }
     }
 }
 

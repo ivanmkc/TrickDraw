@@ -93,7 +93,7 @@ struct DrawScreenView: View {
             GuessesView(guesses: viewModel.onlineInfo.guesses)
         }
         .padding(20)
-        .navigationBarTitle(Text("You are the artist"), displayMode: .inline)
+        .navigationBarTitle(Text("You are drawing"), displayMode: .inline)
     }
 }
 

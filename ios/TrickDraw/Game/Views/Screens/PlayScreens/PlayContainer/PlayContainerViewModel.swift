@@ -27,6 +27,7 @@ class PlayContainerViewModel: ObservableObject {
     
     @Published var scoreboard: Scoreboard = [:]
     @Published var isHost: Bool
+    @Published var playerId: String?
     @Published var players: [Player]
     @Published var stateInfo: LoadableResult<GameStateWrapper, Error> = .loading
     
@@ -38,6 +39,7 @@ class PlayContainerViewModel: ObservableObject {
         self.hostPlayerId = hostPlayerId
         self.players = players
         self.state = state
+        self.playerId = gameAPI.currentUser?.uid
         self.isHost = gameAPI.currentUser.map { $0.uid == hostPlayerId } ?? false
         
         self.setupListeners()

@@ -112,6 +112,7 @@ struct LobbyScreenView: View {
             }
             .animation(.default)
         }
+        .navigationViewStyle(StackNavigationViewStyle())
         .accentColor(Color(GlobalConstants.Colors.LightPurple2))
     }
 }

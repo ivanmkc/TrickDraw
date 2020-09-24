@@ -17,10 +17,10 @@ struct PlayContainerView: View {
             Color(GlobalConstants.Colors.LightGrey).edgesIgnoringSafeArea(.all)
 
             createView()
+                .background(Color(GlobalConstants.Colors.LightGrey))
         }
         .animation(.default)
         .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .center)
-        .background(Color(GlobalConstants.Colors.LightGrey))
     }
     
     private func createView() -> AnyView {
@@ -39,8 +39,10 @@ struct PlayContainerView: View {
                                                                                players: viewModel.players,
                                                                                playerIdsReady: info.playerIdsReady)))
             case .guess(let info):
+                let isArtist = viewModel.playerId
+                    .map { $0 == info.artist.id } ?? false
                 return AnyView(
-                    viewModel.isHost ?
+                    isArtist ?
                         AnyView(
                             DrawScreenView(
                                 viewModel:

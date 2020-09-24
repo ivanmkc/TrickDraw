@@ -64,9 +64,16 @@ class DrawScreenViewModel: NSObject, ObservableObject {
 
 extension DrawScreenViewModel: PKCanvasViewDelegate {
     func canvasViewDrawingDidChange(_ canvasView: PKCanvasView) {
-        
         print("canvasViewDrawingDidChange")
-        
+
+        // Prevent bot from guessing a blank canvas
+        if #available(iOS 14.0, *) {
+            guard !canvasView.drawing.strokes.isEmpty else { return }
+        } else {
+            // Fallback on earlier versions
+            guard !canvasView.drawing.bounds.isEmpty else { return }
+        }
+                
         // Update the drawing on the server
         // TODO: Fix issue where the Firestore update sets the drawing on each artist update
         self.gameApi.updateDrawing(self.gameId, drawing: canvasView.drawing, nil) // TODO: Handle error
@@ -84,9 +91,13 @@ extension DrawScreenViewModel: PKCanvasViewDelegate {
                 // Filter among the choices available to the user
                 let choicesSet = Set(self.onlineInfo.choices)
                 
-                let guesses = guesses.filter { choicesSet.contains($0.guess) }
+                let guessesFiltered = guesses.filter { choicesSet.contains($0.guess) }
                 
-                if let bestGuess = guesses.first, bestGuess.confidence > Constants.confidenceThreshold {
+                if let bestGuess = guessesFiltered.first, bestGuess.confidence > Constants.confidenceThreshold {
+                    self.submitGuessByAI(bestGuess.guess,
+                                         confidence: bestGuess.confidence,
+                                         isCorrect: self.onlineInfo.question == bestGuess.guess)
+                } else if let bestGuess = guesses.first, bestGuess.confidence > Constants.confidenceThreshold {
                     self.submitGuessByAI(bestGuess.guess,
                                          confidence: bestGuess.confidence,
                                          isCorrect: self.onlineInfo.question == bestGuess.guess)

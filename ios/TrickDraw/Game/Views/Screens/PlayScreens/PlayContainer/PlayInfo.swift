@@ -13,12 +13,6 @@ struct PlayReadyInfo: Codable {
 }
 
 struct PlayAnswerInfo: Codable {
-    let artist: Player
-    let guessers: [Player]
-    let question: String
-
-    let correctPlayer: Player
-    let scoreboard: Scoreboard
 }
 
 struct PlayGuessInfo: Codable {

@@ -30,7 +30,12 @@ struct ScoreboardEntry: View {
             Text("\(score)")
                 .foregroundColor(Color(GlobalConstants.Colors.DarkGrey))
                 .font(GlobalConstants.Fonts.Medium)
-                .frame(width: 30, height: 30, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                .padding(10)
+                .frame(minWidth: 40,
+                       idealWidth: 40,
+                       minHeight: 40,
+                       idealHeight: 40,
+                       alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                 .background(Color(GlobalConstants.Colors.Grey))
                 .cornerRadius(5)
         }
@@ -64,3 +69,10 @@ struct ScoreboardView: View {
         .frame(height: 80)
     }
 }
+
+struct ScoreboardView_Previews: PreviewProvider {
+    static var previews: some View {
+        ScoreboardView(scoreboard: ["ai": 500, "human": 10])
+    }
+}
+
