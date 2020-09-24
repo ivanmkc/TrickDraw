@@ -21,6 +21,7 @@ class DrawScreenViewModel: NSObject, ObservableObject {
     private let gameId: String
     private let players: [Player]
     
+    @Published var scoreboard: Scoreboard
     @Published var onlineInfo: PlayGuessInfo
     @Published var drawing: PKDrawing?
     
@@ -32,21 +33,24 @@ class DrawScreenViewModel: NSObject, ObservableObject {
     
     init(gameId: String,
          players: [Player], // TODO: Remove this when moved to cloud function
+         scoreboard: Scoreboard,
          onlineInfo: PlayGuessInfo) {
         self.gameId = gameId
         self.players = players
+        self.scoreboard = scoreboard
         self.onlineInfo = onlineInfo
         self.drawing = onlineInfo.drawing
     }
     
     func resetRound() {
-        gameApi.startGame(gameId, nil) // TODO: Show error toast
+        gameApi.startNewRound(gameId, nil) // TODO: Show error toast
     }
     
-    private func submitGuessByAI(_ guess: String, confidence: Float) {
+    private func submitGuessByAI(_ guess: String, confidence: Float, isCorrect: Bool) {
         gameApi.submitGuessByAI(gameId,
                                 guess: guess,
-                                confidence: confidence) { (result) in
+                                confidence: confidence,
+                                isCorrect: isCorrect) { (result) in
             switch (result) {
             case .success():
                 break
@@ -79,9 +83,8 @@ extension DrawScreenViewModel: PKCanvasViewDelegate {
             case .success(let guesses):
                 if let bestGuess = guesses.first, bestGuess.confidence > Constants.confidenceThreshold {
                     self.submitGuessByAI(bestGuess.guess,
-                                         confidence: bestGuess.confidence)
-                } else {
-                    self.submitGuessByAI("Unknown", confidence: 0)
+                                         confidence: bestGuess.confidence,
+                                         isCorrect: self.onlineInfo.question == bestGuess.guess)
                 }
             case .failure(let error):
                 print(error) // Show error toast

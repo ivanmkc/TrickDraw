@@ -23,6 +23,7 @@ struct Game: Identifiable, Codable {
     var players: [Player] = []
     var hostPlayerId: String
     var state: GameState
+    let scoreboard: Scoreboard
 }
 
 class LobbyScreenViewModel: ObservableObject {
@@ -61,7 +62,7 @@ class LobbyScreenViewModel: ObservableObject {
             switch result {
             case .success(let gameId):
                 // Start game right away. This skips the ready screen
-                self.gameAPI.startGame(gameId) { _ in
+                self.gameAPI.startNewRound(gameId) { _ in
                     completionHandler?(result)
                 }
             case .failure:

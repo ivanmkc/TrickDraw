@@ -18,16 +18,18 @@ enum GameStateWrapper {
 class PlayContainerViewModel: ObservableObject {
     private let gameAPI: GameAPI = DefaultGameAPI.shared
     private var viewInfoListener: ListenerRegistration?
+    private var scoreboardListener: ListenerRegistration?
     
     private let state: GameState
     
     let gameId: String
     let hostPlayerId: String
     
+    @Published var scoreboard: Scoreboard = [:]
     @Published var isHost: Bool
     @Published var players: [Player]
     @Published var stateInfo: LoadableResult<GameStateWrapper, Error> = .loading
-        
+    
     init(gameId: String,
          hostPlayerId: String,
          players: [Player],
@@ -38,101 +40,102 @@ class PlayContainerViewModel: ObservableObject {
         self.state = state
         self.isHost = gameAPI.currentUser.map { $0.uid == hostPlayerId } ?? false
         
-        fetchData()
+        self.setupListeners()
     }
     
-    private func fetchData() {
-        viewInfoListener = gameAPI
-            .viewInfoCollectionReference(gameId)
-            .addSnapshotListener { documentSnapshot, error in
-            let state = self.state
-            
-            switch (state) {
-            case .ready:
-                self.gameAPI
-                    .viewInfoCollectionReference(self.gameId)
-                    .document(state.rawValue)
-                    .getDocument(completion: { [weak self] (snapshot, error) in
-                        guard let `self` = self else { return }
-                        
-                        do {
-                            if let error = error {
-                                self.stateInfo = .failure(error)
-                            } else {
-                                if let info = try snapshot?.data(as: PlayReadyInfo.self) {
-                                    self.stateInfo = .success(GameStateWrapper.ready(info))
-                                }
-                            }
-                        } catch (let error) {
-                            self.stateInfo = .failure(error)
-                        }
-                    })
-            case .guess:
-                self.gameAPI
-                    .viewInfoCollectionReference(self.gameId)
-                    .document(state.rawValue)
-                    .getDocument(completion: { [weak self] (snapshot, error) in
-                        guard let `self` = self else { return }
-                        
-                        do {
-                            if let error = error {
-                                self.stateInfo = .failure(error)
-                            } else {
-                                if let info = try snapshot?.data(as: PlayGuessInfo.self) {
-                                    self.stateInfo = .success(GameStateWrapper.guess(info))
-                                }
-                            }
-                        } catch (let error) {
-                            self.stateInfo = .failure(error)
-                        }
-                    })
-            case .answer:
-                self.gameAPI
-                    .viewInfoCollectionReference(self.gameId)
-                    .document(state.rawValue)
-                    .getDocument(completion: { [weak self] (snapshot, error) in
-                        guard let `self` = self else { return }
-                        
-                        do {
-                            if let error = error {
-                                self.stateInfo = .failure(error)
-                            } else {
-                                if let info = try snapshot?.data(as: PlayAnswerInfo.self) {
-                                    self.stateInfo = .success(GameStateWrapper.answer(info))
-                                }
-                            }
-                        } catch (let error) {
-                            self.stateInfo = .failure(error)
-                        }
-                    })
-            }
-        }
+    private func setupListeners() {
+        setupScoreboardListener()
+        setupViewInfoListener()
     }
     
-    private func fetchGameStateInfo(_ gameState: GameState,
-                                    completionHandler: () -> LoadableResult<GameStateWrapper, Error>) {
-        self.gameAPI
-            .viewInfoCollectionReference(gameId)
-            .document(gameState.rawValue)
-            .getDocument(completion: { [weak self] (snapshot, error) in
+    private func setupScoreboardListener() {
+        viewInfoListener = self.gameAPI
+            .scoreboardReference(gameId)
+            .addSnapshotListener { [weak self] (snapshot, error) in
                 guard let `self` = self else { return }
                 
                 do {
                     if let error = error {
                         self.stateInfo = .failure(error)
                     } else {
-                        if let info = try snapshot?.data(as: PlayReadyInfo.self) {
-                            self.stateInfo = .success(GameStateWrapper.ready(info))
+                        if let scoreboard = try snapshot?.data(as: Scoreboard.self) {
+                            self.scoreboard = scoreboard
                         }
                     }
                 } catch (let error) {
-                    self.stateInfo = .failure(error)
+                    // TODO: Show error toast
                 }
-            })
+
+            }
+    }
+    
+    private func setupViewInfoListener() {
+        switch (state) {
+        case .ready:
+            viewInfoListener = self.gameAPI
+                .viewInfoCollectionReference(self.gameId)
+                .document(state.rawValue)
+                .addSnapshotListener { [weak self] (snapshot, error) in
+                    guard let `self` = self else { return }
+                    
+                    do {
+                        if let error = error {
+                            self.stateInfo = .failure(error)
+                        } else {
+                            if let info = try snapshot?.data(as: PlayReadyInfo.self) {
+                                self.stateInfo = .success(GameStateWrapper.ready(info))
+                            }
+                        }
+                    } catch (let error) {
+                        self.stateInfo = .failure(error)
+                        
+                        // TODO: Show error toast
+                    }
+                }
+        case .guess:
+            viewInfoListener = self.gameAPI
+                .viewInfoCollectionReference(self.gameId)
+                .document(state.rawValue)
+                .addSnapshotListener { [weak self] (snapshot, error) in
+                    guard let `self` = self else { return }
+                    
+                    do {
+                        if let error = error {
+                            self.stateInfo = .failure(error)
+                        } else {
+                            if let info = try snapshot?.data(as: PlayGuessInfo.self) {
+                                self.stateInfo = .success(GameStateWrapper.guess(info))
+                            }
+                        }
+                    } catch (let error) {
+                        self.stateInfo = .failure(error)
+                    }
+                }
+        case .answer:
+            viewInfoListener = self.gameAPI
+                .viewInfoCollectionReference(self.gameId)
+                .document(state.rawValue)
+                .addSnapshotListener { [weak self] (snapshot, error) in
+                    guard let `self` = self else { return }
+                    
+                    do {
+                        if let error = error {
+                            self.stateInfo = .failure(error)
+                        } else {
+                            if let info = try snapshot?.data(as: PlayAnswerInfo.self) {
+                                self.stateInfo = .success(GameStateWrapper.answer(info))
+                            }
+                        }
+                    } catch (let error) {
+                        self.stateInfo = .failure(error)
+                    }
+                }
+        }
     }
     
     deinit {
         viewInfoListener?.remove()
+        scoreboardListener?.remove()
     }
 }
 

@@ -16,6 +16,7 @@ class GuessScreenViewModel: NSObject, ObservableObject {
     private let gameApi: GameAPI = DefaultGameAPI.shared
     
     private let gameId: String
+    @Published var scoreboard: Scoreboard
     @Published var onlineInfo: PlayGuessInfo
     @Published var drawing: PKDrawing?
     
@@ -25,13 +26,15 @@ class GuessScreenViewModel: NSObject, ObservableObject {
     var aiWarnings: String? = nil
     
     init(gameId: String,
+         scoreboard: Scoreboard,
          onlineInfo: PlayGuessInfo) {
         self.gameId = gameId
+        self.scoreboard = scoreboard
         self.onlineInfo = onlineInfo
         self.drawing = onlineInfo.drawing
     }
     
     func submitGuess(guess: String) {
-        gameApi.submitGuessByPlayer(gameId, guess: guess, nil)
+        gameApi.submitGuessByPlayer(gameId, guess: guess, isCorrect: guess == onlineInfo.question,  nil)
     }
 }

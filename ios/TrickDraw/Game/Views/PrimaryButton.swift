@@ -32,7 +32,6 @@ struct PrimaryButton: View {
         struct Colors {
             static let TextFont = GlobalConstants.Fonts.Heavy
             static let Text = GlobalConstants.Colors.LightGrey
-            static let Shadow = GlobalConstants.Colors.Primary.withAlphaComponent(0.4)
         }
     }
     
@@ -44,7 +43,7 @@ struct PrimaryButton: View {
     let action: () -> ()
     
     private var shadowColor: Color {
-        return isDisabled ? Color.clear : Color(LocalConstants.Colors.Shadow)
+        return isDisabled ? Color.clear : Color(style.backgroundColor.withAlphaComponent(0.4))
     }
     
     var body: some View {
@@ -78,9 +77,10 @@ struct PrimaryButton: View {
                 }
             }
             .padding(EdgeInsets(top: 14, leading: 14, bottom: 14, trailing: 14))
+            .frame(height: 65)
             .foregroundColor(.white)
             .background(isDisabled ? Color(Style.Disabled.backgroundColor) : Color(style.backgroundColor))
-            .cornerRadius(15)
+            .cornerRadius(10)
             .shadow(color: shadowColor, radius: 25, x: 0, y: 10)
         }
         .disabled(isDisabled)

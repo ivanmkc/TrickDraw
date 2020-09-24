@@ -16,6 +16,17 @@ struct GuessesView: View {
             createGuessText(guess)
                 .multilineTextAlignment(.center)
                 .font(GlobalConstants.Fonts.Medium)
+                .padding(10)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .strokeBorder(
+                            style: StrokeStyle(
+                                lineWidth: 2,
+                                dash: [15]
+                            )
+                        )
+                        .foregroundColor(guess.isCorrect ? Color(GlobalConstants.Colors.Teal) : Color(GlobalConstants.Colors.DarkGrey))
+                )
                 .frame(height: 60)
         } else {
             Spacer()
@@ -23,16 +34,19 @@ struct GuessesView: View {
         }
     }
     
-    private func createGuessText(_ guess: Guess) -> Text {
+    private func createGuessText(_ guess: Guess) -> some View {
         let isBot = guess.playerId == GlobalConstants.GoogleBot.id
         
         if isBot {
-            let text = guess.guess != "Unknown" ? "'\(guess.playerName)' guesses '\(guess.guess)' with \(String(format: "%.0f", guess.confidence  * 100))% confidence" : ""
+            let text: String = "'\(guess.playerName)' guesses '\(guess.guess)' with \(String(format: "%.0f", guess.confidence  * 100))% confidence"
+
             return Text(text)
-                .foregroundColor(Color(GlobalConstants.Colors.Teal))
+                .minimumScaleFactor(0.5)
+                .foregroundColor(guess.isCorrect ? Color(GlobalConstants.Colors.Teal) : Color(GlobalConstants.Colors.DarkGrey))
         } else {
             return Text("'\(guess.playerName)' guesses \(guess.guess)")
-                .foregroundColor(Color(GlobalConstants.Colors.DarkGrey))
+                .minimumScaleFactor(0.5)
+                .foregroundColor(guess.isCorrect ? Color(GlobalConstants.Colors.Teal) : Color(GlobalConstants.Colors.DarkGrey))
         }
     }
 }

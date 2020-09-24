@@ -46,12 +46,14 @@ struct PlayContainerView: View {
                                     DrawScreenViewModel(
                                         gameId: viewModel.gameId,
                                         players: viewModel.players,
+                                        scoreboard: viewModel.scoreboard,
                                         onlineInfo: info))
                         ):
                         AnyView(
                             GuessScreenView(
                                 viewModel: GuessScreenViewModel(
                                     gameId: viewModel.gameId,
+                                    scoreboard: viewModel.scoreboard,
                                     onlineInfo: info))
                         )
                 )

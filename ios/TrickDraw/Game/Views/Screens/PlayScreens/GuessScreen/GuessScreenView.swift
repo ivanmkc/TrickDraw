@@ -11,11 +11,10 @@ import PencilKit
 
 struct GuessScreenView: View {
     @State private var canvasView = PKCanvasView()
+    @State var isCoolingDown = false
     
     let viewModel: GuessScreenViewModel
     
-    @State private var isCoolingDown = false
-        
     init(viewModel: GuessScreenViewModel) {
         self.viewModel = viewModel
     }
@@ -27,15 +26,25 @@ struct GuessScreenView: View {
     
     var body: some View {
         VStack(spacing: 20) {
-            ScoreboardView(scoreboard: viewModel.onlineInfo.scoreboard)
+            ScoreboardView(scoreboard: viewModel.scoreboard)
             
             Spacer()
             
-            // Drawing instructions
-            Text("Guess what the drawing is!")
-                .foregroundColor(Color(GlobalConstants.Colors.DarkGrey))
-                .font(GlobalConstants.Fonts.Medium)
-                .frame(height: 30, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+            if let correctGuess =
+                viewModel.onlineInfo.guesses.first { $0.isCorrect } {
+                // Drawing instructions
+                Text("'\(correctGuess.playerName)' wins!")
+                    .foregroundColor(Color(GlobalConstants.Colors.Teal))
+                    .font(GlobalConstants.Fonts.Medium)
+                    .frame(height: 30, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                
+            } else {
+                // Drawing instructions
+                Text("Guess what the drawing is!")
+                    .foregroundColor(Color(GlobalConstants.Colors.DarkGrey))
+                    .font(GlobalConstants.Fonts.Medium)
+                    .frame(height: 30, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+            }
             
             GeometryReader { geometry in
                 // Canvas
@@ -52,7 +61,7 @@ struct GuessScreenView: View {
             
             Divider()
             
-            VStack {
+            VStack(spacing: 10) {
                 ForEach(Array(viewModel
                                 .onlineInfo
                                 .choices
@@ -64,7 +73,7 @@ struct GuessScreenView: View {
                             PrimaryButton(text: choice,
                                           shouldExpand: true,
                                           style: .Green,
-                                          isDisabled: isCoolingDown) {
+                                          isDisabled: isCoolingDown || viewModel.onlineInfo.isFinished) {
                                 viewModel.submitGuess(guess: choice)
                                 
                                 isCoolingDown = true
@@ -99,6 +108,11 @@ struct GuessScreenView_Previews: PreviewProvider {
     static var previews: some View {
         GuessScreenView(
             viewModel: GuessScreenViewModel(gameId: "gameId",
+                                            scoreboard: [
+                                                Player.player1.id: 10,
+                                                Player.player2.id: 20,
+                                                GlobalConstants.GoogleBot.id: 40
+                                            ],
                                             onlineInfo: PlayGuessInfo(artist: Player.player1,
                                                                       guessers: [],
                                                                       question: "duck",
@@ -112,12 +126,7 @@ struct GuessScreenView_Previews: PreviewProvider {
                                                                               guess: "bread",
                                                                               confidence: 1),
                                                                       ],
-                                                                      drawingAsBase64: nil,
-                                                                      scoreboard: [
-                                                                        Player.player1.id: 10,
-                                                                        Player.player2.id: 20,
-                                                                        GlobalConstants.GoogleBot.id: 40
-                                                                      ]
+                                                                      drawingAsBase64: nil
                                             )
             )
         )

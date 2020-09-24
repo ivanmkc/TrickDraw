@@ -12,10 +12,12 @@ import PencilKit
 
 enum APIError: Error {
     case userNotLoggedIn
+    case deserializationError
 }
 
 protocol GameAPI {
     func viewInfoCollectionReference(_ gameId: String) -> CollectionReference
+    func scoreboardReference(_ gameId: String) -> DocumentReference
     
     var currentUser: User? { get }
     
@@ -24,12 +26,12 @@ protocol GameAPI {
     func joinGame(_ gameId: String, _ completionHandler: ((Result<Void, Error>) -> ())?)
     
     func readyUp(_ gameId: String, _ completionHandler: ((Result<Void, Error>) -> ())?)
-    func startGame(_ gameId: String, _ completionHandler: ((Result<Void, Error>) -> ())?)
+    func startNewRound(_ gameId: String, _ completionHandler: ((Result<Void, Error>) -> ())?)
     
     func updateDrawing(_ gameId: String, drawing: PKDrawing, _ completionHandler: ((Result<Void, Error>) -> ())?)
     
-    func submitGuessByPlayer(_ gameId: String, guess: String, _ completionHandler: ((Result<Void, Error>) -> ())?)
-    func submitGuessByAI(_ gameId: String, guess: String, confidence: Float, _ completionHandler: ((Result<Void, Error>) -> ())?)
+    func submitGuessByPlayer(_ gameId: String, guess: String, isCorrect: Bool, _ completionHandler: ((Result<Void, Error>) -> ())?)
+    func submitGuessByAI(_ gameId: String, guess: String, confidence: Float, isCorrect: Bool, _ completionHandler: ((Result<Void, Error>) -> ())?)
 }
 
 class DefaultGameAPI: GameAPI {
@@ -52,6 +54,10 @@ class DefaultGameAPI: GameAPI {
         return gamesReference.document(gameId).collection("viewInfo")
     }
     
+    func scoreboardReference(_ gameId: String) -> DocumentReference {
+        return viewInfoCollectionReference(gameId).document("scoreboard")
+    }
+    
     var currentUser: User? {
         return Auth.auth().currentUser
     }
@@ -67,7 +73,8 @@ class DefaultGameAPI: GameAPI {
             let gameReference = try gamesReference.addDocument(from: Game(name: "\(displayName)'s game",
                                                                           players: [player],
                                                                           hostPlayerId: userId,
-                                                                          state: GameState.ready))
+                                                                          state: GameState.ready,
+                                                                          scoreboard: [:]))
             try gameReference
                 .collection("viewInfo")
                 .document("ready")
@@ -79,7 +86,7 @@ class DefaultGameAPI: GameAPI {
             completionHandler?(.failure(error))
         }
     }
-        
+    
     func joinGame(_ gameId: String, _ completionHandler: ((Result<Void, Error>) -> ())?) {
         guard let currentUser = currentUser,
               let displayName = currentUser.displayName else {
@@ -117,9 +124,10 @@ class DefaultGameAPI: GameAPI {
             }
     }
     
-    func startGame(_ gameId: String, _ completionHandler: ((Result<Void, Error>) -> ())?) {
+    func startNewRound(_ gameId: String, _ completionHandler: ((Result<Void, Error>) -> ())?) {
         let gameReference = gamesReference.document(gameId)
         
+        // TODO: Use transaction instead
         gameReference.getDocument { (snapshot, error) in
             if let error = error {
                 completionHandler?(.failure(error))
@@ -143,7 +151,6 @@ class DefaultGameAPI: GameAPI {
                                 
                                 let artist = players.randomElement()!
                                 let endTime = Date().addingTimeInterval(60)
-                                let scoreboard = Scoreboard()
                                 let question = self.labels.randomElement()!
                                 
                                 var choices = self.labels
@@ -164,8 +171,7 @@ class DefaultGameAPI: GameAPI {
                                                                      choices: choices,
                                                                      endTime: endTime,
                                                                      guesses: [],
-                                                                     drawingAsBase64: nil,
-                                                                     scoreboard: scoreboard)) {
+                                                                     drawingAsBase64: nil)) {
                                             if let error = $0 {
                                                 completionHandler?(.failure(error))
                                             } else {
@@ -177,7 +183,7 @@ class DefaultGameAPI: GameAPI {
                                 }
                             }
                         }
-
+                    
                 } catch (let error) {
                     completionHandler?(.failure(error))
                     return
@@ -200,41 +206,109 @@ class DefaultGameAPI: GameAPI {
             }
     }
     
-    func submitGuessByPlayer(_ gameId: String, guess: String, _ completionHandler: ((Result<Void, Error>) -> ())?) {
+    func submitGuessByPlayer(_ gameId: String, guess: String, isCorrect: Bool, _ completionHandler: ((Result<Void, Error>) -> ())?) {
         if let currentUser = currentUser {
             submitGuess(gameId, player: Player(id: currentUser.uid, name: currentUser.displayName ?? ""),
                         guess: guess,
+                        isCorrect: isCorrect,
                         confidence: 1.0,
                         completionHandler)
         }
     }
     
-    func submitGuessByAI(_ gameId: String, guess: String, confidence: Float, _ completionHandler: ((Result<Void, Error>) -> ())?) {
-        submitGuess(gameId, player: GlobalConstants.GoogleBot, guess: guess, confidence: confidence, nil)
+    func submitGuessByAI(_ gameId: String, guess: String, confidence: Float, isCorrect: Bool, _ completionHandler: ((Result<Void, Error>) -> ())?) {
+        submitGuess(gameId, player: GlobalConstants.GoogleBot, guess: guess, isCorrect: isCorrect, confidence: confidence, nil)
     }
     
-    private func submitGuess(_ gameId: String, player: Player, guess: String, confidence: Float, _ completionHandler: ((Result<Void, Error>) -> ())?) {
+    private func submitGuess(_ gameId: String, player: Player, guess: String, isCorrect: Bool, confidence: Float, _ completionHandler: ((Result<Void, Error>) -> ())?) {
         print("'\(player.name)' submitting \(guess)")
         
         let guess = Guess(playerId: player.id,
                           playerName: player.name,
                           guess: guess,
-                          confidence: confidence)
+                          confidence: confidence,
+                          isCorrect: isCorrect)
         
-        let dict: [String : Any] = ["id": guess.id,
-                    "playerId": guess.playerId,
-                    "playerName": guess.playerName,
-                    "confidence": guess.confidence,
-                    "guess": guess.guess]
+        let guessAsDictionary: [String : Any] = ["id": guess.id,
+                                    "playerId": guess.playerId,
+                                    "playerName": guess.playerName,
+                                    "confidence": guess.confidence,
+                                    "guess": guess.guess,
+                                    "isCorrect" : guess.isCorrect]
         
-        self.viewInfoCollectionReference(gameId)
-            .document("guess")
-            .updateData(["guesses": FieldValue.arrayUnion([dict])]) {
-                if let error = $0 {
-                    completionHandler?(.failure(error))
-                } else {
-                    completionHandler?(.success(()))
+        self.database.runTransaction { (transaction, errorPointer) -> Any? in
+            do {
+                let viewInfoReference = self.viewInfoCollectionReference(gameId).document("guess")
+                // Read: Get current guesses
+                guard let playGuessInfo = try transaction.getDocument(viewInfoReference).data(as: PlayGuessInfo.self) else {
+                    let error = NSError(
+                        domain: "AppErrorDomain",
+                        code: -1,
+                        userInfo: [
+                            NSLocalizedDescriptionKey: "Unable to retrieve game from snapshot \(viewInfoReference)"
+                        ]
+                    )
+
+                    errorPointer?.pointee = error
+                    return nil
                 }
+                
+                // Make sure no one has guessed correctly already
+                guard !playGuessInfo.isFinished else { return nil }
+                
+                // Read: Get current scoreboard
+                let scoreboardReference = self.scoreboardReference(gameId)
+                
+                var scoreboard: Scoreboard
+                
+                if try transaction
+                    .getDocument(scoreboardReference)
+                    .exists {
+                    
+                    guard let scoreboardExisting = try transaction
+                    .getDocument(scoreboardReference).data() as? Scoreboard else {
+                        let error = NSError(
+                            domain: "AppErrorDomain",
+                            code: -1,
+                            userInfo: [
+                                NSLocalizedDescriptionKey: "Unable to retrieve scoreboard from snapshot \(scoreboardReference)"
+                            ]
+                        )
+
+                        errorPointer?.pointee = error
+                        return nil
+                    }
+
+                    scoreboard = scoreboardExisting
+                } else {
+                    scoreboard = [:]
+                }
+                
+                // Write: Update guesses
+                transaction.updateData(
+                    [
+                        "guesses": FieldValue.arrayUnion([guessAsDictionary]),
+                    ],
+                    forDocument: viewInfoReference)
+                
+                if guess.isCorrect {
+                    /// Write:  scoreboard
+                    scoreboard[guess.playerId] = scoreboard[guess.playerId, default: 0] + 1
+
+                    transaction.setData(scoreboard, forDocument: scoreboardReference)
+                }
+
+                return nil
+            } catch let fetchError as NSError {
+                errorPointer?.pointee = fetchError
+                return nil
             }
+        } completion: { (object, error) in
+            if let error = error {
+                completionHandler?(.failure(error))
+            } else {
+                completionHandler?(.success(()))
+            }
+        }
     }
 }

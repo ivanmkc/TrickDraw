@@ -83,7 +83,7 @@ struct LobbyScreenView: View {
                                         }
                                     }
                                     .background(Color.white)
-                                    .cornerRadius(15)
+                                    .cornerRadius(10)
                                 }
                             }
                         )

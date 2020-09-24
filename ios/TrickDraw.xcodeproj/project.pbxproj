@@ -271,8 +271,8 @@
 			isa = PBXGroup;
 			children = (
 				78940226251B988800302F48 /* PlayInfo.swift */,
-				78940227251B988800302F48 /* PlayContainerViewModel.swift */,
 				78940228251B988800302F48 /* PlayContainerView.swift */,
+				78940227251B988800302F48 /* PlayContainerViewModel.swift */,
 			);
 			path = PlayContainer;
 			sourceTree = "<group>";

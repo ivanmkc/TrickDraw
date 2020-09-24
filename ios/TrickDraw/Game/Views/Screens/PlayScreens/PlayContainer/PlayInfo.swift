@@ -33,8 +33,6 @@ struct PlayGuessInfo: Codable {
     let guesses: [Guess]
     
     let drawingAsBase64: String?
-
-    let scoreboard: Scoreboard
 }
 
 extension PlayGuessInfo {
@@ -43,6 +41,12 @@ extension PlayGuessInfo {
             return drawing
         } else {
             return nil
+        }
+    }
+    
+    var isFinished: Bool {
+        guesses.contains {
+            $0.isCorrect
         }
     }
 }
