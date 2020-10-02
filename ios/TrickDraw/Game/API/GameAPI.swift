@@ -74,7 +74,8 @@ class DefaultGameAPI: GameAPI {
                                                                           players: [player],
                                                                           hostPlayerId: userId,
                                                                           state: GameState.ready,
-                                                                          scoreboard: [:]))
+                                                                          scoreboard: [:],
+                                                                          createdAt: Date()))
             try gameReference
                 .collection("viewInfo")
                 .document("ready")

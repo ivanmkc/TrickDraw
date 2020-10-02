@@ -24,6 +24,7 @@ struct Game: Identifiable, Codable {
     var hostPlayerId: String
     var state: GameState
     let scoreboard: Scoreboard
+    let createdAt: Date
 }
 
 class LobbyScreenViewModel: ObservableObject {
@@ -39,6 +40,7 @@ class LobbyScreenViewModel: ObservableObject {
     func setupListener() {
         gamesListener = gameAPI
             .gamesReference
+            .order(by: "createdAt", descending: true)
             .addSnapshotListener { querySnapshot, error in
             // TODO: Sort by creation date
             guard let documents = querySnapshot?.documents else {

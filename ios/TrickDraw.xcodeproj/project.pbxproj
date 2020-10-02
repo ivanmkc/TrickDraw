@@ -13,7 +13,6 @@
 		784C88152511598400943942 /* TFLiteExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784C88142511598400943942 /* TFLiteExtensions.swift */; };
 		785980D7251146F800722FDE /* ModelDataHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785980D6251146F800722FDE /* ModelDataHandling.swift */; };
 		785980D92511472800722FDE /* QuickDrawModelDataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785980D82511472800722FDE /* QuickDrawModelDataHandler.swift */; };
-		78732C6F251424C6005ABFBE /* GameSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78732C6E251424C6005ABFBE /* GameSession.swift */; };
 		7877A21F251AC265001B533E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7877A21E251AC265001B533E /* Constants.swift */; };
 		78925BBF25195750009B9096 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 78925BBE25195750009B9096 /* GoogleService-Info.plist */; };
 		78925BC725197FDF009B9096 /* LoadableResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78925BC625197FDF009B9096 /* LoadableResult.swift */; };
@@ -77,7 +76,6 @@
 		784C88142511598400943942 /* TFLiteExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLiteExtensions.swift; sourceTree = "<group>"; };
 		785980D6251146F800722FDE /* ModelDataHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelDataHandling.swift; sourceTree = "<group>"; };
 		785980D82511472800722FDE /* QuickDrawModelDataHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickDrawModelDataHandler.swift; sourceTree = "<group>"; };
-		78732C6E251424C6005ABFBE /* GameSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSession.swift; sourceTree = "<group>"; };
 		7877A21E251AC265001B533E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		78925BBE25195750009B9096 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		78925BC625197FDF009B9096 /* LoadableResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadableResult.swift; sourceTree = "<group>"; };
@@ -192,7 +190,6 @@
 		78732C8B25144EAC005ABFBE /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				78732C6E251424C6005ABFBE /* GameSession.swift */,
 				781027F92516612100B493BC /* Player.swift */,
 			);
 			path = Models;
@@ -643,7 +640,6 @@
 				78940237251B988800302F48 /* PlayContainerViewModel.swift in Sources */,
 				784C88152511598400943942 /* TFLiteExtensions.swift in Sources */,
 				78940236251B988800302F48 /* PlayInfo.swift in Sources */,
-				78732C6F251424C6005ABFBE /* GameSession.swift in Sources */,
 				7894024A251B9A4000302F48 /* UIColor+hex.swift in Sources */,
 				7894023B251B988800302F48 /* DrawGuessCommonOnlineViewModel.swift in Sources */,
 				78925BC725197FDF009B9096 /* LoadableResult.swift in Sources */,

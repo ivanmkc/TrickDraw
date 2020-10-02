@@ -6,13 +6,6 @@
 //  Copyright © 2020 Google. All rights reserved.
 //
 
-/// A result from invoking the `Interpreter`.
-//struct Result<Inference, Error> {
-//    let elapsedTimeInMs: Double
-//    let inference: Inference?
-//    let error: Error
-//}
-
 /// Information about a model file or labels file.
 typealias FileInfo = (name: String, extension: String)
 
