@@ -24,6 +24,14 @@ struct CanvasViewWrapper: UIViewRepresentable {
         
     func makeUIView(context: Context) -> PKCanvasView {
         self.canvasView.tool = PKInkingTool(.pencil, color: .black, width: 5) // This color inverts depending on light vs dark mode
+        
+        if #available(iOS 14.0, *) {
+            self.canvasView.drawingPolicy = .anyInput
+        } else {
+            // Fallback on earlier versions
+            self.canvasView.allowsFingerDrawing = true
+        }
+        
         if let drawing = drawing {
             canvasView.drawing = drawing
         }

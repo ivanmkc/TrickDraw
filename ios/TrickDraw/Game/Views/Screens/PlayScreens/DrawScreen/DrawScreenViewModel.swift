@@ -8,6 +8,8 @@
 
 import PencilKit
 
+private let useSimpleMode = true
+
 class DrawScreenViewModel: NSObject, ObservableObject {
     struct Constants {
         static let confidenceThreshold: Float = 0.01
@@ -66,6 +68,11 @@ extension DrawScreenViewModel: PKCanvasViewDelegate {
     func canvasViewDrawingDidChange(_ canvasView: PKCanvasView) {
         print("canvasViewDrawingDidChange")
 
+        // Update the drawing on the server
+        // TODO: Fix issue where the Firestore update sets the drawing on each artist update
+        self.gameApi.updateDrawing(self.gameId, drawing: canvasView.drawing, nil) // TODO: Handle error
+    
+        
         // Prevent bot from guessing a blank canvas
         if #available(iOS 14.0, *) {
             guard !canvasView.drawing.strokes.isEmpty else { return }
@@ -74,10 +81,6 @@ extension DrawScreenViewModel: PKCanvasViewDelegate {
             guard !canvasView.drawing.bounds.isEmpty else { return }
         }
                 
-        // Update the drawing on the server
-        // TODO: Fix issue where the Firestore update sets the drawing on each artist update
-        self.gameApi.updateDrawing(self.gameId, drawing: canvasView.drawing, nil) // TODO: Handle error
-        
         // Perform inference
         let image = canvasView.drawing.image(from: canvasView.bounds, scale: 1)
         
@@ -93,7 +96,10 @@ extension DrawScreenViewModel: PKCanvasViewDelegate {
                 
                 let guessesFiltered = guesses.filter { choicesSet.contains($0.guess) }
                 
-                if let bestGuess = guessesFiltered.first, bestGuess.confidence > Constants.confidenceThreshold {
+                // Check if this is the best guess within the available choices
+                if useSimpleMode,
+                   let bestGuess = guessesFiltered.first,
+                   bestGuess.confidence > Constants.confidenceThreshold {
                     self.submitGuessByAI(bestGuess.guess,
                                          confidence: bestGuess.confidence,
                                          isCorrect: self.onlineInfo.question == bestGuess.guess)

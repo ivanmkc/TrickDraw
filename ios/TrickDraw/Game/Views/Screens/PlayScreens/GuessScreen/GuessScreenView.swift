@@ -45,7 +45,7 @@ struct GuessScreenView: View {
             GeometryReader { geometry in
                 // Canvas
                 CanvasViewWrapper(canvasView: $canvasView,
-                                  isUserInteractionEnabled: true,
+                                  isUserInteractionEnabled: false,
                                   drawing: viewModel.drawing.map { scaledDrawing($0, size: geometry.size) },
                                   shouldUpdateDrawing: true)
                     .environment(\.colorScheme, .dark)
